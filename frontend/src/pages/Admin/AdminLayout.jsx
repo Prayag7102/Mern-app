@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {  useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Nav from './admin-components/Nav';
+import Sidebar from './admin-components/Sidebar';
 export default function AdminLayout() {
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,6 +20,8 @@ export default function AdminLayout() {
   };
   return (
     <div className="h-screen w-full bg-zinc-500">
+      <Nav onToggleSidebar={toggleSidebar}/>
+      <Sidebar isOpen={isSidebarOpen}/>
       <div className="flex justify-center items-center">
         <button
           onClick={handleLogout}
