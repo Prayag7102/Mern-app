@@ -8,9 +8,13 @@ import { toast } from 'react-toastify';
 export default function ProfilePage() {
   const navigate = useNavigate(); // Call useNavigate at the top level
 
+
+  const username = localStorage.getItem("username");
+
   const handleLogout = () => {
     // Clear token from localStorage
     localStorage.removeItem("token");
+    localStorage.removeItem("username");
     toast.success("Logged out successfully!");
     setTimeout(() => {
       navigate("/login");
@@ -20,7 +24,7 @@ export default function ProfilePage() {
   return (
     <div className='h-[100vh] w-full bg-zinc-500'>
         <Header />
-        <h1 className='text-4xl text-center text-white'>ProfilePage</h1>
+        <h1 className='text-4xl text-center text-white'> Welcome, {username ? username : 'User'}!</h1>
 
         <button
           onClick={handleLogout}

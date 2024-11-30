@@ -20,7 +20,7 @@ export default function RegisterPage() {
     try {
       const data = await registerUser(name, email, password);
       toast.success("Registration successful!");
-        navigate('/profile');
+        navigate('/login');
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
