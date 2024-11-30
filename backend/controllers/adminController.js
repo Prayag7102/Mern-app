@@ -27,7 +27,6 @@ const createAdmin = async (req, res) => {
 const loginAdmin = async (req, res) => {
   const { username, password } = req.body;
 
-  // Check if the admin exists in the database
   const admin = await Admin.findOne({ username });
   if (!admin) {
     return res.status(400).json({ message: "Invalid username or password" });
@@ -39,7 +38,6 @@ const loginAdmin = async (req, res) => {
     return res.status(400).json({ message: "Invalid username or password" });
   }
 
-  // Generate a JWT token
   const token = jwt.sign({ id: admin._id, username: admin.username }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
   res.json({ token });
