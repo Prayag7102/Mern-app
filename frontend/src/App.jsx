@@ -10,6 +10,11 @@ import RegisterPage from "./pages/RegisterPage";
 import AdminLogin from "./pages/AdminLogin";
 import NotFoundPage from "./components/NotFoundPage";
 import AdminLayout from "./pages/Admin/AdminLayout";
+import DashCards from "./pages/Admin/admin-components/DashCards";
+import TableData from "./pages/Admin/admin-components/TableData";
+import Search from "./pages/Admin/admin-components/Search";
+import ContactUs from "./pages/ContactUs";
+import AddProducts from "./pages/Admin/admin-components/AddProducts";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +30,10 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
+    path: "/contact",
+    element: <ContactUs />,
+  },
+  {
     path: "/admin/login",
     element: <AdminLogin />,
   },
@@ -35,6 +44,34 @@ const router = createBrowserRouter([
         <AdminLayout /> 
       </ProtectedRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: (
+          <>
+            <Search/>
+            <DashCards />
+            <TableData />
+          </>
+        ),
+      },
+      {
+        path: 'search',
+        element: <Search />,
+      },
+      {
+        path: 'dashcards',
+        element: <DashCards />,
+      },
+      {
+        path: 'table-data',
+        element: <TableData />,
+      },
+      {
+        path: 'addproducts',
+        element: <AddProducts />,
+      },
+    ],
   },
   {
     path: "/profile", 

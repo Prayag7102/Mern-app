@@ -10,8 +10,19 @@ const getProducts = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  const { name, description, price, imageUrl, stock } = req.body;
-  const product = new Product({ name, description, price, imageUrl, stock });
+  const { name, description, price, discountedPrice, stock } = req.body;
+  const image = req.file ? req.file.filename : null; 
+  if (!image) {
+    return res.status(400).json({ message: "Image is required." });
+  }
+  const product = new Product({
+    name,
+    description,
+    price,
+    discountedPrice,
+    stock,
+    image,
+  });
 
   try {
     await product.save();
