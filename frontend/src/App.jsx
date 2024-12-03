@@ -15,6 +15,7 @@ import TableData from "./pages/Admin/admin-components/TableData";
 import Search from "./pages/Admin/admin-components/Search";
 import ContactUs from "./pages/ContactUs";
 import AddProducts from "./pages/Admin/admin-components/AddProducts";
+import ManageProducts from "./pages/Admin/admin-components/ManageProduct";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: 'addproducts',
         element: <AddProducts />,
+      },
+      {
+        path: 'manageproducts',
+        element: <ManageProducts />,
       },
     ],
   },

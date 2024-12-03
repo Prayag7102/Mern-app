@@ -5,12 +5,12 @@ const ProductsCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch products when the component mounts
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productsData = await getProducts(); // Fetch the products from the API
-        setProducts(productsData);  // Set the products data in state
+        const productsData = await getProducts(); 
+        setProducts(productsData); 
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -18,7 +18,7 @@ const ProductsCard = () => {
       }
     };
 
-    fetchProducts();  // Fetch products when component mounts
+    fetchProducts();  
   }, []);
 
   if (loading) {
@@ -28,7 +28,7 @@ const ProductsCard = () => {
   return (
     <div>
       <h1 className='text-3xl text-black text-center'>New Products</h1>
-      <div className="flex flex-wrap gap-5 items-center">
+      <div className="flex flex-wrap gap-5 items-center px-3">
         {products.length === 0 ? (
           <div className="col-span-full text-center p-5 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-2xl text-gray-700 font-semibold">No Products Available</h2>
@@ -38,11 +38,11 @@ const ProductsCard = () => {
           products.map((product) => (
             <div
               key={product._id} 
-              className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              className="relative  flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
             >
               <a className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl" href="#">
                 <img
-                  className="object-cover"
+                  className="object-cover h-64 w-full"
                   src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"}
                   alt="product image"
                 />

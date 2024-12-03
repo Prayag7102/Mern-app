@@ -21,7 +21,6 @@ export default function AdminLayout() {
         </div>
         <div className='lg:w-[90%] md:w-full sm:w-full px-5'>
           <Outlet/>
-         
         </div>
       </div>
     </div>
