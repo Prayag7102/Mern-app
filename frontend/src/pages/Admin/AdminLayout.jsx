@@ -11,7 +11,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className=" bg-zinc-100 w-full">
+    <div className=" bg-zinc-100 h-screen w-full">
       <div className='w-full'>
         <Nav onToggleSidebar={toggleSidebar} />
       </div>
