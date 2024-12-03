@@ -1,88 +1,121 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Stack } from "@mui/material";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { Box } from "@mui/material";
 import { getProducts } from "../../../api/products";
-import { MdOutlineEditNote,MdDeleteOutline  } from "react-icons/md";
 
-const ManageProducts = () => {
+const ManageProduct = () => {
   const [products, setProducts] = useState([]);
-
-  // Fetch all products
-  const fetchProducts = async () => {
-    try {
-      const productList = await getProducts();
-      setProducts(productList);
-    } catch (error) {
-      console.error("Error fetching products:", error.message);
-    }
-  };
+  const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
     fetchProducts();
   }, []);
 
-  // DataGrid Columns
   const columns = [
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "description", headerName: "Description", width: 300 },
-    { field: "price", headerName: "Price", width: 100 },
-    { field: "discountedPrice", headerName: "Discounted Price", width: 150 },
-    { field: "stock", headerName: "Stock", width: 100 },
+    { field: "name", headerName: "Name", flex: 1, minWidth: 150 },
+    { field: "description", headerName: "Description", flex: 2, minWidth: 200 },
+    { field: "price", headerName: "Price", type: "number", flex: 1, minWidth: 100 },
+    {
+      field: "discountedPrice",
+      headerName: "Discounted Price",
+      type: "number",
+      flex: 1,
+      minWidth: 150,
+    },
+    { field: "stock", headerName: "Stock", type: "number", flex: 1, minWidth: 100 },
     {
       field: "image",
       headerName: "Image",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       renderCell: (params) => (
         <img
-          src={
-            params.row.image
-              ? `http://localhost:5000/uploads/${params.row.image}`
-              : "https://via.placeholder.com/150"
-          }
-          alt={params.row.name}
-          style={{ width: "50px", height: "50px", borderRadius: "4px" }}
+          src={`http://localhost:5000/uploads/${params.value}`}
+          alt="Product"
+          style={{
+            width: "50px",
+            height: "50px",
+            objectFit: "cover",
+            borderRadius: "4px",
+          }}
         />
       ),
     },
     {
       field: "actions",
       headerName: "Actions",
-      flex:1,
-      minwidth: 200,
+      flex: 1,
+      minWidth: 200,
       renderCell: (params) => (
         <Stack direction="row" spacing={1}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleEdit(params.id)}
-        >
-          <MdOutlineEditNote className="text-2xl" />
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => handleDelete(params.id)}
-        >
-          <MdDeleteOutline className="text-2xl" />
-        </Button>
-      </Stack>
-        
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleEdit(params.id)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDelete([params.id])}
+          >
+            Delete
+          </Button>
+        </Stack>
       ),
     },
   ];
 
+  const handleEdit = (id) => {
+    console.log("Edit product with ID:", id);
+  };
+
+  const handleDelete = (ids) => {
+    console.log("Delete products with IDs:", ids);
+  };
+
+  const handleDeleteSelected = () => {
+    handleDelete(selectedRows);
+    setSelectedRows([]); 
+  };
+
   return (
-    <div style={{ height: 500, width: "100%" }}>
-      <h1 className="text-2xl font-bold mb-4">Manage Products</h1>
+    <div style={{ height: 600, width: "100%" }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <h1 className="text-3xl font-bold">Manage Products</h1>
+        {selectedRows.length > 0 && (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleDeleteSelected}
+          >
+            Delete Selected
+          </Button>
+        )}
+      </Box>
       <DataGrid
-        rows={products}
+        rows={products.map((product) => ({ ...product, id: product._id }))}
         columns={columns}
-        getRowId={(row) => row._id} 
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20]}
+        pageSize={10}
+        rowsPerPageOptions={[10]}
+        disableSelectionOnClick
+        checkboxSelection
+        onSelectionModelChange={(ids) => setSelectedRows(ids)}
       />
     </div>
   );
 };
 
-export default ManageProducts;
+export default ManageProduct;
