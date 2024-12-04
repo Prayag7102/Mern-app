@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getCartItems } from '../api/cart';
+import { getCartItems, removeFromCart, updateCartItem } from '../api/cart';
+import { toast } from 'react-toastify';
 
 const CartCard = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -16,6 +17,71 @@ const CartCard = () => {
 
     fetchCart();
   }, []);
+
+  const handleRemoveItem = async (productId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.warning('You must be logged in to remove products from your cart.',{
+        theme:'dark',
+        draggable:true
+      });
+      return;
+    }
+
+    try {
+      const response = await removeFromCart(productId, token);
+      console.log('Product removed from cart:', response);
+      setCartItems(cartItems.filter(item => item.product._id !== productId));
+      toast.success('Product removed from cart!',{
+        theme:'dark',
+        draggable:true
+      });
+    } catch (error) {
+      console.error('Error removing item from cart:', error);
+      toast.error('Failed to remove product from cart.',{
+        theme:'dark',
+        draggable:true
+      });
+    }
+  };
+
+  const handleQuantityChange = async (productId, change) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.warning('You must be logged in to change the quantity.', {
+        theme: 'dark',
+        draggable: true
+      });
+      return;
+    }
+
+    const updatedCartItems = [...cartItems];
+    const itemIndex = updatedCartItems.findIndex(item => item.product._id === productId);
+    
+    if (itemIndex === -1) return;  // If the product is not found, exit
+
+    const newQuantity = updatedCartItems[itemIndex].quantity + change;
+    if (newQuantity < 1) return; // Prevent going below 1
+
+    updatedCartItems[itemIndex].quantity = newQuantity;
+
+    try {
+      const response = await updateCartItem(productId, newQuantity, token);
+      console.log('Cart updated:', response);
+      setCartItems(updatedCartItems);
+      toast.success('Cart updated successfully!', {
+        theme: 'dark',
+        draggable: true
+      });
+    } catch (error) {
+      console.error('Error updating cart quantity:', error);
+      toast.error('Failed to update product quantity.', {
+        theme: 'dark',
+        draggable: true
+      });
+    }
+  };
+
 
   if (cartItems.length === 0) {
     return <p>Your cart is empty.</p>;
@@ -40,37 +106,49 @@ const CartCard = () => {
             </div>
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">
-                <span className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">
-                  {" "}
-                  -{" "}
-                </span>
+                <button
+                 onClick={() => handleQuantityChange(item.product._id, -1)}
+                 className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                  -
+                </button>
                 <input
                   className="h-8 w-8 border bg-white text-center text-xs outline-none"
                   type="number"
-                  defaultValue={item.quantity}
+                  Value={item.quantity}
                   min={1}
+                  readOnly
                 />
-                <span className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
-                  {" "}
-                  +{" "}
-                </span>
+                <button
+                  onClick={() => handleQuantityChange(item.product._id, 1)} 
+                className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                  +
+                </button>
               </div>
               <div className="flex items-center space-x-4">
-                <p className="text-sm">Rs. {item.product.discountedPrice * item.quantity}</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+               <div>
+                <p className="text-sm">Rs. {item.product.discountedPrice}</p>
+                <p className='text-lg mt-3'>Total: Rs.{item.product.discountedPrice * item.quantity}</p>
+               </div>
+                <div>
+                  <button
+                   onClick={() => handleRemoveItem(item.product._id)}
+                   className='remove_btn'>
+                      <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

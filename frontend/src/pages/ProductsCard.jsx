@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
+import { addToCart } from '../api/cart';
+import { toast } from "react-toastify";
 
 const ProductsCard = () => {
   const [products, setProducts] = useState([]);
@@ -21,35 +23,18 @@ const ProductsCard = () => {
   }, []);
 
   const handleAddToCart = async (product) => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      alert('You must be logged in to add products to your cart!');
-      return;
-    }
-
     try {
-      const response = await fetch("http://localhost:5000/api/cart/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          productId: product._id,
-          quantity: 1, 
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add to cart");
-      }
-
-      const data = await response.json();
-      console.log("Product added to cart:", data);
-      alert("Product added to cart!");
+      const data = await addToCart(product._id, 1); 
+      console.log('Product added to cart:', data);
+      toast.success("Product Add To Cart Successfully!",{
+        theme:'dark',
+        draggable:true
+      })
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error('Error adding to cart:', error);
+      alert(error.message); 
+    } finally {
+      setLoading(false);
     }
   };
 
