@@ -6,16 +6,18 @@ import Header from '../components/Header';
 import { toast } from 'react-toastify';
 
 export default function ProfilePage() {
-  const navigate = useNavigate(); // Call useNavigate at the top level
+  const navigate = useNavigate();
 
 
   const username = localStorage.getItem("username");
 
   const handleLogout = () => {
-    // Clear token from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    toast.success("Logged out successfully!");
+    toast.success("Logged out successfully!",{
+      theme:'dark',
+      draggable:true
+    });
     setTimeout(() => {
       navigate("/login");
     }, 1000);

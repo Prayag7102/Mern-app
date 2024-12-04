@@ -22,7 +22,10 @@ export default function AdminLogin() {
       if (data.token) {
         localStorage.setItem("adminToken", data.token);
       }
-      toast.success("successfully logged in!")
+      toast.success("successfully logged in!",{
+        theme:'dark',
+        draggable:true
+      })
       navigate('/admin/dashboard'); 
     } catch (err) {
       setError(err.message || 'Login failed!');

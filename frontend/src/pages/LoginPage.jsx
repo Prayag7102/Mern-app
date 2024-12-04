@@ -19,7 +19,10 @@ export default function LoginPage() {
 
     try {
         const data = await loginUser(email, password);
-        toast.success("Login successful! Welcome,")
+        toast.success("Login successful! Welcome,",{
+          theme:'dark',
+          draggable:true
+        })
         navigate("/profile");
       } catch (err) {
         if (err.status === 401) {
