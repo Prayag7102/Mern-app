@@ -10,7 +10,10 @@ const Nav = ({ onToggleSidebar }) => {
 
     const handleLogout = () => {
       localStorage.removeItem("adminToken");
-      toast.success("logout successfully!")
+      toast.success("logout successfully!",{
+        theme:'dark',
+        draggable:true
+      })
       navigate("/admin/login");
     };
     return (
