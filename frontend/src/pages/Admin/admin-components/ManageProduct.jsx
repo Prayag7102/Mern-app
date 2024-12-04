@@ -7,6 +7,7 @@ import { getProducts } from "../../../api/products";
 import { toast } from 'react-toastify';
 import EditModal from "./EditModal";
 import { handleDelete, handleEditSave } from "../../../utils/ProductUtils";
+import { MdEditNote,MdDelete  } from "react-icons/md";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
@@ -69,14 +70,14 @@ const ManageProduct = () => {
             color="primary"
             onClick={() => handleEdit(params.id)}
           >
-            Edit
+            <MdEditNote className="text-lg" />
           </Button>
           <Button
             variant="contained"
             color="error"
             onClick={() => handleDelete(params.id, setProducts, toast)} // Use handleDelete
           >
-            Delete
+            <MdDelete className="text-lg" />
           </Button>
         </Stack>
       ),
