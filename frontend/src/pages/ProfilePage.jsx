@@ -1,7 +1,7 @@
 
 
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from '../components/Header';
 import { toast } from 'react-toastify';
 
@@ -24,8 +24,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className='h-[100vh] w-full bg-zinc-500'>
-        <Header />
+    <div className=' w-full bg-zinc-500'>
         <h1 className='text-4xl text-center text-white'> Welcome, {username ? username : 'User'}!</h1>
 
         <button
@@ -34,6 +33,7 @@ export default function ProfilePage() {
         >
           Log Out
         </button>
+        <Outlet/>
     </div>
   );
 }

@@ -16,6 +16,8 @@ import Search from "./pages/Admin/admin-components/Search";
 import ContactUs from "./pages/ContactUs";
 import AddProducts from "./pages/Admin/admin-components/AddProducts";
 import ManageProducts from "./pages/Admin/admin-components/ManageProduct";
+import Cart from "./pages/Cart";
+import UserLayout from "./pages/UserLayout";
 
 const router = createBrowserRouter([
   {
@@ -82,9 +84,23 @@ const router = createBrowserRouter([
     path: "/profile", 
     element: (
       <ProtectedRoute>
-        <ProfilePage />
+        <UserLayout />
       </ProtectedRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: (
+          <>
+           <ProfilePage/>
+          </>
+        ),
+      },
+      {
+        path: "cart", 
+        element: <Cart />
+      }
+    ]
   },
   {
     path: "*", 
