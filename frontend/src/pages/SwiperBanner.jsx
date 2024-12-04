@@ -12,6 +12,7 @@ import banner3 from '../assets/images/banner_3.jpg'
 const SwiperBanner = () => {
   return (
     <Swiper
+    loop={true}
     autoplay={{
         delay: 2500,
         disableOnInteraction: false,

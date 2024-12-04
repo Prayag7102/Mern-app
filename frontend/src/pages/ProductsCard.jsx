@@ -5,12 +5,11 @@ const ProductsCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productsData = await getProducts(); 
-        setProducts(productsData); 
+        const productsData = await getProducts();
+        setProducts(productsData);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -18,32 +17,71 @@ const ProductsCard = () => {
       }
     };
 
-    fetchProducts();  
+    fetchProducts();
   }, []);
 
+  const handleAddToCart = async (product) => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      alert('You must be logged in to add products to your cart!');
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/cart/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productId: product._id,
+          quantity: 1, 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add to cart");
+      }
+
+      const data = await response.json();
+      console.log("Product added to cart:", data);
+      alert("Product added to cart!");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
   if (loading) {
-    return <p>Loading products...</p>; 
+    return <p>Loading products...</p>;
   }
 
   return (
-    <div>
-      <h1 className='text-3xl text-black text-center'>New Products</h1>
+    <div className='mb-5 mt-5 container'>
+      <h1 className='text-3xl text-black text-center mb-5 text-blue-700 font-semibold'>
+        New Products
+      </h1>
       <div className="flex flex-wrap gap-5 items-center px-3">
         {products.length === 0 ? (
           <div className="col-span-full text-center p-5 bg-gray-100 rounded-lg shadow-md">
-            <h2 className="text-2xl text-gray-700 font-semibold">No Products Available</h2>
-            <p className="text-gray-500 mt-2">It seems like there are no products available right now. Please check back later.</p>
+            <h2 className="text-2xl text-gray-700 font-semibold">
+              No Products Available
+            </h2>
+            <p className="text-gray-500 mt-2">
+              It seems like there are no products available right now. Please check back later.
+            </p>
           </div>
         ) : (
           products.map((product) => (
             <div
-              key={product._id} 
-              className="relative  flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              key={product._id}
+              className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
             >
               <a className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl" href="#">
                 <img
                   className="object-cover h-64 w-full"
-                  src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c25lYWtlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"}
+                  src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
                   alt="product image"
                 />
                 {product.discount && (
@@ -54,9 +92,7 @@ const ProductsCard = () => {
               </a>
               <div className="mt-4 px-3 pb-5">
                 <a href="#">
-                  <h5 className="text-xl tracking-tight text-slate-900">
-                    {product.name}
-                  </h5>
+                  <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
                 </a>
                 <div className="mt-2 mb-5 flex items-center justify-between">
                   <p>
@@ -64,8 +100,8 @@ const ProductsCard = () => {
                     <span className="text-sm text-slate-900 line-through">Rs.{product.price}</span>
                   </p>
                 </div>
-                <a
-                  href="#"
+                <button
+                  onClick={() => handleAddToCart(product)}
                   className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
                 >
                   <svg
@@ -83,13 +119,12 @@ const ProductsCard = () => {
                     />
                   </svg>
                   Add to cart
-                </a>
+                </button>
               </div>
             </div>
           ))
         )}
       </div>
-
     </div>
   );
 };
