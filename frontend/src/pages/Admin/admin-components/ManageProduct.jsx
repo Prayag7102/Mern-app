@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { getProducts } from "../../../api/products";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import EditModal from "./EditModal";
 import { handleDelete, handleEditSave } from "../../../utils/ProductUtils";
-import { MdEditNote,MdDelete  } from "react-icons/md";
+import { MdEditNote, MdDelete } from "react-icons/md";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterModel, setFilterModel] = useState({
+    items: [],
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -90,6 +94,13 @@ const ManageProduct = () => {
     setEditModalOpen(true);
   };
 
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.price.toString().includes(searchQuery)
+  );
+
   return (
     <>
       <EditModal
@@ -99,18 +110,29 @@ const ManageProduct = () => {
         setProduct={setSelectedProduct}
         onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} // Use handleEditSave
       />
-      <div style={{ height: 600, width: "100%" }}>
+      <div className="mt-5" style={{ height: 600, width: "100%" }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <h1 className="text-3xl font-bold">Manage Products</h1>
+          <TextField
+            label="Search"
+            variant="outlined"
+            size="small"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ width: 300 }}
+          />
         </Box>
+
         <DataGrid
-          rows={products.map((product) => ({ ...product, id: product._id }))}
+          rows={filteredProducts.map((product) => ({ ...product, id: product._id }))}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10]}
           disableSelectionOnClick
           checkboxSelection
           onSelectionModelChange={(ids) => setSelectedRows(ids)}
+          filterModel={filterModel}
+          onFilterModelChange={(model) => setFilterModel(model)} // Handle filter changes
         />
       </div>
     </>
