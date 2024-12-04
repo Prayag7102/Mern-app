@@ -4,10 +4,15 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { Box } from "@mui/material";
 import { getProducts } from "../../../api/products";
+import { toast } from 'react-toastify';
+import EditModal from "./EditModal";
+import { handleDelete, handleEditSave } from "../../../utils/ProductUtils";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -69,7 +74,7 @@ const ManageProduct = () => {
           <Button
             variant="contained"
             color="error"
-            onClick={() => handleDelete([params.id])}
+            onClick={() => handleDelete(params.id, setProducts, toast)} // Use handleDelete
           >
             Delete
           </Button>
@@ -79,42 +84,35 @@ const ManageProduct = () => {
   ];
 
   const handleEdit = (id) => {
-    console.log("Edit product with ID:", id);
-  };
-
-  const handleDelete = (ids) => {
-    console.log("Delete products with IDs:", ids);
-  };
-
-  const handleDeleteSelected = () => {
-    handleDelete(selectedRows);
-    setSelectedRows([]); 
+    const productToEdit = products.find((product) => product._id === id);
+    setSelectedProduct(productToEdit);
+    setEditModalOpen(true);
   };
 
   return (
-    <div style={{ height: 600, width: "100%" }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <h1 className="text-3xl font-bold">Manage Products</h1>
-        {selectedRows.length > 0 && (
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteSelected}
-          >
-            Delete Selected
-          </Button>
-        )}
-      </Box>
-      <DataGrid
-        rows={products.map((product) => ({ ...product, id: product._id }))}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        disableSelectionOnClick
-        checkboxSelection
-        onSelectionModelChange={(ids) => setSelectedRows(ids)}
+    <>
+      <EditModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        product={selectedProduct}
+        setProduct={setSelectedProduct}
+        onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} // Use handleEditSave
       />
-    </div>
+      <div style={{ height: 600, width: "100%" }}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <h1 className="text-3xl font-bold">Manage Products</h1>
+        </Box>
+        <DataGrid
+          rows={products.map((product) => ({ ...product, id: product._id }))}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          disableSelectionOnClick
+          checkboxSelection
+          onSelectionModelChange={(ids) => setSelectedRows(ids)}
+        />
+      </div>
+    </>
   );
 };
 

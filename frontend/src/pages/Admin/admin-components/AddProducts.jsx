@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { createProduct } from '../../../api/products';
+import { toast } from 'react-toastify';
 
 const AddProducts = () => {
   const [productData, setProductData] = useState({
@@ -28,16 +29,18 @@ const AddProducts = () => {
 
     if (!token) {
       alert("You need to log in as an admin to add products");
-      navigate("/admin/login");  // Redirect to login if no admin token
+      navigate("/admin/login");  
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await createProduct(productData, image);  // Call the API function to create product
-      console.log("Product added:", response);
-      alert("Product added successfully!");
+      const response = await createProduct(productData, image); 
+      toast.success("Product Created Successfully!",{
+        theme:'dark',
+        draggable:true
+      })
       setProductData({
         name: '',
         description: '',

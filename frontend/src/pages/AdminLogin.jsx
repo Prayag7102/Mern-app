@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import Header from '../components/Header'; 
+import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom'; 
 import { adminLogin } from '../api/auth';
 import { toast } from 'react-toastify';
