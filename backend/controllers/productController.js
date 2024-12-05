@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("reviews.user", "name email"); // Populate user details in reviews
+    const products = await Product.find().populate("reviews.user", "name email"); 
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -92,7 +92,7 @@ const updateProduct = async (req, res) => {
 
 const addReview = async (req, res) => {
   const { id } = req.params; // Product ID
-  const { user, rating, comment } = req.body; // Review details
+  const { user, rating, comment } = req.body; 
 
   try {
     const product = await Product.findById(id);
@@ -124,7 +124,7 @@ const addReview = async (req, res) => {
 
 // Edit Review
 const editReview = async (req, res) => {
-  const { id, reviewId, userId } = req.params; // Get Product ID, Review ID, and User ID from params
+  const { id, reviewId, userId } = req.params; 
   const { rating, comment } = req.body;
 
   try {

@@ -4,7 +4,7 @@ import Nav from './admin-components/Nav';
 import Sidebar from './admin-components/Sidebar';
 export default function AdminLayout() {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);

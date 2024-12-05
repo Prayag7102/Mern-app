@@ -118,38 +118,40 @@ const ManageProduct = () => {
 
   return (
     <>
+     <div className="lg:w-[90%] lg:float-end">
       <EditModal
-        open={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        product={selectedProduct}
-        setProduct={setSelectedProduct}
-        onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} // Use handleEditSave
-      />
-      <div className="mt-5" style={{ height: 600, width: "100%" }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <h1 className="text-3xl font-bold">Manage Products</h1>
-          <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ width: 300 }}
-          />
-        </Box>
-
-        <DataGrid
-          rows={filteredProducts.map((product) => ({ ...product, id: product._id }))}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10]}
-          disableSelectionOnClick
-          checkboxSelection
-          onSelectionModelChange={(ids) => setSelectedRows(ids)}
-          filterModel={filterModel}
-          onFilterModelChange={(model) => setFilterModel(model)} // Handle filter changes
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          product={selectedProduct}
+          setProduct={setSelectedProduct}
+          onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} // Use handleEditSave
         />
-      </div>
+        <div className="mt-5" style={{ height: 600, width: "100%" }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <h1 className="text-3xl font-bold">Manage Products</h1>
+            <TextField
+              label="Search"
+              variant="outlined"
+              size="small"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{ width: 300 }}
+            />
+          </Box>
+
+          <DataGrid
+            rows={filteredProducts.map((product) => ({ ...product, id: product._id }))}
+            columns={columns}
+            pageSize={10}
+            rowsPerPageOptions={[10]}
+            disableSelectionOnClick
+            checkboxSelection
+            onSelectionModelChange={(ids) => setSelectedRows(ids)}
+            filterModel={filterModel}
+            onFilterModelChange={(model) => setFilterModel(model)} // Handle filter changes
+          />
+        </div>
+     </div>
     </>
   );
 };
