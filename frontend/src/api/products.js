@@ -1,6 +1,6 @@
 import axiosInstance from './axios';
 
-// Create a new product (with image upload, categories, tags)
+
 export const createProduct = async (productData, image) => {
   const token = localStorage.getItem("adminToken");
 
@@ -15,7 +15,7 @@ export const createProduct = async (productData, image) => {
   formData.append("discountedPrice", productData.discountedPrice);
   formData.append("stock", productData.stock);
 
-  // Adding categories and tags
+ 
   productData.categories.forEach(category => {
     formData.append("categories[]", category);
   });
@@ -24,11 +24,9 @@ export const createProduct = async (productData, image) => {
     formData.append("tags[]", tag);
   });
 
-  // Adding the brand field
   formData.append("brand", productData.brand); 
 
-  // Adding the image and other fields
-  formData.append("rating", productData.rating);  // Initial rating if applicable
+  formData.append("rating", productData.rating);  
   formData.append("image", image);
 
   try {
@@ -53,8 +51,6 @@ export const getProducts = async () => {
     throw error.response ? error.response.data : error;
   }
 };
-
-// Delete a product by ID
 export const deleteProduct = async (id) => {
   try {
     const token = localStorage.getItem("adminToken");
@@ -74,7 +70,7 @@ export const deleteProduct = async (id) => {
   }
 };
 
-// Update product details (like categories, tags, etc.)
+
 export const updateProduct = async (id, productData) => {
   try {
     const token = localStorage.getItem("adminToken");
@@ -94,9 +90,9 @@ export const updateProduct = async (id, productData) => {
   }
 };
 
-// Add a review for a product
+
 export const addReview = async (productId, reviewData, userId) => {
-  const token = localStorage.getItem("userToken"); // Assuming user token is stored
+  const token = localStorage.getItem("userToken"); 
 
   if (!token) {
     throw new Error("You must be logged in to add a review");
@@ -115,9 +111,9 @@ export const addReview = async (productId, reviewData, userId) => {
   }
 };
 
-// Edit an existing review
+
 export const editReview = async (productId, reviewId, userId, reviewData) => {
-  const token = localStorage.getItem("userToken"); // Assuming user token is stored
+  const token = localStorage.getItem("userToken"); 
 
   if (!token) {
     throw new Error("You must be logged in to edit a review");
@@ -135,9 +131,9 @@ export const editReview = async (productId, reviewId, userId, reviewData) => {
   }
 };
 
-// Delete an existing review
+
 export const deleteReview = async (productId, reviewId, userId) => {
-  const token = localStorage.getItem("userToken"); // Assuming user token is stored
+  const token = localStorage.getItem("userToken"); 
 
   if (!token) {
     throw new Error("You must be logged in to delete a review");

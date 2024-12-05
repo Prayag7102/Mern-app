@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
       date: { type: Date, default: Date.now },
     },
   ],
-  colors: [String],
+  colors: [{ type:String }],
   sizes: [String],
   features: [String],
   details: { type: String },
