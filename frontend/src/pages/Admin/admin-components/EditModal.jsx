@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Autocomplete } from "@mui/material"; // Import Autocomplete for categories and tags
+import { Autocomplete } from "@mui/material"; 
 
 const EditModal = ({ 
   open, 
@@ -74,7 +74,7 @@ const EditModal = ({
         className="bg-white p-6 rounded-lg w-full max-w-4xl mx-auto mt-16 overflow-y-auto"
         style={{
           maxWidth: "900px",
-          maxHeight: "80vh", // Set max height for the modal
+          maxHeight: "80vh", 
         }}
       >
         <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
