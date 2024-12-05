@@ -49,14 +49,14 @@ const ManageProduct = () => {
       headerName: "Categories",
       flex: 1,
       minWidth: 200,
-      renderCell: (params) => params.value.join(", "), // Show categories as comma-separated
+      renderCell: (params) => params.value.join(", "), 
     },
     {
       field: "tags",
       headerName: "Tags",
       flex: 1,
       minWidth: 200,
-      renderCell: (params) => params.value.join(", "), // Show tags as comma-separated
+      renderCell: (params) => params.value.join(", "), 
     },
     { field: "brand", headerName: "Brand", flex: 1, minWidth: 150 },
     {

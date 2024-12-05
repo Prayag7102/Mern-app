@@ -20,7 +20,7 @@ const ProductsCard = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [products]);
 
   const handleAddToCart = async (product) => {
     try {
