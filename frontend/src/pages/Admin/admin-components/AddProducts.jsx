@@ -96,11 +96,11 @@ const AddProducts = () => {
 
   return (
     <div className="bg-gray-100 flex flex-col justify-center">
-      <div className="relative py-3 sm:max-w-xl sm:mx-auto">
+      <div className="relative py-3">
         <div className="relative px-4 py-10 bg-white md:mx-0 shadow rounded-3xl sm:p-10">
-          <div className="max-w-md mx-auto">
+          <div className="">
             <h2 className="text-xl font-semibold mb-4">Add Product</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="lg:flex flex-wrap gap-5 items-baseline">
               <div>
                 <label className="block mb-1">Product Name</label>
                 <input
@@ -113,17 +113,7 @@ const AddProducts = () => {
                   placeholder="Enter product name"
                 />
               </div>
-              <div>
-                <label className="block mb-1">Description</label>
-                <textarea
-                  name="description"
-                  value={productData.description}
-                  onChange={handleInputChange}
-                  required
-                  className="px-4 py-2 border w-full rounded-md"
-                  placeholder="Enter description"
-                />
-              </div>
+              
               <div>
                 <label className="block mb-1">Price</label>
                 <input
@@ -200,8 +190,6 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'categories')}
                 />
               </div>
-
-              {/* Tags */}
               <div>
                 <label className="block mb-1">Tags</label>
                 <div className="flex flex-wrap gap-2">
@@ -226,6 +214,17 @@ const AddProducts = () => {
                   placeholder="Add tag and press Enter"
                   className="mt-2 px-4 py-2 border w-full rounded-md"
                   onKeyDown={(e) => handleTagChange(e, 'tags')}
+                />
+              </div>
+              <div>
+                <label className="block mb-1">Description</label>
+                <textarea
+                  name="description"
+                  value={productData.description}
+                  onChange={handleInputChange}
+                  required
+                  className="px-4 py-2 border w-full rounded-md"
+                  placeholder="Enter description"
                 />
               </div>
 
