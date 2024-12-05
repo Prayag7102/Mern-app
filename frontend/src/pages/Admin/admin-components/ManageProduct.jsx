@@ -94,7 +94,7 @@ const ManageProduct = () => {
           <Button
             variant="contained"
             color="error"
-            onClick={() => handleDelete(params.id, setProducts, toast)} // Use handleDelete
+            onClick={() => handleDelete(params.id, setProducts, toast)} 
           >
             <MdDelete className="text-lg" />
           </Button>
@@ -124,7 +124,7 @@ const ManageProduct = () => {
           onClose={() => setEditModalOpen(false)}
           product={selectedProduct}
           setProduct={setSelectedProduct}
-          onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} // Use handleEditSave
+          onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} 
         />
         <div className="mt-5" style={{ height: 600, width: "100%" }}>
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
