@@ -42,7 +42,7 @@ const ProductsCard = () => {
 
   return (
     <div className='mb-5 mt-5 container'>
-      <h1 className='text-3xl text-black text-center mb-5 text-blue-700 font-semibold'>
+      <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>
         New Products
       </h1>
       <div className="flex flex-wrap gap-5 items-center px-3">
