@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { createProduct } from '../../../api/products';
 import { toast } from 'react-toastify';
 
@@ -10,7 +10,16 @@ const AddProducts = () => {
     price: '',
     discountedPrice: '',
     stock: '',
+    categories: [],
+    tags: [],
+    brand: '',
+    colors: '',
+    sizes: '',
+    features: '',
+    details: '',
+    specifications: ''
   });
+
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -23,30 +32,58 @@ const AddProducts = () => {
     setImage(e.target.files[0]);
   };
 
+  const handleTagChange = (e, type) => {
+    if (e.key === 'Enter' && e.target.value.trim() !== '') {
+      e.preventDefault();
+      const value = e.target.value.trim();
+      setProductData({
+        ...productData,
+        [type]: [...productData[type], value]
+      });
+      e.target.value = '';
+    }
+  };
+
+  const handleDeleteTag = (tag, type) => {
+    setProductData({
+      ...productData,
+      [type]: productData[type].filter((item) => item !== tag)
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("adminToken");
 
     if (!token) {
       alert("You need to log in as an admin to add products");
-      navigate("/admin/login");  
+      navigate("/admin/login");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await createProduct(productData, image); 
-      toast.success("Product Created Successfully!",{
-        theme:'dark',
-        draggable:true
-      })
+      const response = await createProduct(productData, image);
+      toast.success("Product Created Successfully!", {
+        theme: 'dark',
+        draggable: true
+      });
+
       setProductData({
         name: '',
         description: '',
         price: '',
         discountedPrice: '',
         stock: '',
+        categories: [],
+        tags: [],
+        brand: '',
+        colors: '',
+        sizes: '',
+        features: '',
+        details: '',
+        specifications: ''
       });
       setImage(null);
     } catch (error) {
@@ -122,6 +159,76 @@ const AddProducts = () => {
                   placeholder="Enter stock quantity"
                 />
               </div>
+
+              {/* Brand Field */}
+              <div>
+                <label className="block mb-1">Brand</label>
+                <input
+                  type="text"
+                  name="brand"
+                  value={productData.brand}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border w-full rounded-md"
+                  placeholder="Enter brand name"
+                />
+              </div>
+
+              {/* Categories */}
+              <div>
+                <label className="block mb-1">Categories</label>
+                <div className="flex flex-wrap gap-2">
+                  {productData.categories.map((category, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-gray-300 rounded-full text-sm flex items-center"
+                    >
+                      {category}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTag(category, 'categories')}
+                        className="ml-2 text-red-500"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add category and press Enter"
+                  className="mt-2 px-4 py-2 border w-full rounded-md"
+                  onKeyDown={(e) => handleTagChange(e, 'categories')}
+                />
+              </div>
+
+              {/* Tags */}
+              <div>
+                <label className="block mb-1">Tags</label>
+                <div className="flex flex-wrap gap-2">
+                  {productData.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-blue-300 rounded-full text-sm flex items-center"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTag(tag, 'tags')}
+                        className="ml-2 text-red-500"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add tag and press Enter"
+                  className="mt-2 px-4 py-2 border w-full rounded-md"
+                  onKeyDown={(e) => handleTagChange(e, 'tags')}
+                />
+              </div>
+
               <div>
                 <label className="block mb-1">Upload Image</label>
                 <input
@@ -131,6 +238,7 @@ const AddProducts = () => {
                   className="px-4 py-2 border w-full rounded-md"
                 />
               </div>
+
               <div className="flex space-x-4">
                 <button
                   type="button"
@@ -141,6 +249,14 @@ const AddProducts = () => {
                     price: '',
                     discountedPrice: '',
                     stock: '',
+                    categories: [],
+                    tags: [],
+                    brand: '',
+                    colors: '',
+                    sizes: '',
+                    features: '',
+                    details: '',
+                    specifications: ''
                   })}
                 >
                   Cancel

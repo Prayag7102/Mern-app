@@ -1,3 +1,5 @@
+import { deleteProduct } from "../api/products";
+
 // utils/productUtils.js
 export const handleEditSave = async (selectedProduct, setProducts, setEditModalOpen, toast) => {
     try {

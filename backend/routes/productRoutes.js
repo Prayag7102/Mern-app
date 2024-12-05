@@ -1,5 +1,5 @@
 const express = require("express");
-const { getProducts, addProduct, deleteProduct, updateProduct } = require("../controllers/productController");
+const { getProducts, addProduct, deleteProduct, updateProduct, addReview, editReview, deleteReview } = require("../controllers/productController");
 const { protect } = require("../middleware/authMiddleware");
 const multer = require("multer");
 
@@ -20,5 +20,10 @@ router.get("/", getProducts);
 router.post("/",upload.single("image"),protect, addProduct);
 router.delete("/:id",protect, deleteProduct);
 router.put("/:id",upload.single("image"), protect, updateProduct);
+
+
+router.post("/:id/review", addReview);
+router.put("/:id/reviews/:reviewId/user/:userId", editReview);
+router.delete("/:id/reviews/:reviewId/user/:userId", deleteReview);
 
 module.exports = router;

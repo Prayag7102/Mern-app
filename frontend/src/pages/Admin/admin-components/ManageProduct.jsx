@@ -45,6 +45,21 @@ const ManageProduct = () => {
     },
     { field: "stock", headerName: "Stock", type: "number", flex: 1, minWidth: 100 },
     {
+      field: "categories",
+      headerName: "Categories",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params) => params.value.join(", "), // Show categories as comma-separated
+    },
+    {
+      field: "tags",
+      headerName: "Tags",
+      flex: 1,
+      minWidth: 200,
+      renderCell: (params) => params.value.join(", "), // Show tags as comma-separated
+    },
+    { field: "brand", headerName: "Brand", flex: 1, minWidth: 150 },
+    {
       field: "image",
       headerName: "Image",
       flex: 1,

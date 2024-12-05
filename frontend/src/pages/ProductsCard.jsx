@@ -76,6 +76,7 @@ const ProductsCard = () => {
               <div className="mt-4 px-3 pb-5">
                 <a href="#">
                   <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
+                  <h6 className='text-sm text-blue-900 font-semibold'>{product.brand}</h6>
                 </a>
                 <div className="mt-2 mb-5 flex items-center justify-between">
                   <p>
