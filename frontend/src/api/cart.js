@@ -27,15 +27,12 @@ export const addToCart = async (productId, quantity) => {
     }
 
     try {
-        const response = await axiosInstance.post(
-            '/cart/cart', {
-                productId,
-                quantity,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
+        const response = await axiosInstance.post('/cart/cart', { productId,quantity,},
+           {
+              headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+             },
             }
         );
 

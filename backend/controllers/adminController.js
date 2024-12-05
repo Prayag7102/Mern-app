@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const createAdmin = async (req, res) => {
   const { username, password } = req.body;
 
-  // Check if an admin already exists
   const adminExists = await Admin.findOne({});
 
   if (adminExists) {

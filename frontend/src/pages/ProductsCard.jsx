@@ -13,7 +13,7 @@ const ProductsCard = () => {
         const productsData = await getProducts();
         setProducts(productsData);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        toast.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
@@ -25,14 +25,12 @@ const ProductsCard = () => {
   const handleAddToCart = async (product) => {
     try {
       const data = await addToCart(product._id, 1); 
-      console.log('Product added to cart:', data);
       toast.success("Product Add To Cart Successfully!",{
         theme:'dark',
         draggable:true
       })
     } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert(error.message); 
+      toast.error('Error adding to cart:', error);
     } finally {
       setLoading(false);
     }

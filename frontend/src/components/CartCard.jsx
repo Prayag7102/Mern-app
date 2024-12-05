@@ -11,7 +11,7 @@ const CartCard = () => {
         const data = await getCartItems();  
         setCartItems(data);
       } catch (error) {
-        console.error('Error fetching cart:', error);
+        toast.error('Error fetching cart:', error);
       }
     };
 
@@ -30,14 +30,12 @@ const CartCard = () => {
 
     try {
       const response = await removeFromCart(productId, token);
-      console.log('Product removed from cart:', response);
       setCartItems(cartItems.filter(item => item.product._id !== productId));
       toast.success('Product removed from cart!',{
         theme:'dark',
         draggable:true
       });
     } catch (error) {
-      console.error('Error removing item from cart:', error);
       toast.error('Failed to remove product from cart.',{
         theme:'dark',
         draggable:true
@@ -58,23 +56,17 @@ const CartCard = () => {
     const updatedCartItems = [...cartItems];
     const itemIndex = updatedCartItems.findIndex(item => item.product._id === productId);
     
-    if (itemIndex === -1) return;  // If the product is not found, exit
+    if (itemIndex === -1) return;  
 
     const newQuantity = updatedCartItems[itemIndex].quantity + change;
-    if (newQuantity < 1) return; // Prevent going below 1
+    if (newQuantity < 1) return; 
 
     updatedCartItems[itemIndex].quantity = newQuantity;
 
     try {
       const response = await updateCartItem(productId, newQuantity, token);
-      console.log('Cart updated:', response);
       setCartItems(updatedCartItems);
-      toast.success('Cart updated successfully!', {
-        theme: 'dark',
-        draggable: true
-      });
     } catch (error) {
-      console.error('Error updating cart quantity:', error);
       toast.error('Failed to update product quantity.', {
         theme: 'dark',
         draggable: true
