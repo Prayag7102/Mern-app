@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createProduct } from '../../../api/products';
 import { toast } from 'react-toastify';
+import { Button, Input, Box, Typography } from '@mui/material';
 
 const AddProducts = () => {
   const [productData, setProductData] = useState({
@@ -21,6 +22,7 @@ const AddProducts = () => {
   });
 
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -36,7 +38,12 @@ const AddProducts = () => {
   };
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file); 
+      setPreview(URL.createObjectURL(file)); 
+      handleImageChange(e); 
+    }
   };
 
   const handleTagChange = (e, type) => {
@@ -243,9 +250,6 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'tags')}
                 />
               </div>
-
-              {/* New Fields: Colors, Sizes, Features, Specifications */}
-              {/* Colors */}
               <div>
                 <label className="block mb-1">Colors</label>
                 <div className="flex flex-wrap gap-2">
@@ -272,8 +276,6 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'colors')}
                 />
               </div>
-
-              {/* Sizes */}
               <div>
                 <label className="block mb-1">Sizes</label>
                 <div className="flex flex-wrap gap-2">
@@ -300,8 +302,6 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'sizes')}
                 />
               </div>
-
-              {/* Specifications */}
               <div>
                 <label className="block mb-1">Specifications</label>
                 <input
@@ -337,8 +337,6 @@ const AddProducts = () => {
                   placeholder="Enter other specifications"
                 />
               </div>
-
-              {/* Details */}
               <div>
                 <label className="block mb-1">Details</label>
                 <textarea
@@ -349,22 +347,50 @@ const AddProducts = () => {
                   placeholder="Enter product details"
                 ></textarea>
               </div>
-              <div>
-                <label className="block mb-1">Upload Image</label>
-                <input
-                  type="file"
-                  onChange={handleImageChange}
-                  required
-                  className="px-4 py-2 border w-full rounded-md"
-                />
-              </div>
+              <div className=''>
+                <div >
+                 <Box className='flex flex-wrap '>
+                    <div>
+                      <Typography variant="body1" className="mb-3">Upload Image:</Typography>
+                      <Input
+                        type="file"
+                        onChange={handleImageChange}
+                        required
+                        inputProps={{ accept: 'image/*' }}
+                        sx={{
+                          display: 'none',
+                        }}
+                        id="image-upload"
+                      />
+                      <label htmlFor="image-upload">
+                        <Button variant="contained" color="primary" component="span" sx={{ px: 2, py: 1 }}>
+                          Choose File
+                        </Button>
+                      </label>
+                    </div>
 
-              {/* Submit and Reset */}
-              <div className="">
+                   <div>
+                    {preview && (
+                        <Box mt={2}>
+                          <img
+                            src={preview}
+                            alt="Preview"
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '100px',
+                              objectFit: 'contain',
+                              marginTop: '10px',
+                            }}
+                          />
+                        </Box>
+                      )}
+                   </div>
+                  </Box>
+                </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md mt-5"
                 >
                   {loading ? 'Adding Product...' : 'Add Product'}
                 </button>
