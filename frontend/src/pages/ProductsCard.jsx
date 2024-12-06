@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
 import { addToCart } from '../api/cart';
 import { toast } from "react-toastify";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ProductsCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate
   useEffect(() => {
     const fetchProducts = async () => {
       try {
