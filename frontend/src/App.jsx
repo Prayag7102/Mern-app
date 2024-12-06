@@ -19,11 +19,27 @@ import ManageProducts from "./pages/Admin/admin-components/ManageProduct";
 import Cart from "./pages/Cart";
 import UserLayout from "./pages/UserLayout";
 import ProductDetail from "./pages/ProductDetails";
+import Home from "./pages/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <Home />,
+    children:[
+      {
+        index:true,
+        element:(
+          <>
+            <HomePage/>
+          </>
+        )
+      },
+        {
+          path: "/products/:id",
+          element: <ProductDetail />,
+        },
+      
+    ]
   },
   {
     path: "/login",
@@ -33,10 +49,7 @@ const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
-  {
-    path: "/products/:id",
-    element: <ProductDetail />,
-  },
+ 
   {
     path: "/contact",
     element: <ContactUs />,

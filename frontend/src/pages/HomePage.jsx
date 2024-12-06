@@ -6,7 +6,6 @@ import SwiperBanner from './SwiperBanner'
 export default function HomePage() {
   return (
     <>
-      <Header/>
       <SwiperBanner/>
       <ProductsCard/>
     </>
