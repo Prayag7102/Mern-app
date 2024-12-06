@@ -106,7 +106,7 @@ const updateProduct = async (req, res) => {
 
 const addReview = async (req, res) => {
   const { id } = req.params; // Product ID
-  const { user, rating, comment } = req.body; 
+  const { rating, comment } = req.body; // Get rating and comment from request body
 
   try {
     const product = await Product.findById(id);
@@ -115,7 +115,7 @@ const addReview = async (req, res) => {
     }
 
     const review = {
-      user,
+      user: req.user.id, // Use the user ID from the token
       rating,
       comment,
       date: new Date(),
@@ -138,7 +138,7 @@ const addReview = async (req, res) => {
 
 // Edit Review
 const editReview = async (req, res) => {
-  const { id, reviewId, userId } = req.params; 
+  const { id, reviewId } = req.params; // Product ID and Review ID
   const { rating, comment } = req.body;
 
   try {
@@ -152,7 +152,7 @@ const editReview = async (req, res) => {
       return res.status(404).json({ message: "Review not found" });
     }
 
-    if (review.user.toString() !== userId) {
+    if (review.user.toString() !== req.user.id) {
       return res.status(403).json({ message: "You can only edit your own reviews." });
     }
 
@@ -160,6 +160,7 @@ const editReview = async (req, res) => {
     review.comment = comment;
     review.date = new Date();
 
+    // Recalculate the overall rating
     const totalReviews = product.reviews.length;
     const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
     product.rating = totalRating / totalReviews;
@@ -174,7 +175,7 @@ const editReview = async (req, res) => {
 
 // Delete Review
 const deleteReview = async (req, res) => {
-  const { id, reviewId, userId } = req.params;
+  const { id, reviewId } = req.params; // Product ID and Review ID
 
   try {
     const product = await Product.findById(id);
@@ -187,9 +188,10 @@ const deleteReview = async (req, res) => {
       return res.status(404).json({ message: "Review not found" });
     }
 
-    if (review.user.toString() !== userId) {
+    if (review.user.toString() !== req.user.id) {
       return res.status(403).json({ message: "You can only delete your own reviews." });
     }
+
     product.reviews.pull(reviewId);
     const totalReviews = product.reviews.length;
     const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);

@@ -1,6 +1,6 @@
 const express = require("express");
 const { getProducts, addProduct, deleteProduct, updateProduct, addReview, editReview, deleteReview, getProductById } = require("../controllers/productController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, verifyToken } = require("../middleware/authMiddleware");
 const multer = require("multer");
 
 const router = express.Router();
@@ -22,9 +22,13 @@ router.post("/",upload.single("image"),protect, addProduct);
 router.delete("/:id",protect, deleteProduct);
 router.put("/:id",upload.single("image"), protect, updateProduct);
 
+// Add review
+router.post("/:id/review", verifyToken, addReview);
 
-router.post("/:id/review", addReview);
-router.put("/:id/reviews/:reviewId/user/:userId", editReview);
-router.delete("/:id/reviews/:reviewId/user/:userId", deleteReview);
+// Edit review
+router.put("/:id/review/:reviewId", verifyToken, editReview);
+
+// Delete review
+router.delete("/:id/review/:reviewId", verifyToken, deleteReview);
 
 module.exports = router;
