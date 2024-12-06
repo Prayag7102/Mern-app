@@ -15,32 +15,53 @@ export const createProduct = async (productData, image) => {
   formData.append("discountedPrice", productData.discountedPrice);
   formData.append("stock", productData.stock);
 
- 
-  productData.categories.forEach(category => {
+  productData.categories.forEach((category) => {
     formData.append("categories[]", category);
   });
 
-  productData.tags.forEach(tag => {
+  productData.tags.forEach((tag) => {
     formData.append("tags[]", tag);
   });
 
-  formData.append("brand", productData.brand); 
+  productData.colors.forEach((color) => {
+    formData.append("colors[]", color);
+  });
 
-  formData.append("rating", productData.rating);  
+  productData.sizes.forEach((size) => {
+    formData.append("sizes[]", size);
+  });
+
+  productData.features.forEach((feature) => {
+    formData.append("features[]", feature);
+  });
+
+  formData.append("details", productData.details);
+  formData.append("brand", productData.brand);
+
+  formData.append("specifications[weight]", productData.specifications.weight);
+  formData.append(
+    "specifications[dimensions]",
+    productData.specifications.dimensions
+  );
+  formData.append(
+    "specifications[material]",
+    productData.specifications.material
+  );
+  formData.append("specifications[other]", productData.specifications.other);
+
+  formData.append("rating", productData.rating);
   formData.append("image", image);
 
-  try {
-    const response = await axiosInstance.post("/products", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error;
-  }
+  const response = await axiosInstance.post("/products", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
 };
+
 
 // Get all products
 export const getProducts = async () => {

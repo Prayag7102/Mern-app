@@ -13,11 +13,11 @@ const AddProducts = () => {
     categories: [],
     tags: [],
     brand: '',
-    colors: '',
-    sizes: '',
-    features: '',
+    colors: [],
+    sizes: [],
+    features: [],
     details: '',
-    specifications: ''
+    specifications: { weight: '', dimensions: '', material: '', other: '' }
   });
 
   const [image, setImage] = useState(null);
@@ -26,6 +26,13 @@ const AddProducts = () => {
 
   const handleInputChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
+  };
+
+  const handleSpecificationChange = (e) => {
+    setProductData({
+      ...productData,
+      specifications: { ...productData.specifications, [e.target.name]: e.target.value }
+    });
   };
 
   const handleImageChange = (e) => {
@@ -79,11 +86,11 @@ const AddProducts = () => {
         categories: [],
         tags: [],
         brand: '',
-        colors: '',
-        sizes: '',
-        features: '',
+        colors: [],
+        sizes: [],
+        features: [],
         details: '',
-        specifications: ''
+        specifications: { weight: '', dimensions: '', material: '', other: '' }
       });
       setImage(null);
     } catch (error) {
@@ -98,9 +105,10 @@ const AddProducts = () => {
     <div className="bg-gray-100 flex flex-col justify-center">
       <div className="relative py-3">
         <div className="relative px-4 py-10 bg-white md:mx-0 shadow rounded-3xl sm:p-10">
-          <div className="">
+          <div>
             <h2 className="text-xl font-semibold mb-4">Add Product</h2>
             <form onSubmit={handleSubmit} className="lg:flex flex-wrap gap-5 items-baseline">
+              {/* Product Name */}
               <div>
                 <label className="block mb-1">Product Name</label>
                 <input
@@ -113,7 +121,20 @@ const AddProducts = () => {
                   placeholder="Enter product name"
                 />
               </div>
-              
+              <div>
+                <label className="block mb-1">Description</label>
+                <input
+                  type="text"
+                  name="description"
+                  value={productData.description}
+                  onChange={handleInputChange}
+                  required
+                  className="px-4 py-2 border w-full rounded-md"
+                  placeholder="Enter product name"
+                />
+              </div>
+
+              {/* Price */}
               <div>
                 <label className="block mb-1">Price</label>
                 <input
@@ -126,6 +147,8 @@ const AddProducts = () => {
                   placeholder="Enter price"
                 />
               </div>
+
+              {/* Discounted Price */}
               <div>
                 <label className="block mb-1">Discounted Price</label>
                 <input
@@ -137,6 +160,8 @@ const AddProducts = () => {
                   placeholder="Enter discounted price"
                 />
               </div>
+
+              {/* Stock */}
               <div>
                 <label className="block mb-1">Stock</label>
                 <input
@@ -150,7 +175,7 @@ const AddProducts = () => {
                 />
               </div>
 
-              {/* Brand Field */}
+              {/* Brand */}
               <div>
                 <label className="block mb-1">Brand</label>
                 <input
@@ -190,6 +215,8 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'categories')}
                 />
               </div>
+
+              {/* Tags */}
               <div>
                 <label className="block mb-1">Tags</label>
                 <div className="flex flex-wrap gap-2">
@@ -216,18 +243,112 @@ const AddProducts = () => {
                   onKeyDown={(e) => handleTagChange(e, 'tags')}
                 />
               </div>
+
+              {/* New Fields: Colors, Sizes, Features, Specifications */}
+              {/* Colors */}
               <div>
-                <label className="block mb-1">Description</label>
-                <textarea
-                  name="description"
-                  value={productData.description}
-                  onChange={handleInputChange}
-                  required
-                  className="px-4 py-2 border w-full rounded-md"
-                  placeholder="Enter description"
+                <label className="block mb-1">Colors</label>
+                <div className="flex flex-wrap gap-2">
+                  {productData.colors.map((color, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-green-300 rounded-full text-sm flex items-center"
+                    >
+                      {color}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTag(color, 'colors')}
+                        className="ml-2 text-red-500"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add color and press Enter"
+                  className="mt-2 px-4 py-2 border w-full rounded-md"
+                  onKeyDown={(e) => handleTagChange(e, 'colors')}
                 />
               </div>
 
+              {/* Sizes */}
+              <div>
+                <label className="block mb-1">Sizes</label>
+                <div className="flex flex-wrap gap-2">
+                  {productData.sizes.map((size, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-yellow-300 rounded-full text-sm flex items-center"
+                    >
+                      {size}
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTag(size, 'sizes')}
+                        className="ml-2 text-red-500"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  placeholder="Add size and press Enter"
+                  className="mt-2 px-4 py-2 border w-full rounded-md"
+                  onKeyDown={(e) => handleTagChange(e, 'sizes')}
+                />
+              </div>
+
+              {/* Specifications */}
+              <div>
+                <label className="block mb-1">Specifications</label>
+                <input
+                  type="text"
+                  name="weight"
+                  value={productData.specifications.weight}
+                  onChange={handleSpecificationChange}
+                  className="px-4 py-2 border w-full rounded-md mb-2"
+                  placeholder="Enter weight"
+                />
+                <input
+                  type="text"
+                  name="dimensions"
+                  value={productData.specifications.dimensions}
+                  onChange={handleSpecificationChange}
+                  className="px-4 py-2 border w-full rounded-md mb-2"
+                  placeholder="Enter dimensions"
+                />
+                <input
+                  type="text"
+                  name="material"
+                  value={productData.specifications.material}
+                  onChange={handleSpecificationChange}
+                  className="px-4 py-2 border w-full rounded-md mb-2"
+                  placeholder="Enter material"
+                />
+                <input
+                  type="text"
+                  name="other"
+                  value={productData.specifications.other}
+                  onChange={handleSpecificationChange}
+                  className="px-4 py-2 border w-full rounded-md"
+                  placeholder="Enter other specifications"
+                />
+              </div>
+
+              {/* Details */}
+              <div>
+                <label className="block mb-1">Details</label>
+                <textarea
+                  name="details"
+                  value={productData.details}
+                  onChange={handleInputChange}
+                  className="px-4 py-2 border w-full rounded-md"
+                  placeholder="Enter product details"
+                ></textarea>
+              </div>
               <div>
                 <label className="block mb-1">Upload Image</label>
                 <input
@@ -238,34 +359,14 @@ const AddProducts = () => {
                 />
               </div>
 
-              <div className="flex space-x-4">
-                <button
-                  type="button"
-                  className="px-4 py-2 border rounded-md text-gray-700"
-                  onClick={() => setProductData({
-                    name: '',
-                    description: '',
-                    price: '',
-                    discountedPrice: '',
-                    stock: '',
-                    categories: [],
-                    tags: [],
-                    brand: '',
-                    colors: '',
-                    sizes: '',
-                    features: '',
-                    details: '',
-                    specifications: ''
-                  })}
-                >
-                  Cancel
-                </button>
+              {/* Submit and Reset */}
+              <div className="">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
                 >
-                  {loading ? 'Adding...' : 'Create'}
+                  {loading ? 'Adding Product...' : 'Add Product'}
                 </button>
               </div>
             </form>

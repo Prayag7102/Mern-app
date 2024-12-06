@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
 import { addToCart } from '../api/cart';
 import { toast } from "react-toastify";
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductsCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -61,7 +62,7 @@ const ProductsCard = () => {
               key={product._id}
               className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
             >
-              <a className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl" href="#">
+              <Link to={`/products/${product._id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl" >
                 <img
                   className="object-cover h-64 w-full"
                   src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
@@ -72,7 +73,7 @@ const ProductsCard = () => {
                     {product.discount}% OFF
                   </span>
                 )}
-              </a>
+              </Link>
               <div className="mt-4 px-3 pb-5">
                 <a href="#">
                   <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>

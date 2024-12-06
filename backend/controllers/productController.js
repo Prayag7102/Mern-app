@@ -9,6 +9,20 @@ const getProducts = async (req, res) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate("reviews.user", "name email");
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const addProduct = async (req, res) => {
   const {
     name,
@@ -189,4 +203,4 @@ const deleteReview = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, addProduct, deleteProduct, updateProduct, addReview,deleteReview,editReview };
+module.exports = { getProducts, addProduct, deleteProduct, updateProduct, addReview,deleteReview,editReview,getProductById };

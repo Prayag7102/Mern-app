@@ -2,42 +2,32 @@ import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Autocomplete } from "@mui/material"; 
+import { Autocomplete } from "@mui/material";
 
-const EditModal = ({ 
-  open, 
-  onClose, 
-  product, 
-  setProduct, 
-  onSave 
-}) => {
+const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [previewImage, setPreviewImage] = useState("");
-  
-  // For tags and categories
+
+  // Local state for multi-value fields
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  
-  // For brand
-  const [brand, setBrand] = useState("");
+  const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
   useEffect(() => {
+    // Set image preview
     if (product?.image && typeof product.image === "string") {
       setPreviewImage(`http://localhost:5000/uploads/${product.image}`);
     } else if (product?.image instanceof File) {
       setPreviewImage(URL.createObjectURL(product.image));
     }
 
-    if (product?.categories) {
-      setSelectedCategories(product.categories);
-    }
-    
-    if (product?.tags) {
-      setSelectedTags(product.tags);
-    }
-    
-    if (product?.brand) {
-      setBrand(product.brand);
-    }
+    // Initialize multi-value fields
+    setSelectedCategories(product?.categories || []);
+    setSelectedTags(product?.tags || []);
+    setSelectedColors(product?.colors || []);
+    setSelectedSizes(product?.sizes || []);
+    setSelectedFeatures(product?.features || []);
   }, [product]);
 
   const handleFileChange = (e) => {
@@ -47,20 +37,43 @@ const EditModal = ({
       setPreviewImage(URL.createObjectURL(file));
     }
   };
+  const categoriesOptions = ["Smartphones", "Electronics", "Accessories"];
+  const tagsOptions = ["Flagship", "5G", "Android", "Photography"];
+  const colorsOptions = ["Phantom Black", "Cream", "Green", "Blue"];
+  const sizesOptions = ["264GB", "512GB", "1TB"];
+  const featuresOptions = ["S Pen", "Fast Charging", "Waterproof", "Wireless Charging"];
 
-  const handleCategoryChange = (event, newValue) => {
-    setSelectedCategories(newValue);
-    setProduct({ ...product, categories: newValue });
+  const handleMultiChange = (event, newValue, type) => {
+    setProduct({ ...product, [type]: newValue });
+    switch (type) {
+      case "categories":
+        setSelectedCategories(newValue);
+        break;
+      case "tags":
+        setSelectedTags(newValue);
+        break;
+      case "colors":
+        setSelectedColors(newValue);
+        break;
+      case "sizes":
+        setSelectedSizes(newValue);
+        break;
+      case "features":
+        setSelectedFeatures(newValue);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleTagChange = (event, newValue) => {
-    setSelectedTags(newValue);
-    setProduct({ ...product, tags: newValue });
-  };
-
-  const handleBrandChange = (e) => {
-    setBrand(e.target.value);
-    setProduct({ ...product, brand: e.target.value });
+  const handleSpecificationChange = (e) => {
+    setProduct({
+      ...product,
+      specifications: {
+        ...product.specifications,
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
   return (
@@ -72,127 +85,151 @@ const EditModal = ({
     >
       <div
         className="bg-white p-6 rounded-lg w-full max-w-4xl mx-auto mt-16 overflow-y-auto"
-        style={{
-          maxWidth: "900px",
-          maxHeight: "80vh", 
-        }}
+        style={{ maxWidth: "900px", maxHeight: "80vh" }}
       >
         <h2 className="text-2xl font-bold mb-4">Edit Product</h2>
 
-        {/* Form Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* General Fields */}
+        <TextField
+          label="Name"
+          fullWidth
+          value={product?.name || ""}
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
+          margin="normal"
+        />
+        <TextField
+          label="Description"
+          fullWidth
+          value={product?.description || ""}
+          onChange={(e) =>
+            setProduct({ ...product, description: e.target.value })
+          }
+          margin="normal"
+        />
+        <TextField
+          label="Price"
+          fullWidth
+          type="number"
+          value={product?.price || ""}
+          onChange={(e) => setProduct({ ...product, price: e.target.value })}
+          margin="normal"
+        />
+        <TextField
+          label="Discounted Price"
+          fullWidth
+          type="number"
+          value={product?.discountedPrice || ""}
+          onChange={(e) =>
+            setProduct({ ...product, discountedPrice: e.target.value })
+          }
+          margin="normal"
+        />
+        <TextField
+          label="Stock"
+          fullWidth
+          type="number"
+          value={product?.stock || ""}
+          onChange={(e) => setProduct({ ...product, stock: e.target.value })}
+          margin="normal"
+        />
+         {["categories", "tags", "colors", "sizes", "features"].map((type) => (
+            <Autocomplete
+              key={type}
+              multiple
+              options={
+                type === "categories"
+                  ? categoriesOptions
+                  : type === "tags"
+                  ? tagsOptions
+                  : type === "colors"
+                  ? colorsOptions
+                  : type === "sizes"
+                  ? sizesOptions
+                  : featuresOptions
+              }
+              value={
+                type === "categories"
+                  ? selectedCategories
+                  : type === "tags"
+                  ? selectedTags
+                  : type === "colors"
+                  ? selectedColors
+                  : type === "sizes"
+                  ? selectedSizes
+                  : selectedFeatures
+              }
+              onChange={(event, newValue) => handleMultiChange(event, newValue, type)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={type.charAt(0).toUpperCase() + type.slice(1)}
+                  margin="normal"
+                />
+              )}
+            />
+          ))}
+
+        {/* Specifications */}
+        <div className="grid grid-cols-2 gap-4">
           <TextField
-            label="Name"
+            label="Weight"
             fullWidth
-            value={product?.name || ""}
-            onChange={(e) =>
-              setProduct({ ...product, name: e.target.value })
-            }
-            margin="normal"
+            name="weight"
+            value={product?.specifications?.weight || ""}
+            onChange={handleSpecificationChange}
           />
           <TextField
-            label="Description"
+            label="Dimensions"
             fullWidth
-            value={product?.description || ""}
-            onChange={(e) =>
-              setProduct({ ...product, description: e.target.value })
-            }
-            margin="normal"
+            name="dimensions"
+            value={product?.specifications?.dimensions || ""}
+            onChange={handleSpecificationChange}
           />
           <TextField
-            label="Price"
+            label="Material"
             fullWidth
-            type="number"
-            value={product?.price || ""}
-            onChange={(e) =>
-              setProduct({ ...product, price: e.target.value })
-            }
-            margin="normal"
+            name="material"
+            value={product?.specifications?.material || ""}
+            onChange={handleSpecificationChange}
           />
           <TextField
-            label="Discounted Price"
+            label="Other"
             fullWidth
-            type="number"
-            value={product?.discountedPrice || ""}
-            onChange={(e) =>
-              setProduct({
-                ...product,
-                discountedPrice: e.target.value,
-              })
-            }
-            margin="normal"
-          />
-          <TextField
-            label="Stock"
-            fullWidth
-            type="number"
-            value={product?.stock || ""}
-            onChange={(e) =>
-              setProduct({ ...product, stock: e.target.value })
-            }
-            margin="normal"
+            name="other"
+            value={product?.specifications?.other || ""}
+            onChange={handleSpecificationChange}
           />
         </div>
 
-        {/* Brand Field */}
+        {/* Details */}
         <TextField
-          label="Brand"
+          label="Details"
           fullWidth
-          value={brand || ""}
-          onChange={handleBrandChange}
+          multiline
+          rows={4}
+          value={product?.details || ""}
+          onChange={(e) => setProduct({ ...product, details: e.target.value })}
           margin="normal"
         />
 
-        {/* Categories Field */}
-        <Autocomplete
-          multiple
-          options={["Electronics", "Clothing", "Home", "Books"]} // Example category options, replace with your actual categories
-          value={selectedCategories}
-          onChange={handleCategoryChange}
-          renderInput={(params) => (
-            <TextField {...params} label="Categories" margin="normal" />
+        {/* Image Upload */}
+        <div className="mt-4">
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-h-32 object-contain mb-4"
+            />
           )}
-          getOptionLabel={(option) => option} // Customize this based on your category structure
-        />
-
-        {/* Tags Field */}
-        <Autocomplete
-          multiple
-          options={["Sale", "New", "Featured", "Limited"]} // Example tag options, replace with your actual tags
-          value={selectedTags}
-          onChange={handleTagChange}
-          renderInput={(params) => (
-            <TextField {...params} label="Tags" margin="normal" />
-          )}
-          getOptionLabel={(option) => option} // Customize this based on your tag structure
-        />
-
-        {/* Image Upload Section */}
-        <div className="mt-6">
-          <label className="block mb-2">Current Image:</label>
-          <div>
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Current Product"
-                className="max-h-24 object-contain mb-4"
-              />
-            )}
-          </div>
-          <label className="block mb-2">Update Image:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="block w-full p-2 border border-gray-300 rounded"
-          />
+          <input type="file" accept="image/*" onChange={handleFileChange} />
         </div>
 
+        {/* Save Button */}
         <Button
           variant="contained"
           color="primary"
           onClick={onSave}
-          className="mt-4"
+          className="mt-6"
           fullWidth
         >
           Save Changes

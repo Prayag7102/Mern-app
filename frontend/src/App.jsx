@@ -18,6 +18,7 @@ import AddProducts from "./pages/Admin/admin-components/AddProducts";
 import ManageProducts from "./pages/Admin/admin-components/ManageProduct";
 import Cart from "./pages/Cart";
 import UserLayout from "./pages/UserLayout";
+import ProductDetail from "./pages/ProductDetails";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/products/:id",
+    element: <ProductDetail />,
   },
   {
     path: "/contact",
