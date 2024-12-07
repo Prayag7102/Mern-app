@@ -192,18 +192,6 @@ const ProductDetail = () => {
                 <span key={idx} className={star === "★" ? "text-yellow-500" : "text-gray-400"}>{star}</span>
               ))}
             </div>
-            {/*<div className="mt-2 flex space-x-4">
-              <button
-                onClick={() => {
-                  setSelectedReviewId(review._id);
-                  setDeleteModalOpen(true);
-                }}
-                className="text-red-600 hover:text-red-800"
-              >
-                Delete
-              </button>
-            </div>*/}
-             
              {review.user?._id === userId && (
               
                 <div className="mt-2 flex space-x-4">
@@ -226,8 +214,6 @@ const ProductDetail = () => {
         ) : (
           <p className="text-gray-500">No reviews yet.</p>
         )}
-
-      {/* Delete Confirmation Modal */}
       <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
         <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
