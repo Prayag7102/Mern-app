@@ -6,15 +6,21 @@ import Modal from "@mui/material/Modal";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import axiosInstance from "../api/axios";
+import axiosInstance from "../api/axios"
+import { decodeToken, deleteReview, editReview } from "../api/review";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [openReviewModal, setOpenReviewModal] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const token = localStorage.getItem("token");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editRating, setEditRating] = useState(0);
+  const [editComment, setEditComment] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -59,6 +65,56 @@ const ProductDetail = () => {
     }
   };
 
+  const decodedToken = decodeToken(token);
+  const userId = decodedToken?.id; 
+
+  const handleEditClick = (review) => {
+    setSelectedReviewId(review._id);
+    setEditRating(review.rating);
+    setEditComment(review.comment);
+    setEditModalOpen(true);
+  };
+
+  const handleEditReview = async () => {
+    try {
+      const updatedReview = await editReview(
+        product._id,
+        selectedReviewId,
+        editRating,
+        editComment
+      );
+      toast.success("Review Edited successfully!",{
+        theme: "dark",
+        draggable: true
+      });
+      setEditModalOpen(false);
+      const updatedProduct = await axiosInstance.get(`/products/${product._id}`);
+      setProduct(updatedProduct.data);
+    } catch (error) {
+      console.error("Error editing review:", error);
+    }
+  };
+
+
+  const handleDeleteClick = (reviewId) => {
+    setSelectedReviewId(reviewId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteReview = async () => {
+    try {
+      await deleteReview(product._id, selectedReviewId);
+      toast.success("Review deleted successfully!",{
+        theme: "dark",
+        draggable: true
+      });
+      setDeleteModalOpen(false);
+      const updatedProduct = await axiosInstance.get(`/products/${product._id}`);
+      setProduct(updatedProduct.data);
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
+  };
   if (!product) return <div className="flex justify-center py-20">Loading...</div>;
 
   return (
@@ -122,26 +178,75 @@ const ProductDetail = () => {
         </div>
       </div>
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-        {product.reviews.length > 0 ? (
-          product.reviews.map((review) => (
-            <div key={review._id} className="border-b py-4">
-              <div className="flex items-center justify-between">
-                <p className="font-medium">{review.user?.name || "Anonymous"}</p>
-                <p className="text-sm text-gray-500">{new Date(review.date).toLocaleDateString()}</p>
-              </div>
-              <p className="text-gray-700 mt-1">{review.comment}</p>
-              <div className="flex items-center mt-1">
-                {"★".repeat(review.rating).padEnd(5, "☆").split("").map((star, idx) => (
-                  <span key={idx} className={star === "★" ? "text-yellow-500" : "text-gray-400"}>{star}</span>
-                ))}
-              </div>
+      <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+      {product.reviews.length > 0 ? (
+        product.reviews.map((review) => (
+          <div key={review._id} className="border-b py-4">
+            <div className="flex items-center justify-between">
+              <p className="font-medium">{review.user?.name || "Anonymous"}</p>
+              <p className="text-sm text-gray-500">{new Date(review.date).toLocaleDateString()}</p>
             </div>
-          ))
+            <p className="text-gray-700 mt-1">{review.comment}</p>
+            <div className="flex items-center mt-1">
+              {"★".repeat(review.rating).padEnd(5, "☆").split("").map((star, idx) => (
+                <span key={idx} className={star === "★" ? "text-yellow-500" : "text-gray-400"}>{star}</span>
+              ))}
+            </div>
+            {/*<div className="mt-2 flex space-x-4">
+              <button
+                onClick={() => {
+                  setSelectedReviewId(review._id);
+                  setDeleteModalOpen(true);
+                }}
+                className="text-red-600 hover:text-red-800"
+              >
+                Delete
+              </button>
+            </div>*/}
+             
+             {review.user?._id === userId && (
+              
+                <div className="mt-2 flex space-x-4">
+                 <button
+                    onClick={() => handleEditClick(review)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(review._id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+        ))
         ) : (
           <p className="text-gray-500">No reviews yet.</p>
         )}
-      </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+        <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
+          <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
+          <p className="text-gray-600 mb-4">Are you sure you want to delete this review?</p>
+          <div className="mt-4 flex gap-2 justify-end">
+            <Button onClick={() => setDeleteModalOpen(false)} variant="outlined">
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteReview}
+              variant="contained"
+              color="primary"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
       <Modal open={openReviewModal} onClose={() => setOpenReviewModal(false)}>
         <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Add a Review</h2>
@@ -169,6 +274,36 @@ const ProductDetail = () => {
           </div>
         </div>
       </Modal>
+      {editModalOpen && (
+        <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
+          <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Edit Review</h2>
+            <Rating
+              value={editRating}
+              onChange={(e, newValue) => setEditRating(newValue)}
+              size="large"
+            />
+            <TextField
+              label="Comment"
+              fullWidth
+              multiline
+              rows={4}
+              value={editComment}
+              onChange={(e) => setEditComment(e.target.value)}
+              margin="normal"
+            />
+            <div className="mt-4 flex gap-2 justify-end">
+              <Button onClick={() => setEditModalOpen(false)} variant="outlined">
+                Cancel
+              </Button>
+              <Button onClick={handleEditReview} variant="contained" color="primary">
+                Save Changes
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </div>
     </div>
   );
 };
