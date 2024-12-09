@@ -136,7 +136,6 @@ const addReview = async (req, res) => {
   }
 };
 
-// Edit Review
 const editReview = async (req, res) => {
   const { id, reviewId } = req.params; // Product ID and Review ID
   const { rating, comment } = req.body;
@@ -173,7 +172,6 @@ const editReview = async (req, res) => {
   }
 };
 
-// Delete Review
 const deleteReview = async (req, res) => {
   const { id, reviewId } = req.params; // Product ID and Review ID
 

@@ -30,8 +30,6 @@ const loginAdmin = async (req, res) => {
   if (!admin) {
     return res.status(400).json({ message: "Invalid username or password" });
   }
-
-  // Check if the password matches
   const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) {
     return res.status(400).json({ message: "Invalid username or password" });
