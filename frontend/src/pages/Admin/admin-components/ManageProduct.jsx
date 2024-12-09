@@ -148,7 +148,7 @@ const ManageProduct = () => {
             checkboxSelection
             onSelectionModelChange={(ids) => setSelectedRows(ids)}
             filterModel={filterModel}
-            onFilterModelChange={(model) => setFilterModel(model)} // Handle filter changes
+            onFilterModelChange={(model) => setFilterModel(model)} 
           />
         </div>
      </div>
