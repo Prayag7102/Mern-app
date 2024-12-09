@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { getProducts } from '../api/products';
 import { addToCart } from '../api/cart';
 import { toast } from "react-toastify";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductsCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -84,26 +88,31 @@ const ProductsCard = () => {
                     <span className="text-sm text-slate-900 line-through">Rs.{product.price}</span>
                   </p>
                 </div>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mr-2 h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
+                <div className='flex flex-wrap gap-3 xxs:justify-center xs:items-center'>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  Add to cart
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="mr-2 h-5 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    Add to cart
+                  </button>
+                  <button onClick={()=> navigate(`/products/${product._id}`)}  className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                      View Details 
+                  </button>
+                </div>
               </div>
             </div>
           ))
