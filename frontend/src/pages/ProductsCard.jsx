@@ -45,12 +45,10 @@ const ProductsCard = () => {
       <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>
         New Products
       </h1>
-      <div className="flex flex-wrap gap-5 items-center px-3">
+      <div className="grid grid-cols-1 gap-5 px-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {products.length === 0 ? (
           <div className="col-span-full text-center p-5 bg-gray-100 rounded-lg shadow-md">
-            <h2 className="text-2xl text-gray-700 font-semibold">
-              No Products Available
-            </h2>
+            <h2 className="text-2xl text-gray-700 font-semibold">No Products Available</h2>
             <p className="text-gray-500 mt-2">
               It seems like there are no products available right now. Please check back later.
             </p>
@@ -59,12 +57,19 @@ const ProductsCard = () => {
           products.map((product) => (
             <div
               key={product._id}
-              className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              className="relative flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
             >
-              <Link to={`/products/${product._id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl" >
+              <Link
+                to={`/products/${product._id}`}
+                className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl"
+              >
                 <img
                   className="object-cover h-64 w-full"
-                  src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
+                  src={
+                    product.image
+                      ? `http://localhost:5000/uploads/${product.image}`
+                      : "https://via.placeholder.com/150"
+                  }
                   alt="product image"
                 />
                 {product.discount && (
@@ -76,11 +81,13 @@ const ProductsCard = () => {
               <div className="mt-4 px-3 pb-5">
                 <a href="#">
                   <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
-                  <h6 className='text-sm text-blue-900 font-semibold'>{product.brand}</h6>
+                  <h6 className="text-sm text-blue-900 font-semibold">{product.brand}</h6>
                 </a>
                 <div className="mt-2 mb-5 flex items-center justify-between">
                   <p>
-                    <span className="text-3xl font-bold text-slate-900">Rs.{product.discountedPrice}</span>
+                    <span className="text-3xl font-bold text-slate-900">
+                      Rs.{product.discountedPrice}
+                    </span>
                     <span className="text-sm text-slate-900 line-through">Rs.{product.price}</span>
                   </p>
                 </div>
@@ -109,6 +116,7 @@ const ProductsCard = () => {
           ))
         )}
       </div>
+
     </div>
   );
 };

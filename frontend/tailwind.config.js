@@ -7,6 +7,8 @@ export default {
   theme: {
     extend: {},
     screens: {
+      'xxs': '320px',
+      'xs': '540px',
       'sm': '640px', // Small devices
       'md': '768px', // Medium devices
       'lg': '1024px', // Large devices

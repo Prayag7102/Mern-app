@@ -159,6 +159,11 @@ const ProductDetail = () => {
                 </span>
               ))}
             </div>
+            <div className="flex items-center mt-4">
+             <span className="mr-3">Rating: </span>{"★".repeat(product.rating).padEnd(5, "☆").split("").map((star, idx) => (
+                <span key={idx} className={star === "★" ? "text-yellow-500" : "text-gray-400"}>{star}</span>
+              ))}
+            </div>
           </div>
           <div className="space-y-4">
             <p className="text-sm text-gray-500">Stock: {product.stock}</p>
@@ -178,7 +183,7 @@ const ProductDetail = () => {
         </div>
       </div>
       <div className="mt-12">
-      <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
+      <h2 className="text-2xl font-semibold mb-4">Reviews: {product.reviews.length}</h2>
       {product.reviews.length > 0 ? (
         product.reviews.map((review) => (
           <div key={review._id} className="border-b py-4">

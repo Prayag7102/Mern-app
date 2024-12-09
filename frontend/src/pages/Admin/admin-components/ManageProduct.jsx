@@ -126,7 +126,7 @@ const ManageProduct = () => {
           setProduct={setSelectedProduct}
           onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} 
         />
-        <div className="mt-5" style={{ height: 600, width: "100%" }}>
+        <div className="mt-5" >
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
             <h1 className="text-3xl font-bold">Manage Products</h1>
             <TextField
