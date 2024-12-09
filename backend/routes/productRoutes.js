@@ -22,13 +22,9 @@ router.post("/",upload.single("image"),protect, addProduct);
 router.delete("/:id",protect, deleteProduct);
 router.put("/:id",upload.single("image"), protect, updateProduct);
 
-// Add review
+
 router.post("/:id/review", verifyToken, addReview);
-
-// Edit review
 router.put("/:id/review/:reviewId", verifyToken, editReview);
-
-// Delete review
 router.delete("/:id/review/:reviewId", verifyToken, deleteReview);
 
 module.exports = router;
