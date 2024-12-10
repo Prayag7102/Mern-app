@@ -1,12 +1,31 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { BsCart } from "react-icons/bs";
+import { IoMdLogOut } from "react-icons/io";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
+  const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    toast.success("Logged out successfully!",{
+      theme:'dark',
+      draggable:true
+    });
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+  };
+
 
   return (
     <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
@@ -24,7 +43,7 @@ const Navbar = () => {
         <div className="flex items-center lg:order-2">
           <Link
             to="/login"
-            className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+            className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
           >
             Log in
           </Link>
@@ -38,8 +57,10 @@ const Navbar = () => {
             to="/profile/cart"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           >
-            Cart
+            <BsCart />
           </Link>
+          {!token?'': <button onClick={handleLogout} className="btn bg-red-600 hover:bg-red-500 px-4 py-2 text-white rounded-md"><IoMdLogOut /></button> }
+          
           <button
             onClick={toggleMobileMenu}
             type="button"

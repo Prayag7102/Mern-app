@@ -45,11 +45,11 @@ const ProductsCard = () => {
   }
 
   return (
-    <div className='mb-5 mt-5 container'>
+    <div className='mb-5 mt-5 '>
       <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>
         New Products
       </h1>
-      <div className="flex flex-wrap gap-5 items-center px-3">
+      <div className="flex flex-wrap justify-center gap-5 items-center px-3">
         {products.length === 0 ? (
           <div className="col-span-full text-center p-5 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-2xl text-gray-700 font-semibold">

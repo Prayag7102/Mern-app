@@ -143,6 +143,14 @@ const ProductDetail = () => {
               ))}
             </ul>
           </div>
+          <div>
+            <h3 className="font-semibold text-lg mb-2">Sizes:</h3>
+            <ul className="list-disc list-inside text-gray-600">
+              {product.sizes.map((size, idx) => (
+                <li key={idx}>{size}</li>
+              ))}
+            </ul>
+          </div>
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Specifications:</h3>
             <p className="text-sm text-gray-500">Weight: {product.specifications?.weight}</p>
