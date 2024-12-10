@@ -44,3 +44,13 @@ export const adminLogin = async (username, password) => {
     throw error.response ? error.response.data : error;
   }
 };
+
+
+export  const fetchAllUsers = async () => {
+  try {
+    const response = await axiosInstance.get("/users");
+    console.log("All users:", response.data);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+};

@@ -1,12 +1,12 @@
 
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-
+  const [users, setUsers] = useState(null);
 
   const username = localStorage.getItem("username");
 
