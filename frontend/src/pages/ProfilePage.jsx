@@ -135,7 +135,7 @@ export default function ProfilePage() {
   </div>
   <div className="flex flex-col items-center -mt-20">
     <img
-      src="https://vojislavd.com/ta-template-demo/assets/img/profile.jpg"
+      src="https://avatar.iran.liara.run/public/boy?username=Ash"
       className="w-40 border-4 border-white rounded-full"
     />
     <div className="flex items-center space-x-2 mt-2">
@@ -157,8 +157,6 @@ export default function ProfilePage() {
         </svg>
       </span>
     </div>
-    <p className="text-gray-700">Senior Software Engineer at Tailwind CSS</p>
-    <p className="text-sm text-gray-500">New York, USA</p>
   </div>
   <div className="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
     <div className="flex items-center space-x-4 mt-2">
