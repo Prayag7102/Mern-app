@@ -4,9 +4,13 @@ import { toast } from "react-toastify";
 import { addToCart } from "../api/cart";
 import Modal from "@mui/material/Modal";
 import Rating from "@mui/material/Rating";
+import { BsCart } from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axiosInstance from "../api/axios"
+import { MdRateReview } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+import { CiCircleRemove } from "react-icons/ci";
 import { decodeToken, deleteReview, editReview } from "../api/review";
 
 const ProductDetail = () => {
@@ -175,18 +179,20 @@ const ProductDetail = () => {
           </div>
           <div className="space-y-4">
             <p className="text-sm text-gray-500">Stock: {product.stock}</p>
+            <div className="flex  gap-5">
+              <button
+                className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-2  rounded-md hover:bg-blue-700"
+                onClick={handleAddToCart}
+              >
+              <BsCart className="text-2xl" /> Add to Cart
+              </button>
             <button
-              className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700"
-              onClick={handleAddToCart}
-            >
-              Add to Cart
-            </button>
-            <button
-              className="w-full bg-gray-600 text-white py-3 rounded-md hover:bg-gray-700"
+              className="w-full bg-gray-600 flex items-center justify-center gap-2 text-white py-3 rounded-md hover:bg-gray-700"
               onClick={() => setOpenReviewModal(true)}
             >
-              Add Review
+             <MdRateReview className="text-2xl" />  Add Review
             </button>
+            </div>
           </div>
         </div>
       </div>
@@ -212,13 +218,13 @@ const ProductDetail = () => {
                     onClick={() => handleEditClick(review)}
                     className="text-blue-600 hover:text-blue-800"
                   >
-                    Edit
+                    <CiEdit className="text-2xl"/>
                   </button>
                   <button
                     onClick={() => handleDeleteClick(review._id)}
                     className="text-red-600 hover:text-red-800"
                   >
-                    Delete
+                    <CiCircleRemove className="text-2xl" />
                   </button>
                 </div>
               )}
