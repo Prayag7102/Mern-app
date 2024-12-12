@@ -24,6 +24,8 @@ const getProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
+  console.log("Uploaded Files:", req.files); // Log the files to see if 'image' is present
+
   const {
     name,
     description,
@@ -40,13 +42,14 @@ const addProduct = async (req, res) => {
     specifications,
   } = req.body;
 
-  const image = req.file
-    ? req.file.filename
-    : 'http://localhost:5000/uploads/1733290002876-31MZVlSW1KL._SY445_SX342_QL70_FMwebp_.webp';
+  // Make sure to check for the correct field in req.files
+  const image = req.files?.image?.[0]?.filename || null; // Check if `image` exists in req.files
 
   if (!image) {
     return res.status(400).json({ message: "Image is required." });
   }
+
+  const otherImages = req.files?.otherImages?.map((file) => file.filename) || []; // Additional images
 
   const product = new Product({
     name,
@@ -55,6 +58,7 @@ const addProduct = async (req, res) => {
     discountedPrice,
     stock,
     image,
+    otherImages,
     categories,
     tags,
     brand,
@@ -88,9 +92,17 @@ const updateProduct = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
-  let image = req.file ? req.file.filename : null;
-  if (image) {
+  let image = null;
+  let otherImages = [];
+
+  if (req.file) {
+    image = req.file.filename;
     updates.image = image;
+  }
+
+  if (req.files && req.files.length > 0) {
+    otherImages = req.files.map(file => file.filename);
+    updates.otherImages = otherImages;
   }
 
   try {

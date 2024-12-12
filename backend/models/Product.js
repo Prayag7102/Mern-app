@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
   discountedPrice: { type: Number, required: true },
   stock: { type: Number, default: 0, require:true },
   image: { type: String },
+  otherImages:[{type:String}],
   categories: [{ type: String, required: true }],
   tags: [{ type: String }],
   brand: { type: String, required:true },
@@ -36,6 +37,14 @@ productSchema.virtual("imageUrl").get(function() {
   return this.image
     ? `http://localhost:5000/uploads/${this.image}`
     : 'http://localhost:5000/uploads/1733290002876-31MZVlSW1KL._SY445_SX342_QL70_FMwebp_.webp';
+});
+
+productSchema.virtual("otherImagesUrls").get(function() {
+  return this.otherImages && this.otherImages.length > 0
+    ? this.otherImages.map(image => `http://localhost:5000/uploads/${image}`)
+    : [
+        'http://localhost:5000/uploads/1733290002876-31MZVlSW1KL._SY445_SX342_QL70_FMwebp_.webp'
+      ];
 });
 
 module.exports = mongoose.model("Product", productSchema);
