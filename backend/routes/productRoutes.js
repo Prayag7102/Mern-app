@@ -1,7 +1,7 @@
 const express = require("express");
 const { getProducts, addProduct, deleteProduct, updateProduct, addReview, editReview, deleteReview, getProductById } = require("../controllers/productController");
 const { protect, verifyToken } = require("../middleware/authMiddleware");
-const { uploadImage, uploadOtherImages, uploadFields } = require("../middleware/ImagesMiddleware");
+const { uploadFields } = require("../middleware/ImagesMiddleware");
 
 
 const router = express.Router();
