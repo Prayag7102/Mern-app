@@ -12,6 +12,12 @@ import { MdRateReview } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { CiCircleRemove } from "react-icons/ci";
 import { decodeToken, deleteReview, editReview } from "../api/review";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Zoom, Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/zoom';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -125,18 +131,43 @@ const ProductDetail = () => {
     <div className="container mx-auto p-6">
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="flex justify-center">
-          <img
-            src={`http://localhost:5000/uploads/${product.image}`}
-            alt={product.name}
-            className="rounded-lg shadow-md max-h-96 object-contain"
-          />
-        </div>
-        <div>
-          {product.otherImages.map((img,index)=>{
-            return (
-              <img key={index} src={`http://localhost:5000/uploads/${img}`} alt={product.name} className="max-w-full h-48 object-cover" />
-            )
-          })}
+          <Swiper
+            loop={true} 
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false, 
+            }}
+            grabCursor={true} 
+            zoom={true} 
+            navigation={true} 
+            pagination={{ clickable: true }} 
+            modules={[Zoom, Navigation, Pagination,Autoplay]} 
+            className="w-full max-w-xl"
+            spaceBetween={10}
+            slidesPerView={1}
+          >
+            {/* Main product image */}
+            <SwiperSlide>
+              <img
+                src={`http://localhost:5000/uploads/${product.image}`}
+                alt={product.name}
+                className="rounded-lg shadow-md  object-contain"
+              />
+            </SwiperSlide>
+            {product.otherImages.length > 0 && (
+              <>
+                {product.otherImages.map((img, index) => (
+                  <SwiperSlide key={index}>
+                    <img
+                      src={`http://localhost:5000/uploads/${img}`}
+                      alt={product.name}
+                      className="max-w-full  object-cover"
+                    />
+                  </SwiperSlide>
+                ))}
+              </>
+            )}
+          </Swiper>
         </div>
         <div className="space-y-6">
           <h1 className="text-4xl font-bold text-gray-800">{product.name}</h1>

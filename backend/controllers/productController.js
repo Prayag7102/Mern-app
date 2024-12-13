@@ -134,11 +134,10 @@ const addReview = async (req, res) => {
     };
 
     product.reviews.push(review);
-
-    // Update the overall rating
     const totalReviews = product.reviews.length;
     const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
-    product.rating = totalRating / totalReviews;
+    let averageRating = totalRating / totalReviews;
+    product.rating = averageRating.toFixed(2);
 
     await product.save();
 
@@ -185,7 +184,7 @@ const editReview = async (req, res) => {
 };
 
 const deleteReview = async (req, res) => {
-  const { id, reviewId } = req.params; // Product ID and Review ID
+  const { id, reviewId } = req.params; 
 
   try {
     const product = await Product.findById(id);
