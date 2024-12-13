@@ -6,8 +6,8 @@ import { Box, TextField } from "@mui/material";
 import { getProducts } from "../../../api/products";
 import { toast } from "react-toastify";
 import EditModal from "./EditModal";
-import { handleDelete, handleEditSave } from "../../../utils/ProductUtils";
 import { MdEditNote, MdDelete } from "react-icons/md";
+import { handleDelete, handleEditSave } from "../../../utils/productUtils";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);

@@ -181,7 +181,7 @@ const ProductDetail = () => {
             <div className="flex items-center mt-4">
              <span className="mr-3">Rating: </span>{"★".repeat(product.rating).padEnd(5, "☆").split("").map((star, idx) => (
                 <span key={idx} className={star === "★" ? "text-yellow-500" : "text-gray-400"}>{star}</span>
-              ))}
+              ))} <span className="mx-1">{product.rating}</span> <span className="mx-1">and Reviews {product.reviews.length}</span>
             </div>
           </div>
           <div className="space-y-4">

@@ -11,6 +11,7 @@ const CartCard = () => {
       try {
         const data = await getCartItems();  
         setCartItems(data);
+        console.log(data);
       } catch (error) {
         toast.error('Error fetching cart:', error);
       }
@@ -109,7 +110,7 @@ const CartCard = () => {
                 <input
                   className="h-8 w-8 border bg-white text-center text-xs outline-none"
                   type="number"
-                  Value={item.quantity}
+                  value={item.quantity}
                   min={1}
                   readOnly
                 />
