@@ -1,7 +1,7 @@
 import axiosInstance from './axios';
 
 
-export const createProduct = async (productData, image) => {
+export const createProduct = async (productData, image, otherImages) => {
   const token = localStorage.getItem("adminToken");
 
   if (!token) {
@@ -51,6 +51,10 @@ export const createProduct = async (productData, image) => {
 
   formData.append("rating", productData.rating);
   formData.append("image", image);
+
+  otherImages.forEach((file) => {
+    formData.append("otherImages", file); // Notice the singular key
+  });
 
   const response = await axiosInstance.post("/products", formData, {
     headers: {

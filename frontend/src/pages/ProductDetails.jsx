@@ -131,6 +131,13 @@ const ProductDetail = () => {
             className="rounded-lg shadow-md max-h-96 object-contain"
           />
         </div>
+        <div>
+          {product.otherImages.map((img,index)=>{
+            return (
+              <img key={index} src={`http://localhost:5000/uploads/${img}`} alt={product.name} className="max-w-full h-48 object-cover" />
+            )
+          })}
+        </div>
         <div className="space-y-6">
           <h1 className="text-4xl font-bold text-gray-800">{product.name}</h1>
           <p className="text-lg text-gray-500">Brand: <span className="font-semibold">{product.brand}</span></p>

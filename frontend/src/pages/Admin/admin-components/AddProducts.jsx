@@ -22,6 +22,8 @@ const AddProducts = () => {
   });
 
   const [image, setImage] = useState(null);
+  const [otherImages, setOtherImages] = useState([]);
+  const [otherImagesPreviews, setOtherImagesPreviews] = useState([]);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -40,10 +42,16 @@ const AddProducts = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file); 
-      setPreview(URL.createObjectURL(file)); 
-      handleImageChange(e); 
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
+  };
+
+  const handleOtherImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setOtherImages(files); // Store file objects for upload
+    setOtherImagesPreviews(previews); // Generate preview URLs for display
   };
 
   const handleTagChange = (e, type) => {
@@ -75,14 +83,16 @@ const AddProducts = () => {
       return;
     }
 
+    if (!productData.name || !productData.description || !productData.price || !image || otherImages.length === 0) {
+      toast.error("Please fill in all required fields", { theme: "dark" });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await createProduct(productData, image);
-      toast.success("Product Created Successfully!", {
-        theme: 'dark',
-        draggable: true
-      });
+      const response = await createProduct(productData, image, otherImages);
+      toast.success("Product Created Successfully!", { theme: "dark" });
 
       setProductData({
         name: '',
@@ -97,9 +107,12 @@ const AddProducts = () => {
         sizes: [],
         features: [],
         details: '',
-        specifications: { weight: '', dimensions: '', material: '', other: '' }
+        specifications: { weight: '', dimensions: '', material: '', other: '' },
       });
       setImage(null);
+      setOtherImages([]);
+      setOtherImagesPreviews([]);
+      setPreview(null);
     } catch (error) {
       console.error("Error adding product:", error);
       alert("Failed to add product. Please try again.");
@@ -348,45 +361,61 @@ const AddProducts = () => {
                 ></textarea>
               </div>
               <div className=''>
-                <div >
-                 <Box className='flex flex-wrap '>
-                    <div>
-                      <Typography variant="body1" className="mb-3">Upload Image:</Typography>
-                      <Input
-                        type="file"
-                        onChange={handleImageChange}
-                        required
-                        inputProps={{ accept: 'image/*' }}
-                        sx={{
-                          display: 'none',
-                        }}
-                        id="image-upload"
-                      />
-                      <label htmlFor="image-upload">
-                        <Button variant="contained" color="primary" component="span" sx={{ px: 2, py: 1 }}>
-                          Choose File
-                        </Button>
-                      </label>
-                    </div>
-
-                   <div>
-                    {preview && (
-                        <Box mt={2}>
-                          <img
-                            src={preview}
-                            alt="Preview"
-                            style={{
-                              maxWidth: '100%',
-                              maxHeight: '100px',
-                              objectFit: 'contain',
-                              marginTop: '10px',
-                            }}
-                          />
-                        </Box>
-                      )}
-                   </div>
+              <div>
+                <Typography variant="body1" className="mb-3">Upload Image:</Typography>
+                <Input
+                  type="file"
+                  onChange={handleImageChange}
+                  required
+                  inputProps={{ accept: 'image/*' }}
+                  sx={{ display: 'none' }}
+                  id="image-upload"
+                />
+                <label htmlFor="image-upload">
+                  <Button variant="contained" color="primary" component="span" sx={{ px: 2, py: 1 }}>
+                    Choose File
+                  </Button>
+                </label>
+                {preview && (
+                  <Box mt={2}>
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100px',
+                        objectFit: 'contain',
+                        marginTop: '10px',
+                      }}
+                    />
                   </Box>
+                )}
+              </div>
+
+              {/* Other Images Upload */}
+              <div>
+                <label>Other Images</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleOtherImagesChange}
+                  accept="image/*"
+                />
+                <div>
+                  {otherImagesPreviews.length > 0 ? (
+                    otherImagesPreviews.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt={`Preview ${index + 1}`}
+                        style={{ width: "100px", marginRight: "10px" }}
+                      />
+                    ))
+                  ) : (
+                    <p>No images selected</p>
+                  )}
                 </div>
+              </div>
                 <button
                   type="submit"
                   disabled={loading}

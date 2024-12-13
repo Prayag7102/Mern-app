@@ -24,7 +24,6 @@ const getProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-  console.log("Uploaded Files:", req.files); // Log the files to see if 'image' is present
 
   const {
     name,
@@ -42,38 +41,39 @@ const addProduct = async (req, res) => {
     specifications,
   } = req.body;
 
-  // Make sure to check for the correct field in req.files
-  const image = req.files?.image?.[0]?.filename || null; // Check if `image` exists in req.files
+  const image = req.files?.image?.[0]?.filename || null;
 
   if (!image) {
-    return res.status(400).json({ message: "Image is required." });
+    return res.status(400).json({ message: "Main image is required." });
   }
 
-  const otherImages = req.files?.otherImages?.map((file) => file.filename) || []; // Additional images
-
-  const product = new Product({
-    name,
-    description,
-    price,
-    discountedPrice,
-    stock,
-    image,
-    otherImages,
-    categories,
-    tags,
-    brand,
-    colors,
-    sizes,
-    features,
-    details,
-    specifications,
-  });
+  // Extract otherImages filenames
+  const otherImages = req.files?.otherImages?.map((file) => file.filename) || [];
 
   try {
+    const product = new Product({
+      name,
+      description,
+      price,
+      discountedPrice,
+      stock,
+      image,
+      otherImages, // Save filenames in the array
+      categories,
+      tags,
+      brand,
+      colors,
+      sizes,
+      features,
+      details,
+      specifications,
+    });
+
     await product.save();
     res.status(201).json(product);
   } catch (error) {
     res.status(400).json({ message: error.message });
+    res.status(500).json({ message: "Error creating product" });
   }
 };
 
