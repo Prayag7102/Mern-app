@@ -393,29 +393,42 @@ const AddProducts = () => {
               </div>
 
               {/* Other Images Upload */}
-              <div>
-                <label>Other Images</label>
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleOtherImagesChange}
-                  accept="image/*"
-                />
-                <div>
-                  {otherImagesPreviews.length > 0 ? (
-                    otherImagesPreviews.map((img, index) => (
-                      <img
-                        key={index}
-                        src={img}
-                        alt={`Preview ${index + 1}`}
-                        style={{ width: "100px", marginRight: "10px" }}
-                      />
-                    ))
-                  ) : (
-                    <p>No images selected</p>
-                  )}
+              <div className="space-y-4 mt-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Other Images
+                  </label>
+                  <input
+                    type="file"
+                    multiple
+                    onChange={handleOtherImagesChange}
+                    accept="image/*"
+                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring focus:ring-indigo-300"
+                  />
+                  <div className="mt-4 flex flex-wrap gap-4">
+                    {otherImagesPreviews.length > 0 ? (
+                      otherImagesPreviews.map((img, index) => (
+                        <div
+                          key={index}
+                          className="relative group w-24 h-24 border rounded-md overflow-hidden shadow-sm hover:shadow-lg"
+                        >
+                          <img
+                            src={img}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                          <button
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-1 right-1 bg-red-500 text-white text-xs px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-gray-500 text-sm">No images selected</p>
+                    )}
+                  </div>
                 </div>
-              </div>
                 <button
                   type="submit"
                   disabled={loading}
