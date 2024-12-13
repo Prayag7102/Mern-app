@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Autocomplete } from "@mui/material";
+import  JoditEditor  from "jodit-react";
 
 const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [previewImage, setPreviewImage] = useState("");
@@ -11,12 +12,10 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  
-  const [newCategory, setNewCategory] = useState("");
-  const [newTag, setNewTag] = useState("");
-  const [newColor, setNewColor] = useState("");
-  const [newSize, setNewSize] = useState("");
-  const [newFeature, setNewFeature] = useState("");
+
+  const [editorContent, setEditorContent] = useState(product?.details || "");
+
+  const editorRef = useRef(null);
 
   const categoriesOptions = ["Smartphones", "Electronics", "Accessories"];
   const tagsOptions = ["Flagship", "5G", "Android", "Photography"];
@@ -30,7 +29,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
     } else if (product?.image instanceof File) {
       setPreviewImage(URL.createObjectURL(product.image));
     }
-    
+
     setSelectedCategories(product?.categories || []);
     setSelectedTags(product?.tags || []);
     setSelectedColors(product?.colors || []);
@@ -49,19 +48,29 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const handleMultiChange = (event, newValue, type) => {
     setProduct({ ...product, [type]: newValue });
     switch (type) {
-      case "categories": setSelectedCategories(newValue); break;
-      case "tags": setSelectedTags(newValue); break;
-      case "colors": setSelectedColors(newValue); break;
-      case "sizes": setSelectedSizes(newValue); break;
-      case "features": setSelectedFeatures(newValue); break;
-      default: break;
+      case "categories":
+        setSelectedCategories(newValue);
+        break;
+      case "tags":
+        setSelectedTags(newValue);
+        break;
+      case "colors":
+        setSelectedColors(newValue);
+        break;
+      case "sizes":
+        setSelectedSizes(newValue);
+        break;
+      case "features":
+        setSelectedFeatures(newValue);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleAddNew = (type, value) => {
-    if (!value) return;
-    const updatedList = [...(product[type] || []), value];
-    setProduct({ ...product, [type]: updatedList });
+  const handleEditorChange = (newContent) => {
+    setEditorContent(newContent);
+    setProduct({ ...product, details: newContent });
   };
 
   const handleSpecificationChange = (e) => {
@@ -83,7 +92,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
         <TextField label="Price" fullWidth type="number" value={product?.price || ""} onChange={(e) => setProduct({ ...product, price: e.target.value })} margin="normal" />
         <TextField label="Discounted Price" fullWidth type="number" value={product?.discountedPrice || ""} onChange={(e) => setProduct({ ...product, discountedPrice: e.target.value })} margin="normal" />
         <TextField label="Stock" fullWidth type="number" value={product?.stock || ""} onChange={(e) => setProduct({ ...product, stock: e.target.value })} margin="normal" />
-        
+
         {["categories", "tags", "colors", "sizes", "features"].map((type) => (
           <div key={type} className="mt-4">
             <Autocomplete
@@ -93,13 +102,6 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
               onChange={(event, newValue) => handleMultiChange(event, newValue, type)}
               renderInput={(params) => <TextField {...params} label={type.charAt(0).toUpperCase() + type.slice(1)} margin="normal" />}
             />
-            <div className="mt-2">
-              <TextField label={`Add ${type}`} fullWidth value={type === "categories" ? newCategory : type === "tags" ? newTag : type === "colors" ? newColor : type === "sizes" ? newSize : newFeature}
-                onChange={(e) => type === "categories" ? setNewCategory(e.target.value) : type === "tags" ? setNewTag(e.target.value) : type === "colors" ? setNewColor(e.target.value) : type === "sizes" ? setNewSize(e.target.value) : setNewFeature(e.target.value)} />
-              <Button variant="outlined" className="mt-2" onClick={() => handleAddNew(type, type === "categories" ? newCategory : type === "tags" ? newTag : type === "colors" ? newColor : type === "sizes" ? newSize : newFeature)}>
-                Add {type.slice(0, -1)}
-              </Button>
-            </div>
           </div>
         ))}
 
@@ -110,7 +112,21 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
           <TextField label="Other" fullWidth name="other" value={product?.specifications?.other || ""} onChange={handleSpecificationChange} />
         </div>
 
-        <TextField label="Details" fullWidth multiline rows={4} value={product?.details || ""} onChange={(e) => setProduct({ ...product, details: e.target.value })} margin="normal" />
+        <div className="mt-4">
+          <h3 className="text-lg font-bold">Details</h3>
+          <JoditEditor
+            ref={editorRef}
+            value={product?.details || ""}
+            onChange={(newContent) => setProduct({ ...product, details: newContent })}
+            config={{
+              readonly: false,
+              height: 400,
+              uploader: {
+                insertImageAsBase64URI: true,
+              },
+            }}
+          />
+        </div>
 
         <div className="mt-4">
           {previewImage && <img src={previewImage} alt="Preview" className="max-h-32 object-contain mb-4" />}

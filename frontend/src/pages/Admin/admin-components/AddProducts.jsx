@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createProduct } from '../../../api/products';
 import { toast } from 'react-toastify';
 import { Button, Input, Box, Typography } from '@mui/material';
+import  JoditEditor  from 'jodit-react';
 
 const AddProducts = () => {
+  const editor = useRef(null);
   const [productData, setProductData] = useState({
     name: '',
     description: '',
@@ -72,6 +74,11 @@ const AddProducts = () => {
       [type]: productData[type].filter((item) => item !== tag)
     });
   };
+
+  const handleDetailsChange = (newContent) => {
+    setProductData({ ...productData, details: newContent });
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -352,13 +359,18 @@ const AddProducts = () => {
               </div>
               <div>
                 <label className="block mb-1">Details</label>
-                <textarea
-                  name="details"
+                <JoditEditor
+                  ref={editor}
                   value={productData.details}
-                  onChange={handleInputChange}
-                  className="px-4 py-2 border w-full rounded-md"
-                  placeholder="Enter product details"
-                ></textarea>
+                  onChange={handleDetailsChange}
+                  config={{
+                    readonly: false, // All editing allowed
+                    height: 300, // Height of the editor
+                    toolbarSticky: false,
+                    toolbarButtonSize: 'middle'
+                  }}
+                  className="border rounded-md"
+                />
               </div>
               <div className=''>
               <div>

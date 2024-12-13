@@ -200,6 +200,7 @@ const ProductDetail = () => {
             <p className="text-sm text-gray-500">Material: {product.specifications?.material}</p>
             <p className="text-sm text-gray-500">Other: {product.specifications?.other}</p>
           </div>
+          
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Tags:</h3>
             <div className="flex flex-wrap gap-2">
@@ -234,6 +235,10 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <div className="product-details">
+            <h2>Product Details</h2>
+            <div dangerouslySetInnerHTML={{ __html: product.details }}></div>
+          </div>
       <div className="mt-12">
       <h2 className="text-2xl font-semibold mb-4">Reviews: {product.reviews.length}</h2>
       {product.reviews.length > 0 ? (
@@ -271,6 +276,7 @@ const ProductDetail = () => {
         ) : (
           <p className="text-gray-500">No reviews yet.</p>
         )}
+        
       <Modal open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
         <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
           <h2 className="text-xl font-semibold mb-4">Confirm Deletion</h2>
