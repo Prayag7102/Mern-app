@@ -362,7 +362,7 @@ const AddProducts = () => {
                 <JoditEditor
                   ref={editor}
                   value={productData.details}
-                  onChange={handleDetailsChange}
+                  onBlur={handleDetailsChange}
                   config={{
                     readonly: false, // All editing allowed
                     height: 300, // Height of the editor

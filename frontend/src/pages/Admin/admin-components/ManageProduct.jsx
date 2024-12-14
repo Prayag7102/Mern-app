@@ -124,7 +124,7 @@ const ManageProduct = () => {
           onClose={() => setEditModalOpen(false)}
           product={selectedProduct}
           setProduct={setSelectedProduct}
-          onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast)} 
+          onSave={() => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast )} 
         />
         <div className="mt-5" >
           <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>

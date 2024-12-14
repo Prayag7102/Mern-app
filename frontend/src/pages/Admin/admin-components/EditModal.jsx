@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { Autocomplete } from "@mui/material";
 import  JoditEditor  from "jodit-react";
 
-const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
+const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
   const [previewImage, setPreviewImage] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -24,12 +24,12 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const featuresOptions = ["S Pen", "Fast Charging", "Waterproof", "Wireless Charging"];
 
   useEffect(() => {
-    if (product?.image) {
+    if (product?.image && typeof product.image === "string") {
       setPreviewImage(`http://localhost:5000/uploads/${product.image}`);
     } else if (product?.image instanceof File) {
       setPreviewImage(URL.createObjectURL(product.image));
     }
-
+  
     setSelectedCategories(product?.categories || []);
     setSelectedTags(product?.tags || []);
     setSelectedColors(product?.colors || []);
@@ -40,8 +40,8 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProduct({ ...product, image: file });
-      setPreviewImage(URL.createObjectURL(file));
+      setProduct({ ...product, image: file }); // Save the file object directly
+      setPreviewImage(URL.createObjectURL(file)); // Preview the image
     }
   };
 
@@ -117,7 +117,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
           <JoditEditor
             ref={editorRef}
             value={product?.details || ""}
-            onChange={(newContent) => setProduct({ ...product, details: newContent })}
+            onBlur={(newContent) => setProduct({ ...product, details: newContent })}
             config={{
               readonly: false,
               height: 400,

@@ -90,29 +90,33 @@ const deleteProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const updates = req.body;
-
-  let image = null;
-  let otherImages = [];
-
-  if (req.file) {
-    image = req.file.filename;
-    updates.image = image;
-  }
-
-  if (req.files && req.files.length > 0) {
-    otherImages = req.files.map(file => file.filename);
-    updates.otherImages = otherImages;
-  }
+  const updates = { ...req.body };
 
   try {
-    const product = await Product.findByIdAndUpdate(id, updates, { new: true });
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: "Invalid product ID format." });
     }
-    res.json(product);
+
+    if (req.files && req.files.image) {
+      const image = req.files.image[0].filename;
+      updates.image = `${image}`;
+    }
+
+    if (req.files && req.files.otherImages) {
+      const otherImages = req.files.otherImages.map((file) => `/uploads/${file.filename}`);
+      updates.otherImages = otherImages;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    res.status(200).json(updatedProduct);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("Error updating product:", error);
+    res.status(500).json({ message: "Failed to update product.", error: error.message });
   }
 };
 
