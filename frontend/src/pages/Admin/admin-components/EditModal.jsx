@@ -117,12 +117,17 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
           <JoditEditor
             ref={editorRef}
             value={product?.details || ""}
-            onBlur={(newContent) => setProduct({ ...product, details: newContent })}
+            onBlur={handleEditorChange}
             config={{
               readonly: false,
               height: 400,
               uploader: {
                 insertImageAsBase64URI: true,
+              },
+              paste: {
+                cleanPasted: false,
+                keepStyles: true, 
+                allow: true, 
               },
             }}
           />
