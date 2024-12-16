@@ -50,7 +50,6 @@ const ProductDetail = () => {
   }, [id]);
 
   useEffect(() => {
-    // GSAP ScrollTrigger Animation
     gsap.from(".product-details h2", {
       opacity: 0,
       y: 50,
