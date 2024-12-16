@@ -28,7 +28,7 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
     const updatedProductData = {
       ...selectedProduct,
       image: imageUrl,
-      reviews: undefined, // Ensure reviews are not included in the update payload
+      reviews: undefined, 
       rating: undefined
     };
 
