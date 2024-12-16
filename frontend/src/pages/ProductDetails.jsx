@@ -20,6 +20,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
+import "../assets/stylesheets/responsive.css"
+import Loading from '../components/LoaderSpinner'
 
 gsap.registerPlugin(ScrollTrigger); // Register ScrollTrigger plugin
 
@@ -53,7 +55,7 @@ const ProductDetail = () => {
     gsap.from(".product-details h2", {
       opacity: 0,
       y: 50,
-      duration: 1,
+      duration: 1.5,
       scrollTrigger: {
         trigger: ".product-details",
         start: "top bottom",
@@ -65,7 +67,7 @@ const ProductDetail = () => {
     gsap.from(".product-description", {
       opacity: 0,
       y: 100,
-      duration: 1,
+      duration: 1.5,
       scrollTrigger: {
         trigger: ".product-description",
         start: "top bottom",
@@ -132,7 +134,7 @@ const ProductDetail = () => {
       const updatedProduct = await axiosInstance.get(`/products/${product._id}`);
       setProduct(updatedProduct.data);
     } catch (error) {
-      console.error("Error editing review:", error);
+      toast.error("Error editing review:", error);
     }
   };
 
@@ -152,16 +154,16 @@ const ProductDetail = () => {
       const updatedProduct = await axiosInstance.get(`/products/${product._id}`);
       setProduct(updatedProduct.data);
     } catch (error) {
-      console.error("Error deleting review:", error);
+      toast.error("Error deleting review:", error);
     }
   };
 
-  if (!product) return <div className="flex justify-center py-20">Loading...</div>;
+  if (!product) return <Loading />;
 
   return (
     <div className="container mx-auto p-6">
       <motion.div
-        className="grid lg:grid-cols-2 gap-8"
+        className="grid grid_none lg:grid-cols-2 gap-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
