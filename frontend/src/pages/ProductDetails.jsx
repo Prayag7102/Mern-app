@@ -20,7 +20,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "swiper/css/zoom";
-import "../assets/stylesheets/responsive.css"
 import Loading from '../components/LoaderSpinner'
 
 gsap.registerPlugin(ScrollTrigger); // Register ScrollTrigger plugin
@@ -161,9 +160,9 @@ const ProductDetail = () => {
   if (!product) return <Loading />;
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto lg:p-6 xs:p-0">
       <motion.div
-        className="grid grid_none lg:grid-cols-2 gap-8"
+        className="lg:grid sm:block xs:block lg:grid-cols-2 gap-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -313,8 +312,8 @@ const ProductDetail = () => {
         </div>
       </motion.div>
 
-      <div className="product-details">
-        <h2>Product Details</h2>
+      <div className="product-details mt-2">
+        <h2 className="mb-2 text-center text-2xl">Product Details</h2>
         <div dangerouslySetInnerHTML={{ __html: product.details }}></div>
       </div>
 
