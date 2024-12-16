@@ -107,18 +107,21 @@ const updateProduct = async (req, res) => {
       updates.otherImages = otherImages;
     }
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
-
-    if (!updatedProduct) {
+    const existingProduct = await Product.findById(id);
+    if (!existingProduct) {
       return res.status(404).json({ message: "Product not found." });
     }
 
+    updates.reviews = existingProduct.reviews;
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
+
     res.status(200).json(updatedProduct);
   } catch (error) {
-    console.error("Error updating product:", error);
     res.status(500).json({ message: "Failed to update product.", error: error.message });
   }
 };
+
 
 const addReview = async (req, res) => {
   const { id } = req.params; // Product ID
