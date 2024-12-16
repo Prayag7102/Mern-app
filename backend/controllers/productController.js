@@ -113,6 +113,7 @@ const updateProduct = async (req, res) => {
     }
 
     updates.reviews = existingProduct.reviews;
+    updates.rating = existingProduct.rating;
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
 
@@ -124,8 +125,8 @@ const updateProduct = async (req, res) => {
 
 
 const addReview = async (req, res) => {
-  const { id } = req.params; // Product ID
-  const { rating, comment } = req.body; // Get rating and comment from request body
+  const { id } = req.params; 
+  const { rating, comment } = req.body; 
 
   try {
     const product = await Product.findById(id);
@@ -134,7 +135,7 @@ const addReview = async (req, res) => {
     }
 
     const review = {
-      user: req.user.id, // Use the user ID from the token
+      user: req.user.id,
       rating,
       comment,
       date: new Date(),
@@ -155,7 +156,7 @@ const addReview = async (req, res) => {
 };
 
 const editReview = async (req, res) => {
-  const { id, reviewId } = req.params; // Product ID and Review ID
+  const { id, reviewId } = req.params; 
   const { rating, comment } = req.body;
 
   try {

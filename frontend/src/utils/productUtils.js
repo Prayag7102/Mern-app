@@ -29,6 +29,7 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
       ...selectedProduct,
       image: imageUrl,
       reviews: undefined, // Ensure reviews are not included in the update payload
+      rating: undefined
     };
 
     const updateResponse = await fetch(

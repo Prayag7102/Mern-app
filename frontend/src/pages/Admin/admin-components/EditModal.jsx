@@ -40,8 +40,8 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProduct({ ...product, image: file }); // Save the file object directly
-      setPreviewImage(URL.createObjectURL(file)); // Preview the image
+      setProduct({ ...product, image: file }); 
+      setPreviewImage(URL.createObjectURL(file)); 
     }
   };
 
