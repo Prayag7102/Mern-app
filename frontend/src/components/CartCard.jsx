@@ -9,11 +9,12 @@ const CartCard = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const data = await getCartItems();  
-        setCartItems(data);
-        console.log(data);
+        const data = await getCartItems();
+        const validItems = data.filter(item => item.product && item.product._id);
+        setCartItems(validItems);
+        console.log(validItems);
       } catch (error) {
-        toast.error('Error fetching cart:', error);
+        toast.error('Error fetching cart.', { theme: 'dark', draggable: true });
       }
     };
 
@@ -23,25 +24,19 @@ const CartCard = () => {
   const handleRemoveItem = async (productId) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      toast.warning('You must be logged in to remove products from your cart.',{
-        theme:'dark',
-        draggable:true
+      toast.warning('You must be logged in to remove products from your cart.', {
+        theme: 'dark',
+        draggable: true
       });
       return;
     }
 
     try {
-      const response = await removeFromCart(productId, token);
+      await removeFromCart(productId, token);
       setCartItems(cartItems.filter(item => item.product._id !== productId));
-      toast.success('Product removed from cart!',{
-        theme:'dark',
-        draggable:true
-      });
+      toast.success('Product removed from cart!', { theme: 'dark', draggable: true });
     } catch (error) {
-      toast.error('Failed to remove product from cart.',{
-        theme:'dark',
-        draggable:true
-      });
+      toast.error('Failed to remove product from cart.', { theme: 'dark', draggable: true });
     }
   };
 
@@ -57,16 +52,16 @@ const CartCard = () => {
 
     const updatedCartItems = [...cartItems];
     const itemIndex = updatedCartItems.findIndex(item => item.product._id === productId);
-    
-    if (itemIndex === -1) return;  
+
+    if (itemIndex === -1) return;
 
     const newQuantity = updatedCartItems[itemIndex].quantity + change;
-    if (newQuantity < 1) return; 
+    if (newQuantity < 1) return;
 
     updatedCartItems[itemIndex].quantity = newQuantity;
 
     try {
-      const response = await updateCartItem(productId, newQuantity, token);
+      await updateCartItem(productId, newQuantity, token);
       setCartItems(updatedCartItems);
     } catch (error) {
       toast.error('Failed to update product quantity.', {
@@ -75,7 +70,6 @@ const CartCard = () => {
       });
     }
   };
-
 
   if (cartItems.length === 0) {
     return <p>Your cart is empty.</p>;
@@ -90,7 +84,7 @@ const CartCard = () => {
         >
           <Link to={`/products/${item.product._id}`}>
             <img
-            src={item.product.image ? `http://localhost:5000/uploads/${item.product.image}` : '/path/to/default-image.jpg'}
+              src={item.product.image ? `http://localhost:5000/uploads/${item.product.image}` : '/path/to/default-image.jpg'}
               alt={item.product.name}
               className="w-full rounded-lg sm:w-40"
             />
@@ -103,8 +97,9 @@ const CartCard = () => {
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">
                 <button
-                 onClick={() => handleQuantityChange(item.product._id, -1)}
-                 className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                  onClick={() => handleQuantityChange(item.product._id, -1)}
+                  className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                >
                   -
                 </button>
                 <input
@@ -115,21 +110,23 @@ const CartCard = () => {
                   readOnly
                 />
                 <button
-                  onClick={() => handleQuantityChange(item.product._id, 1)} 
-                className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">
+                  onClick={() => handleQuantityChange(item.product._id, 1)}
+                  className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                >
                   +
                 </button>
               </div>
               <div className="flex items-center space-x-4">
-               <div>
-                <p className="text-sm">Rs. {item.product.discountedPrice}</p>
-                <p className='text-lg mt-3'>Total: Rs.{item.product.discountedPrice * item.quantity}</p>
-               </div>
+                <div>
+                  <p className="text-sm">Rs. {item.product.discountedPrice}</p>
+                  <p className="text-lg mt-3">Total: Rs.{item.product.discountedPrice * item.quantity}</p>
+                </div>
                 <div>
                   <button
-                   onClick={() => handleRemoveItem(item.product._id)}
-                   className='remove_btn'>
-                      <svg
+                    onClick={() => handleRemoveItem(item.product._id)}
+                    className="remove_btn"
+                  >
+                    <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
