@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { getCartItems } from '../api/cart';
+
 
 const Checkout = () => {
   const location = useLocation();
-  const { cartItems, subtotal, shippingCost, total } = location.state || {}; // Get cart data from navigation state
+  const { cartItems, subtotal, shippingCost, total } = location.state || {}; 
 
-  const [userCart, setUserCart] = useState(cartItems); // Initialize with the data passed from Cart
+  const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,6 +17,8 @@ const Checkout = () => {
       getCartItems()
         .then((items) => {
           setUserCart(items);
+          console.log(items);
+          
         })
         .catch((error) => {
           console.error('Error fetching cart items:', error);
@@ -34,6 +37,7 @@ const Checkout = () => {
 
   return (
     <div className="h-auto bg-gray-100 lg:p-20 md:p-12 sm:p-5 xxs:p-3">
+      <Link to="/profile/cart" className='bg-blue-400 px-3 py-1 rounded text-white font-bold'>Back To Cart</Link>
       <h1 className="mb-10 text-center text-2xl font-bold">Checkout</h1>
       <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
         <div className="rounded-lg md:w-2/3">
