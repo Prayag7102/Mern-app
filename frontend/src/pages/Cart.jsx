@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CartCard from '../components/CartCard';
 
 const Cart = () => {
   const [subtotal, setSubtotal] = useState(0); // Maintain subtotal in the parent
+  const [cartItems, setCartItems] = useState([]); // Store cart items
   const shippingCost = 50; // Fixed shipping cost
   const total = subtotal + shippingCost; // Total = Subtotal + Shipping
 
-  // Callback function to update the subtotal
-  const updateSubtotal = (newSubtotal) => {
+  const navigate = useNavigate();
+
+  // Callback function to update the subtotal and cart items
+  const updateSubtotal = (newSubtotal, updatedCartItems) => {
     setSubtotal(newSubtotal);
+    setCartItems(updatedCartItems);
+  };
+
+  // Handle Checkout button click
+  const handleCheckout = () => {
+    // Redirect to checkout page with cart data
+    navigate('/profile/checkout', { state: { cartItems, subtotal, shippingCost, total } });
   };
 
   return (
@@ -36,7 +47,10 @@ const Cart = () => {
               <p className="text-sm text-gray-700">including GST</p>
             </div>
           </div>
-          <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
+          <button
+            onClick={handleCheckout}
+            className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600"
+          >
             Check out
           </button>
         </div>
