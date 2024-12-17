@@ -13,8 +13,8 @@ import { CiEdit, CiCircleRemove } from "react-icons/ci";
 import { decodeToken, deleteReview, editReview } from "../api/review";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Zoom, Navigation, Pagination, Autoplay } from "swiper/modules";
-import { motion } from "framer-motion"; // Import Framer Motion
-import gsap from "gsap"; // Import GSAP
+import { motion } from "framer-motion";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger"; 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -22,7 +22,7 @@ import "swiper/css/navigation";
 import "swiper/css/zoom";
 import Loading from '../components/LoaderSpinner'
 
-gsap.registerPlugin(ScrollTrigger); // Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger); 
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -142,7 +142,7 @@ const ProductDetail = () => {
       >
         <div className="flex justify-center">
         <Swiper
-            loop={product.otherImages.length > 1} // Enable loop only if more than 1 slide
+            loop={product.otherImages.length > 1} 
             autoplay={{
               delay: 2500,
               disableOnInteraction: false,
@@ -350,7 +350,6 @@ const ProductDetail = () => {
           </div>
         </Modal>
 
-        {/* Add Review Modal */}
         <Modal open={openReviewModal} onClose={() => setOpenReviewModal(false)}>
           <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
             <h2 className="text-xl font-semibold mb-4">Add a Review</h2>
@@ -375,7 +374,6 @@ const ProductDetail = () => {
           </div>
         </Modal>
 
-        {/* Edit Review Modal */}
         {editModalOpen && (
           <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
             <div className="bg-white p-6 rounded-lg max-w-md mx-auto mt-24 shadow-lg">
