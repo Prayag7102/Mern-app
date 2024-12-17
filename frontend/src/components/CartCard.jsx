@@ -3,7 +3,7 @@ import { getCartItems, removeFromCart, updateCartItem } from '../api/cart';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-const CartCard = () => {
+const CartCard = ({ updateSubtotal }) => {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
@@ -12,7 +12,6 @@ const CartCard = () => {
         const data = await getCartItems();
         const validItems = data.filter(item => item.product && item.product._id);
         setCartItems(validItems);
-        console.log(validItems);
       } catch (error) {
         toast.error('Error fetching cart.', { theme: 'dark', draggable: true });
       }
@@ -20,7 +19,6 @@ const CartCard = () => {
 
     fetchCart();
   }, []);
-
   const handleRemoveItem = async (productId) => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -71,6 +69,13 @@ const CartCard = () => {
     }
   };
 
+  useEffect(() => {
+    const subtotal = cartItems.reduce((total, item) => {
+      return total + item.product.discountedPrice * item.quantity;
+    }, 0);
+    updateSubtotal(subtotal); 
+  }, [cartItems, updateSubtotal]);
+  
   if (cartItems.length === 0) {
     return <p>Your cart is empty.</p>;
   }
@@ -141,8 +146,8 @@ const CartCard = () => {
                       />
                     </svg>
                   </button>
+                  </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
