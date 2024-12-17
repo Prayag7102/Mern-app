@@ -46,8 +46,6 @@ const addProduct = async (req, res) => {
   if (!image) {
     return res.status(400).json({ message: "Main image is required." });
   }
-
-  // Extract otherImages filenames
   const otherImages = req.files?.otherImages?.map((file) => file.filename) || [];
 
   try {
@@ -58,7 +56,7 @@ const addProduct = async (req, res) => {
       discountedPrice,
       stock,
       image,
-      otherImages, // Save filenames in the array
+      otherImages,
       categories,
       tags,
       brand,

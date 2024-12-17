@@ -312,7 +312,7 @@ const ProductDetail = () => {
       </motion.div>
 
       <div className="product-details mt-2">
-        <h2 className="mb-2 text-center text-2xl">Product Details</h2>
+        <h2 className="mb-2  text-2xl">Product Details</h2>
         <div dangerouslySetInnerHTML={{ __html: product.details }}></div>
       </div>
 
