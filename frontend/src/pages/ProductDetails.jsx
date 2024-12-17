@@ -36,12 +36,16 @@ const ProductDetail = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await axiosInstance.get(`/products/${id}`);
         setProduct(response.data);
+        setSelectedColor(response.data.colors[0]); // default to the first color
+        setSelectedSize(response.data.sizes[0]);
       } catch (error) {
         toast.error("Error fetching product details.");
       }
@@ -88,6 +92,13 @@ const ProductDetail = () => {
     setEditRating(review.rating);
     setEditComment(review.comment);
     setEditModalOpen(true);
+  };
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+  };
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
   };
 
   const handleEditReview = async () => {
@@ -221,12 +232,39 @@ const ProductDetail = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-2">Sizes:</h3>
-            <ul className="list-disc list-inside text-gray-600">
-              {product.sizes.map((size, idx) => (
-                <li key={idx}>{size}</li>
+          <h3 className="font-semibold text-lg mb-2">Sizes:</h3>
+          <div className="flex flex-wrap space-x-2">
+            {product.sizes.map((size, idx) => (
+              <button
+                key={idx}
+                className={`px-4 py-2 rounded-md border-2 text-sm ${
+                  selectedSize === size
+                    ? 'border-blue-500 bg-blue-500 text-white'
+                    : 'border-gray-300 bg-white text-gray-700'
+                }`}
+                onClick={() => handleSizeSelect(size)}
+                aria-label={`Select size ${size}`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg mb-2">Colors:</h3>
+            <div className="flex flex-wrap space-x-2">
+              {product.colors.map((color, idx) => (
+                <button
+                  key={idx}
+                  className={`w-8 h-8 rounded-full border-2 ${
+                    selectedColor === color ? 'border-blue-500' : 'border-gray-300'
+                  }`}
+                  style={{ backgroundColor: color }}
+                  onClick={() => handleColorSelect(color)}
+                  aria-label={`Select ${color}`}
+                />
               ))}
-            </ul>
+            </div>
           </div>
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Specifications:</h3>

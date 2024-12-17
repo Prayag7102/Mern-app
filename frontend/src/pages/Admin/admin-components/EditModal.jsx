@@ -3,9 +3,9 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Autocomplete } from "@mui/material";
-import  JoditEditor  from "jodit-react";
+import JoditEditor from "jodit-react";
 
-const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
+const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [previewImage, setPreviewImage] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -29,7 +29,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
     } else if (product?.image instanceof File) {
       setPreviewImage(URL.createObjectURL(product.image));
     }
-  
+
     setSelectedCategories(product?.categories || []);
     setSelectedTags(product?.tags || []);
     setSelectedColors(product?.colors || []);
@@ -40,8 +40,8 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProduct({ ...product, image: file }); 
-      setPreviewImage(URL.createObjectURL(file)); 
+      setProduct({ ...product, image: file });
+      setPreviewImage(URL.createObjectURL(file));
     }
   };
 
@@ -97,8 +97,29 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
           <div key={type} className="mt-4">
             <Autocomplete
               multiple
-              options={type === "categories" ? categoriesOptions : type === "tags" ? tagsOptions : type === "colors" ? colorsOptions : type === "sizes" ? sizesOptions : featuresOptions}
-              value={type === "categories" ? selectedCategories : type === "tags" ? selectedTags : type === "colors" ? selectedColors : type === "sizes" ? selectedSizes : selectedFeatures}
+              freeSolo // Allow typing custom values
+              options={
+                type === "categories"
+                  ? categoriesOptions
+                  : type === "tags"
+                  ? tagsOptions
+                  : type === "colors"
+                  ? colorsOptions
+                  : type === "sizes"
+                  ? sizesOptions
+                  : featuresOptions
+              }
+              value={
+                type === "categories"
+                  ? selectedCategories
+                  : type === "tags"
+                  ? selectedTags
+                  : type === "colors"
+                  ? selectedColors
+                  : type === "sizes"
+                  ? selectedSizes
+                  : selectedFeatures
+              }
               onChange={(event, newValue) => handleMultiChange(event, newValue, type)}
               renderInput={(params) => <TextField {...params} label={type.charAt(0).toUpperCase() + type.slice(1)} margin="normal" />}
             />
@@ -126,8 +147,8 @@ const EditModal = ({ open, onClose, product, setProduct, onSave, }) => {
               },
               paste: {
                 cleanPasted: false,
-                keepStyles: true, 
-                allow: true, 
+                keepStyles: true,
+                allow: true,
               },
             }}
           />
