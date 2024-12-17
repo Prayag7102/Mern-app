@@ -4,7 +4,7 @@ const Checkout = require('../models/checkoutmodel');
 // Create a new checkout
 const createCheckout = async (req, res) => {
   try {
-    const userId = req.user?.id; // User ID from the decoded token
+    const userId = req.user?.id; 
     if (!userId) {
       return res.status(401).json({ message: "User not authenticated." });
     }

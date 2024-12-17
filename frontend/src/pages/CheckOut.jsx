@@ -11,7 +11,6 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // If no cart data is passed, fetch cart items from API
     if (!cartItems || cartItems.length === 0) {
       setLoading(true);
       getCartItems()
