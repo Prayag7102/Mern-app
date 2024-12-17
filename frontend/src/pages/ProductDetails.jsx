@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Zoom, Navigation, Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion"; // Import Framer Motion
 import gsap from "gsap"; // Import GSAP
-import { ScrollTrigger } from "gsap/ScrollTrigger"; // Import ScrollTrigger from GSAP
+import { ScrollTrigger } from "gsap/ScrollTrigger"; 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -48,32 +48,6 @@ const ProductDetail = () => {
     };
     fetchProduct();
   }, [id]);
-
-  useEffect(() => {
-    gsap.from(".product-details h2", {
-      opacity: 0,
-      y: 50,
-      duration: 1.5,
-      scrollTrigger: {
-        trigger: ".product-details",
-        start: "top bottom",
-        end: "top top",
-        scrub: true,
-      },
-    });
-
-    gsap.from(".product-description", {
-      opacity: 0,
-      y: 100,
-      duration: 1.5,
-      scrollTrigger: {
-        trigger: ".product-description",
-        start: "top bottom",
-        end: "top top",
-        scrub: true,
-      },
-    });
-  }, []);
 
   const handleAddToCart = async () => {
     if (!token) {
@@ -167,8 +141,8 @@ const ProductDetail = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="flex justify-center">
-          <Swiper
-            loop={true}
+        <Swiper
+            loop={product.otherImages.length > 1} // Enable loop only if more than 1 slide
             autoplay={{
               delay: 2500,
               disableOnInteraction: false,
@@ -189,17 +163,16 @@ const ProductDetail = () => {
                 className="rounded-lg shadow-md object-contain"
               />
             </SwiperSlide>
-            {product.otherImages.length > 0 &&
-              product.otherImages.map((img, index) => (
-                <SwiperSlide key={index}>
-                  <img
-                    src={`http://localhost:5000/uploads/${img}`}
-                    alt={product.name}
-                    className="max-w-full object-cover"
-                  />
-                </SwiperSlide>
-              ))}
-          </Swiper>
+            {product.otherImages.map((img, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={`http://localhost:5000/uploads/${img}`}
+                  alt={product.name}
+                  className="max-w-full object-cover"
+                />
+              </SwiperSlide>
+            ))}
+        </Swiper>
         </div>
         <div className="space-y-6">
           <h1 className="text-4xl font-bold text-gray-800">{product.name}</h1>
@@ -311,8 +284,8 @@ const ProductDetail = () => {
         </div>
       </motion.div>
 
-      <div className="product-details mt-2">
-        <h2 className="mb-2  text-2xl">Product Details</h2>
+      <div className=" mt-2">
+        <h2 className="mb-2  text-2xl product-details">Product Details</h2>
         <div dangerouslySetInnerHTML={{ __html: product.details }}></div>
       </div>
 
