@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getCartItems } from '../api/cart';
+import { toast } from 'react-toastify'
+import Loading from '../components/LoaderSpinner'
 
 
 const Checkout = () => {
@@ -16,18 +18,16 @@ const Checkout = () => {
       getCartItems()
         .then((items) => {
           setUserCart(items);
-          console.log(items);
-          
         })
         .catch((error) => {
-          console.error('Error fetching cart items:', error);
+          toast.error('Error fetching cart items:', error);
         })
         .finally(() => setLoading(false));
     }
   }, [cartItems]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading/>;
   }
 
   if (!userCart || userCart.length === 0) {
