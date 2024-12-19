@@ -33,20 +33,28 @@ export default function ProfilePage() {
         }
 
         const response = await axiosInstance.get('/checkout/orders');
-        if (response.data.checkouts || null) { 
-          setOrders(response.data.checkouts || null);
+        if (response.data.checkouts && response.data.checkouts.length > 0) {
+          setOrders(response.data.checkouts);
+        } else {
+          setOrders([]);
+          toast.info("No orders");
         }
       } catch (error) {
-        toast.error(error.response?.data?.error || 'Failed to fetch order details');
+        if (error.response?.status === 404) {
+          setOrders([]);
+          toast.info("No orders found");
+        } else {
+          console.error("Error fetching orders:", error);
+          toast.error("Error fetching orders");
+        }
       } finally {
         setLoading(false);
       }
     };
-
-    if (activeTab === 'orders') {
+    if (activeTab === 'orders' && orders.length === 0) {
       fetchOrderDetails();
     }
-  }, [activeTab, navigate]);
+  }, [activeTab, navigate, orders.length]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
