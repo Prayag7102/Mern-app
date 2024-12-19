@@ -98,6 +98,9 @@ const CartCard = ({ updateSubtotal }) => {
             <div className="mt-5 sm:mt-0">
               <h2 className="text-lg font-bold text-gray-900">{item.product.name}</h2>
               <p className="mt-1 text-xs text-gray-700">{item.product.description}</p>
+              <p className="mt-1 font-bold text-xs text-blue-900">{item.color}</p>
+              <p className="mt-1 font-bold text-xs text-blue-900">{item.size}</p>
+
             </div>
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">

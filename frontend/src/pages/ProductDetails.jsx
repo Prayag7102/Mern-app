@@ -38,6 +38,7 @@ const ProductDetail = () => {
   const [editComment, setEditComment] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -58,8 +59,21 @@ const ProductDetail = () => {
       toast.error("You need to be logged in to add items to the cart.");
       return;
     }
+
+    if (!selectedColor || !selectedSize) {
+      toast.error("Please select both color and size");
+      return;
+    }
+
     try {
-      await addToCart(product._id, 1);
+      const cartItem = {
+        productId: product._id,
+        quantity: quantity,
+        color: selectedColor,
+        size: selectedSize
+      };
+
+      await addToCart(cartItem);
       toast.success("Product added to cart successfully!", { theme: "dark" });
     } catch (error) {
       toast.error("Failed to add product to cart.");
@@ -97,8 +111,16 @@ const ProductDetail = () => {
   const handleColorSelect = (color) => {
     setSelectedColor(color);
   };
+  
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value > 0 && value <= product.stock) {
+      setQuantity(value);
+    }
   };
 
   const handleEditReview = async () => {
@@ -266,6 +288,19 @@ const ProductDetail = () => {
               ))}
             </div>
           </div>
+
+          <div>
+            <h3 className="font-semibold text-lg mb-2">Quantity:</h3>
+            <input
+              type="number"
+              min="1"
+              max={product.stock}
+              value={quantity}
+              onChange={handleQuantityChange}
+              className="w-20 px-2 py-1 border rounded"
+            />
+          </div>
+
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Specifications:</h3>
             <p className="text-sm text-gray-500">Weight: {product.specifications?.weight}</p>
@@ -306,6 +341,7 @@ const ProductDetail = () => {
                 onClick={handleAddToCart}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                disabled={!selectedColor || !selectedSize}
               >
                 <BsCart className="text-2xl" /> Add to Cart
               </motion.button>

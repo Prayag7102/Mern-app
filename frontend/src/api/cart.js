@@ -20,25 +20,32 @@ export const getCartItems = async () => {
 };
 
 
-export const addToCart = async (productId, quantity) => {
+export const addToCart = async (cartItem) => {
     const token = localStorage.getItem('token');
     if (!token) {
         throw new Error('You must be logged in to add products to your cart!');
     }
 
     try {
-        const response = await axiosInstance.post('/cart/cart', { productId,quantity,},
-           {
-              headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-             },
+        const response = await axiosInstance.post('/cart/cart', 
+            cartItem,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
             }
         );
 
         return response.data;
     } catch (error) {
-        throw error.response ? error.response.data : error.message;
+        if (error.response) {
+            throw error.response.data;
+        } else if (error.request) {
+            throw new Error('No response received from server');
+        } else {
+            throw new Error('Error setting up request');
+        }
     }
 };
 
@@ -59,11 +66,15 @@ export const removeFromCart = async (productId, token) => {
     }
   };
   
-  export const updateCartItem = async (productId, quantity, token) => {
+  export const updateCartItem = async (productId, quantity, color, size, token) => {
     try {
       const response = await axiosInstance.patch(
         `/cart/update/${productId}`,
-        { quantity },
+        { 
+          quantity,
+          color,
+          size 
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
