@@ -10,6 +10,8 @@ const CartCard = ({ updateSubtotal }) => {
     const fetchCart = async () => {
       try {
         const data = await getCartItems();
+        console.log(data);
+        
         const validItems = data.filter(item => item.product && item.product._id);
         setCartItems(validItems);
       } catch (error) {
@@ -19,7 +21,8 @@ const CartCard = ({ updateSubtotal }) => {
 
     fetchCart();
   }, []);
-  const handleRemoveItem = async (productId) => {
+
+  const handleRemoveItem = async (cartItemId, productId) => {
     const token = localStorage.getItem('token');
     if (!token) {
       toast.warning('You must be logged in to remove products from your cart.', {
@@ -30,15 +33,15 @@ const CartCard = ({ updateSubtotal }) => {
     }
 
     try {
-      await removeFromCart(productId, token);
-      setCartItems(cartItems.filter(item => item.product._id !== productId));
+      await removeFromCart(cartItemId, productId, token);
+      setCartItems(cartItems.filter(item => item._id !== cartItemId));
       toast.success('Product removed from cart!', { theme: 'dark', draggable: true });
     } catch (error) {
       toast.error('Failed to remove product from cart.', { theme: 'dark', draggable: true });
     }
   };
 
-  const handleQuantityChange = async (productId, change) => {
+  const handleQuantityChange = async (cartItemId, productId, change) => {
     const token = localStorage.getItem('token');
     if (!token) {
       toast.warning('You must be logged in to change the quantity.', {
@@ -49,7 +52,7 @@ const CartCard = ({ updateSubtotal }) => {
     }
 
     const updatedCartItems = [...cartItems];
-    const itemIndex = updatedCartItems.findIndex(item => item.product._id === productId);
+    const itemIndex = updatedCartItems.findIndex(item => item._id === cartItemId);
 
     if (itemIndex === -1) return;
 
@@ -59,7 +62,14 @@ const CartCard = ({ updateSubtotal }) => {
     updatedCartItems[itemIndex].quantity = newQuantity;
 
     try {
-      await updateCartItem(productId, newQuantity, token);
+      await updateCartItem(
+        cartItemId,
+        productId, 
+        newQuantity,
+        updatedCartItems[itemIndex].color,
+        updatedCartItems[itemIndex].size,
+        token
+      );
       setCartItems(updatedCartItems);
     } catch (error) {
       toast.error('Failed to update product quantity.', {
@@ -84,7 +94,7 @@ const CartCard = ({ updateSubtotal }) => {
     <div>
       {cartItems.map((item) => (
         <div
-          key={item.product._id}
+          key={item._id}
           className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
         >
           <Link to={`/products/${item.product._id}`}>
@@ -105,7 +115,7 @@ const CartCard = ({ updateSubtotal }) => {
             <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
               <div className="flex items-center border-gray-100">
                 <button
-                  onClick={() => handleQuantityChange(item.product._id, -1)}
+                  onClick={() => handleQuantityChange(item._id, item.product._id, -1)}
                   className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   -
@@ -118,7 +128,7 @@ const CartCard = ({ updateSubtotal }) => {
                   readOnly
                 />
                 <button
-                  onClick={() => handleQuantityChange(item.product._id, 1)}
+                  onClick={() => handleQuantityChange(item._id, item.product._id, 1)}
                   className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   +
@@ -131,7 +141,7 @@ const CartCard = ({ updateSubtotal }) => {
                 </div>
                 <div>
                   <button
-                    onClick={() => handleRemoveItem(item.product._id)}
+                    onClick={() => handleRemoveItem(item._id, item.product._id)}
                     className="remove_btn"
                   >
                     <svg

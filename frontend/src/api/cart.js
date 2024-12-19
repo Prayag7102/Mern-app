@@ -20,7 +20,7 @@ export const getCartItems = async () => {
 };
 
 
-export const addToCart = async (cartItem) => {
+export const addToCart = async (productId, quantity = 1, color, size) => {
     const token = localStorage.getItem('token');
     if (!token) {
         throw new Error('You must be logged in to add products to your cart!');
@@ -28,7 +28,12 @@ export const addToCart = async (cartItem) => {
 
     try {
         const response = await axiosInstance.post('/cart/cart', 
-            cartItem,
+            {
+                productId,
+                quantity,
+                color,
+                size
+            },
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -50,10 +55,10 @@ export const addToCart = async (cartItem) => {
 };
 
 
-export const removeFromCart = async (productId, token) => {
+export const removeFromCart = async (cartItemId, productId, token) => {
     try {
       const response = await axiosInstance.delete(
-        `/cart/remove/${productId}`,
+        `/cart/remove/${cartItemId}/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,10 +71,10 @@ export const removeFromCart = async (productId, token) => {
     }
   };
   
-  export const updateCartItem = async (productId, quantity, color, size, token) => {
+export const updateCartItem = async (cartItemId, productId, quantity, color, size, token) => {
     try {
       const response = await axiosInstance.patch(
-        `/cart/update/${productId}`,
+        `/cart/update/${cartItemId}/${productId}`,
         { 
           quantity,
           color,

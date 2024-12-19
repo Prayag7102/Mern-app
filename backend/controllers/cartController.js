@@ -60,8 +60,8 @@ const addToCart = async (req, res) => {
 };
 
 const removeFromCart = async (req, res) => {
-  const userId = req.user.id; 
-  const { productId } = req.params; 
+  const userId = req.user.id;
+  const { cartItemId, productId } = req.params;
 
   try {
     const cart = await Cart.findOne({ user: userId });
@@ -71,7 +71,8 @@ const removeFromCart = async (req, res) => {
     }
 
     const productIndex = cart.products.findIndex(
-      (item) => item.product.toString() === productId
+      (item) => item._id.toString() === cartItemId && 
+                item.product.toString() === productId
     );
 
     if (productIndex === -1) {
@@ -89,7 +90,7 @@ const removeFromCart = async (req, res) => {
 
 const updateCartItem = async (req, res) => {
   const userId = req.user.id;
-  const { productId } = req.params;
+  const { cartItemId, productId } = req.params;
   const { quantity, color, size } = req.body;
 
   try {
@@ -99,17 +100,20 @@ const updateCartItem = async (req, res) => {
       return res.status(404).json({ message: 'Cart not found.' });
     }
 
-    const productIndex = cart.products.findIndex(
-      (item) => item.product.toString() === productId
+    // Find cart item by both cartItemId and productId
+    const cartItemIndex = cart.products.findIndex(
+      (item) => item._id.toString() === cartItemId && 
+                item.product.toString() === productId
     );
 
-    if (productIndex === -1) {
-      return res.status(404).json({ message: 'Product not found in cart.' });
+    if (cartItemIndex === -1) {
+      return res.status(404).json({ message: 'Cart item not found.' });
     }
 
-    cart.products[productIndex].quantity = quantity;
-    if (color) cart.products[productIndex].color = color;
-    if (size) cart.products[productIndex].size = size;
+    // Update cart item fields
+    cart.products[cartItemIndex].quantity = quantity;
+    if (color) cart.products[cartItemIndex].color = color;
+    if (size) cart.products[cartItemIndex].size = size;
     
     await cart.save();
     const populatedCart = await Cart.findById(cart._id).populate('products.product');

@@ -66,17 +66,14 @@ const ProductDetail = () => {
     }
 
     try {
-      const cartItem = {
-        productId: product._id,
-        quantity: quantity,
-        color: selectedColor,
-        size: selectedSize
-      };
-
-      await addToCart(cartItem);
+      await addToCart(product._id, quantity, selectedColor, selectedSize);
       toast.success("Product added to cart successfully!", { theme: "dark" });
     } catch (error) {
-      toast.error("Failed to add product to cart.");
+      if (typeof error === 'string') {
+        toast.error(error);
+      } else {
+        toast.error("Failed to add product to cart.");
+      }
     }
   };
 
