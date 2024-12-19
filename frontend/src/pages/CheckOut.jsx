@@ -43,7 +43,7 @@ const Checkout = () => {
           <div>
             {userCart.map((item) => (
               <div
-                key={item.product._id}
+                key={item._id}
                 className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
               >
                 <img
@@ -55,8 +55,8 @@ const Checkout = () => {
                   <div className="mt-5 sm:mt-0">
                     <h2 className="text-lg font-bold text-gray-900">{item.product.name}</h2>
                     <p className="mt-1 text-xs text-gray-700">{item.product.description}</p>
-                    <p className="mt-1 text-xs font-bold text-blue-900">{item.color}</p>
-                    <p className="mt-1 text-xs font-bold text-blue-900">{item.size}</p>
+                    <p className="mt-1 text-xs f text-blue-900">{item.color}</p>
+                    <p className="mt-1 text-xs f text-blue-900">{item.size}</p>
                   </div>
                   <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                     <div className="flex items-center border-gray-100">
