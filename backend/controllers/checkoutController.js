@@ -51,16 +51,15 @@ const createCheckout = async (req, res) => {
 };
 // Get checkout details
 const getCheckoutById = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const checkout = await Checkout.findById(id).populate("userId").populate("items.productId");
-    if (!checkout) {
-      return res.status(404).json({ error: "Checkout not found" });
+    const userId = req.user.id;
+    const checkouts = await Checkout.find({ userId }).populate("products.productId");
+    if (!checkouts || checkouts.length === 0) {
+      return res.status(404).json({ error: "No orders found for this user" });
     }
-    res.status(200).json({ checkout });
+    res.status(200).json({ checkouts });
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve checkout details", details: error.message });
+    res.status(500).json({ error: "Failed to retrieve order details", details: error.message });
   }
 };
 

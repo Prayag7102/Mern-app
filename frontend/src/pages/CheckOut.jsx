@@ -1,16 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getCartItems } from '../api/cart';
 import { toast } from 'react-toastify'
 import Loading from '../components/LoaderSpinner'
+import { createCheckout } from '../api/Checkout';
 
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const { cartItems, subtotal, shippingCost, total } = location.state || {}; 
+  const { cartItems, subtotal, shippingCost, total } = location.state || {};
 
   const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [address, setAddress] = useState({
+    fullName: '',
+    phone: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    pinCode: '',
+  });
+  const [paymentMethod, setPaymentMethod] = useState('COD');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error('Please login to continue');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      // Decode token
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const decodedToken = JSON.parse(window.atob(base64));
+      
+      if (!decodedToken.id) {
+        toast.error('Invalid session. Please login again');
+        localStorage.removeItem('token');
+        navigate('/login');
+        return;
+      }
+
+      setUserId(decodedToken.id);
+    } catch (error) {
+      console.error('Token decode error:', error);
+      toast.error('Session error. Please login again');
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (!cartItems || cartItems.length === 0) {
@@ -25,6 +68,60 @@ const Checkout = () => {
         .finally(() => setLoading(false));
     }
   }, [cartItems]);
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!userId) {
+        toast.error('Please login to continue');
+        navigate('/login');
+        return;
+      }
+
+      setLoading(true);
+      
+      // Validation checks
+      if (!address.fullName || !address.phone || !address.addressLine1 || 
+          !address.city || !address.state || !address.pinCode) {
+        toast.error('Please fill all required fields');
+        return;
+      }
+
+      const checkoutData = {
+        userId: userId, // Using decoded userId
+        products: userCart.map(item => ({
+          productId: item.product._id,
+          quantity: item.quantity
+        })),
+        address,
+        paymentMethod,
+        totalPrice: total
+      };
+
+      const response = await createCheckout(checkoutData);
+      
+      // Verify if the response contains the correct user ID
+      if (response.checkout.userId !== userId) {
+        toast.error('User verification failed. Please try again');
+        return;
+      }
+
+      toast.success('Order placed successfully!');
+      navigate('/order-success', { state: { orderId: response.checkout._id } });
+    } catch (error) {
+      toast.error(error.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   if (loading) {
     return <Loading/>;
@@ -81,30 +178,86 @@ const Checkout = () => {
           </div>
           <hr className="my-6" />
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-bold mb-4">Shipping Address</h2>
-            <div className="space-y-4">
-              <div className="flex flex-col">
-                <label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name</label>
-                <input id="fullName" type="text" className="mt-2 p-3 border border-gray-300 rounded-lg" />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="address" className="text-sm font-medium text-gray-700">Address</label>
-                <input id="address" type="text" className="mt-2 p-3 border border-gray-300 rounded-lg" />
-              </div>
-            </div>
+          <h2 className="text-lg font-bold mb-4">Shipping Address</h2>
+        <div className="space-y-4">
+          <div className="flex flex-col">
+            <label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name *</label>
+            <input
+              name="fullName"
+              value={address.fullName}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number *</label>
+            <input
+              name="phone"
+              value={address.phone}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="addressLine1" className="text-sm font-medium text-gray-700">Address Line 1 *</label>
+            <input
+              name="addressLine1"
+              value={address.addressLine1}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="city" className="text-sm font-medium text-gray-700">City *</label>
+            <input
+              name="city"
+              value={address.city}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="state" className="text-sm font-medium text-gray-700">State *</label>
+            <input
+              name="state"
+              value={address.state}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="pinCode" className="text-sm font-medium text-gray-700">PIN Code *</label>
+            <input
+              name="pinCode"
+              value={address.pinCode}
+              onChange={handleAddressChange}
+              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+        </div>
           </div>
 
           <hr className="my-6" />
 
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-bold mb-4">Payment Method</h2>
-            <div>
-              <select className="p-3 border border-gray-300 rounded-lg">
-                <option value="COD">Cash on Delivery</option>
-                <option value="UPI">UPI</option>
-                <option value="Card">Credit/Debit Card</option>
-              </select>
-            </div>
+          <h2 className="text-lg font-bold mb-4">Payment Method</h2>
+          <div>
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="p-3 border border-gray-300 rounded-lg w-full"
+            >
+              <option value="COD">Cash on Delivery</option>
+              <option value="UPI">UPI</option>
+              <option value="Card">Credit/Debit Card</option>
+            </select>
+          </div>
           </div>
         </div>
 
@@ -125,9 +278,13 @@ const Checkout = () => {
               <p className="text-sm text-gray-700">including GST</p>
             </div>
           </div>
-          <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
-            Confirm Order
-          </button>
+          <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600 disabled:bg-gray-400"
+        >
+          {loading ? 'Processing...' : 'Confirm Order'}
+        </button>
         </div>
       </div>
     </div>

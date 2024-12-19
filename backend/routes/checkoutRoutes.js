@@ -6,6 +6,6 @@ const router = express.Router();
 
 // Route to create a new checkout
 router.post("/", verifyToken, createCheckout);
-router.get("/:id", getCheckoutById);
+router.get("/orders", verifyToken, getCheckoutById);
 
 module.exports = router;
