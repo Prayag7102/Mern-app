@@ -1,28 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { getProducts } from '../api/products';
-import { addToCart } from '../api/cart';
-import { toast } from "react-toastify";
-import { Link, useNavigate } from 'react-router-dom';
-import Loading from '../components/LoaderSpinner';
+import React, { useState } from 'react';
+import { Link, } from 'react-router-dom';
 
-const ProductsCard = ({products,handleAddToCart,navigate}) => {
+const ProductsCard = ({products, handleAddToCart, navigate}) => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const categories = [
+    { id: 'all', name: 'All Products' },
+    { id: 'clothing', name: 'Clothing & Accessories' },
+    { id: 'smartphones', name: 'Smartphones' },
+    { id: 'electronics', name: 'Electronics' }
+  ];
+
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(product => product.categories.includes(selectedCategory));
+
   return (
-    <div className='mb-5 mt-5 '>
+    <div className='mb-5 mt-5'>
+      <div className="flex justify-center gap-4 mb-8">
+        {categories.map(category => (
+          <button
+            key={category.id}
+            onClick={() => setSelectedCategory(category.id)}
+            className={`px-4 py-2 rounded-lg transition-all ${
+              selectedCategory === category.id
+                ? 'bg-blue-700 text-white'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {category.name}
+          </button>
+        ))}
+      </div>
+
       <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>
-        New Products
+        {selectedCategory === 'all' ? 'All Products' : `${categories.find(c => c.id === selectedCategory)?.name}`}
       </h1>
+
       <div className="flex flex-wrap justify-center gap-5 items-center px-3">
-        {products.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div className="col-span-full text-center p-5 bg-gray-100 rounded-lg shadow-md">
             <h2 className="text-2xl text-gray-700 font-semibold">
               No Products Available
             </h2>
             <p className="text-gray-500 mt-2">
-              It seems like there are no products available right now. Please check back later.
+              No products found in this category. Please try another category.
             </p>
           </div>
         ) : (
-          products.map((product) => (
+          filteredProducts.map((product) => (
             <div
               key={product._id}
               className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
@@ -71,8 +97,11 @@ const ProductsCard = ({products,handleAddToCart,navigate}) => {
                     </svg>
                     Add to cart
                   </button>
-                  <button onClick={()=> navigate(`/products/${product._id}`)}  className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                      View Details 
+                  <button 
+                    onClick={() => navigate(`/products/${product._id}`)}  
+                    className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                  >
+                    View Details 
                   </button>
                 </div>
               </div>
