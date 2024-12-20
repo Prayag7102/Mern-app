@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
 import Loading from '../components/LoaderSpinner';
 
-const ProductsCard = ({products,handleAddToCart}) => {
+const ProductsCard = ({products,handleAddToCart,navigate}) => {
   return (
     <div className='mb-5 mt-5 '>
       <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>

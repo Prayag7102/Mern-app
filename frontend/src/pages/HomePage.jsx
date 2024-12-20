@@ -52,7 +52,7 @@ export default function HomePage() {
   return (
     <>
       <SwiperBanner/>
-      <ProductsCard handleAddToCart={handleAddToCart} products={products}/>
+      <ProductsCard handleAddToCart={handleAddToCart} products={products} navigate={navigate}/>
     </>
   )
 }
