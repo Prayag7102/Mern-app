@@ -19,10 +19,9 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use('/api/cart', require("./routes/cartRoutes"));
 app.use("/api/checkout", require("./routes/checkoutRoutes"));
 if (process.env.NODE_ENV === "production") {
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
+  app.use(express.static(path.join(__dirname, "public")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
   });
 } else {
   app.get("/", (req, res) => {
