@@ -153,7 +153,7 @@ export default function ProfilePage() {
               <div className="text-center py-8">
                 <p className="text-gray-500 mb-4">No orders found</p>
                 <button
-                  onClick={() => navigate('/products')}
+                  onClick={() => navigate('/')}
                   className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
                 >
                   Start Shopping
