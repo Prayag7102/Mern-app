@@ -35,6 +35,8 @@ export default function ProfilePage() {
         const response = await axiosInstance.get('/checkout/orders');
         if (response.data.checkouts && response.data.checkouts.length > 0) {
           setOrders(response.data.checkouts);
+          console.log(response.data.checkouts);
+          
         } else {
           setOrders([]);
           toast.info("No orders");
@@ -195,6 +197,8 @@ export default function ProfilePage() {
                             <p className="text-sm text-gray-500">
                               Quantity: {item.quantity}
                             </p>
+                            <p className='text-xs text-black'><span className='font-bold'>Color:</span> {item.color}</p>
+                            <p className='text-xs text-black'><span className='font-bold'>Size:</span> {item.size}</p>
                             <p className="text-sm font-medium">
                               Price: ₹{(item.productId.price * item.quantity).toFixed(2)}
                             </p>

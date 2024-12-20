@@ -1,10 +1,10 @@
 const Product = require("../models/Product");
-const Checkout = require('../models/checkoutmodel');
+const Checkout = require('../models/Checkout.model');
 
 // Create a new checkout
 const createCheckout = async (req, res) => {
   try {
-    const userId = req.user?.id; 
+    const userId = req.user?.id;
     if (!userId) {
       return res.status(401).json({ message: "User not authenticated." });
     }
@@ -26,17 +26,33 @@ const createCheckout = async (req, res) => {
           .status(400)
           .json({ message: `Insufficient stock for product: ${product.name}.` });
       }
-      totalPrice += product.price * item.quantity;
+      const price = product.discountedPrice || product.price;
+      totalPrice += price * item.quantity;
     }
 
     const checkout = await Checkout.create({
       userId,
-      products,
+      products: products.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        color: item.color,
+        size: item.size
+      })),
       totalPrice,
-      address,
+      address: {
+        fullName: address.fullName,
+        phone: address.phone,
+        addressLine1: address.addressLine1,
+        addressLine2: address.addressLine2,
+        city: address.city,
+        state: address.state,
+        pinCode: address.pinCode
+      },
       paymentMethod,
+      status: "Pending"
     });
 
+    // Update product stock
     for (const item of products) {
       await Product.findByIdAndUpdate(item.productId, {
         $inc: { stock: -item.quantity },
@@ -49,11 +65,18 @@ const createCheckout = async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 };
+
 // Get checkout details
 const getCheckoutById = async (req, res) => {
   try {
     const userId = req.user.id;
-    const checkouts = await Checkout.find({ userId }).populate("products.productId");
+    const checkouts = await Checkout.find({ userId })
+      .populate({
+        path: "products.productId",
+        select: "name image price discountedPrice colors sizes"
+      })
+      .sort({ createdAt: -1 });
+
     if (!checkouts || checkouts.length === 0) {
       return res.status(404).json({ error: "No orders found for this user" });
     }
@@ -63,5 +86,4 @@ const getCheckoutById = async (req, res) => {
   }
 };
 
-
-module.exports = {getCheckoutById,createCheckout }
+module.exports = { getCheckoutById, createCheckout }

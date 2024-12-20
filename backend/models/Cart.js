@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 const CartSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the User model
+    ref: 'User', 
     required: true,
   },
   products: [
     {
       product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Reference to the Product model
+        ref: 'Product',
         required: true,
       },
       quantity: {
@@ -40,7 +40,6 @@ const CartSchema = new mongoose.Schema({
   },
 });
 
-// Virtual field to calculate the total price of the cart
 CartSchema.virtual('totalPrice').get(function () {
   return this.products.reduce((total, item) => {
     const product = item.product; 

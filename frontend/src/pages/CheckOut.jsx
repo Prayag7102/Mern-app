@@ -48,7 +48,6 @@ const Checkout = () => {
 
       setUserId(decodedToken.id);
     } catch (error) {
-      console.error('Token decode error:', error);
       toast.error('Session error. Please login again');
       localStorage.removeItem('token');
       navigate('/login');
@@ -98,7 +97,9 @@ const Checkout = () => {
         userId: userId, // Using decoded userId
         products: userCart.map(item => ({
           productId: item.product._id,
-          quantity: item.quantity
+          quantity: item.quantity,
+          color: item.color,
+          size: item.size
         })),
         address,
         paymentMethod,
@@ -107,7 +108,6 @@ const Checkout = () => {
 
       const response = await createCheckout(checkoutData);
       
-      // Verify if the response contains the correct user ID
       if (response.checkout.userId !== userId) {
         toast.error('User verification failed. Please try again');
         return;

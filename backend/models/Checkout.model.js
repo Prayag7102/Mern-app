@@ -19,6 +19,20 @@ const checkoutSchema = new mongoose.Schema(
           required: true,
           min: 1,
         },
+        color: {
+          type: String,
+          required: false,
+          default: function() {
+            return this.product.colors[0];
+          }
+        },
+        size: {
+          type: String,
+          required: false,
+          default: function() {
+            return this.product.sizes[0];
+          }
+        }
       },
     ],
     totalPrice: {
