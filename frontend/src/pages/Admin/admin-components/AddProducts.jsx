@@ -364,10 +364,18 @@ const AddProducts = () => {
                   value={productData.details}
                   onBlur={handleDetailsChange}
                   config={{
-                    readonly: false, // All editing allowed
-                    height: 300, // Height of the editor
+                    readonly: false,
+                    height: 300,
                     toolbarSticky: false,
-                    toolbarButtonSize: 'middle'
+                    toolbarButtonSize: 'middle',
+                    uploader: {
+                      insertImageAsBase64URI: true,
+                    },
+                    paste: {
+                      cleanPasted: false,
+                      keepStyles: true,
+                      allow: true
+                    }
                   }}
                   className="border rounded-md"
                 />
