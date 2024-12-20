@@ -3,47 +3,9 @@ import { getProducts } from '../api/products';
 import { addToCart } from '../api/cart';
 import { toast } from "react-toastify";
 import { Link, useNavigate } from 'react-router-dom';
+import Loading from '../components/LoaderSpinner';
 
-const ProductsCard = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const productsData = await getProducts();
-        setProducts(productsData);
-      } catch (error) {
-        toast.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const handleAddToCart = async (product) => {
-    try {
-      await addToCart(product._id, 1); 
-      toast.success("Product Add To Cart Successfully!",{
-        theme:'dark',
-        draggable:true
-      })
-    } catch (error) {
-      toast.error('Error adding to cart:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <p>Loading products...</p>;
-  }
-
+const ProductsCard = ({products,handleAddToCart}) => {
   return (
     <div className='mb-5 mt-5 '>
       <h1 className='text-3xl text-center mb-5 text-blue-700 font-semibold'>

@@ -1,10 +1,14 @@
 import React from "react";
-import { ClipLoader } from "react-spinners"; // Import ClipLoader or any other loader from react-spinners
+import { ClipLoader } from "react-spinners";
+import "../assets/stylesheets/loader.css";
 
 const Loading = () => {
+
   return (
     <div className="loader-container flex justify-center items-center w-full">
-      <ClipLoader color="#3498db" size={50} />
+      <div className="h-1 w-full bg-gray-200">
+        <div className="h-1 bg-[#000080] animate-youtube-loading"></div>
+      </div>
     </div>
   );
 };
