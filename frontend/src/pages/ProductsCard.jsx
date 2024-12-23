@@ -17,7 +17,7 @@ const ProductsCard = ({products, handleAddToCart, navigate}) => {
 
   return (
     <div className='mb-5 mt-5'>
-      <div className="flex justify-center gap-4 mb-8">
+      <div className="flex flex-wrap justify-center gap-4 mb-8">
         {categories.map(category => (
           <button
             key={category.id}

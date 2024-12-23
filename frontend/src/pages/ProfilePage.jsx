@@ -23,8 +23,6 @@ export default function ProfilePage() {
           navigate('/login');
           return;
         }
-
-        // Decode token to get userId
         const decodedToken = decodeToken(token);
         if (!decodedToken?.id) {
           toast.error('Invalid session');
@@ -46,17 +44,16 @@ export default function ProfilePage() {
           setOrders([]);
           toast.info("No orders found");
         } else {
-          console.error("Error fetching orders:", error);
           toast.error("Error fetching orders");
         }
       } finally {
         setLoading(false);
       }
     };
-    if (activeTab === 'orders' && orders.length === 0) {
+    //if (activeTab === 'orders' && orders.length === 0) {
       fetchOrderDetails();
-    }
-  }, [activeTab, navigate, orders.length]);
+    //}
+  }, [ navigate, orders.length]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
