@@ -1,5 +1,4 @@
 import React from "react";
-import { ClipLoader } from "react-spinners";
 import "../assets/stylesheets/loader.css";
 
 const Loading = () => {
