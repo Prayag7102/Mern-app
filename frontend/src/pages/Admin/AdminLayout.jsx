@@ -19,7 +19,7 @@ export default function AdminLayout() {
         <div className='lg:w-[10%]'>
           <Sidebar isOpen={isSidebarOpen} />
         </div>
-        <div className='lg:w-[90%] md:w-full sm:w-full px-5'>
+        <div className='lg:w-[90%] md:w-full sm:w-full lg:px-5 sm:px-2'>
           <Outlet/>
         </div>
       </div>

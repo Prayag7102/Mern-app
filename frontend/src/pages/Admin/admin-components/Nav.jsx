@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaUser, FaBell, FaBars } from "react-icons/fa";
+import {  FaBars } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -36,12 +36,6 @@ const Nav = ({ onToggleSidebar }) => {
                             className="bg-red-600 text-white py-2 px-6 rounded-lg mt-6"
                         >
                             Log Out
-                        </button>
-                        <button>
-                            <span className='text-2xl text-cyan-500 '><FaBell /></span>
-                        </button>
-                        <button>
-                            <span className='text-2xl text-cyan-500'><FaUser /></span>
                         </button>
                     </div>
                 </div>
