@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
-        <div className='mt-3 border'>
-        <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white py-8">
+        <div className='mt-3 px-5 py-3'>
+        <footer className="bg-gradient-to-r from-gray-900 via-gray-700 via-gray-500 via-gray-300 to-gray-900 rounded-[40px] text-white py-8 animate-bg-move">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="flex flex-col items-center">
@@ -24,8 +24,6 @@ const Footer = () => {
                     </div>
                     <div className="flex flex-col items-center">
                         <h2 className="text-2xl font-bold mb-4">Follow Us</h2>
-                       
-
                         <div className="flex space-x-4">
                             <a target='_blank' href="https://facebook.com" className="hover:text-gray-300"><FaFacebookF /></a>
                             <a target='_blank' href="https://twitter.com" className="hover:text-gray-300"><FaTwitter /></a>
@@ -39,6 +37,19 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
+        <style jsx>{`
+            @keyframes bgMove {
+                0% { background-position: 0% 50%; }
+                25% { background-position: 50% 50%; }
+                50% { background-position: 100% 50%; }
+                75% { background-position: 50% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            .animate-bg-move {
+                background-size: 200% 200%;
+                animation: bgMove 20s ease infinite;
+            }
+        `}</style>
         </div>
     )
 }
