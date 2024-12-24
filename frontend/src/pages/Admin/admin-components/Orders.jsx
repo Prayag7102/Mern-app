@@ -132,7 +132,7 @@ const Orders = () => {
       </Typography>
 
       {/* Summary Cards */}
-      <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+      <Box className="flex flex-wrap gap-2 mb-3">
         <Paper 
           elevation={3} 
           sx={{ 
