@@ -1,5 +1,4 @@
 import React from 'react'
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -53,19 +52,7 @@ const Footer = () => {
                 </div>
             </div>
         </footer>
-        <style jsx>{`
-            @keyframes bgMove {
-                0% { background-position: 0% 50%; }
-                25% { background-position: 50% 50%; }
-                50% { background-position: 100% 50%; }
-                75% { background-position: 50% 50%; }
-                100% { background-position: 0% 50%; }
-            }
-            .animate-bg-move {
-                background-size: 200% 200%;
-                animation: bgMove 20s ease infinite;
-            }
-        `}</style>
+     
         </div>
     )
 }
