@@ -21,6 +21,7 @@ import UserLayout from "./pages/UserLayout";
 import ProductDetail from "./pages/ProductDetails";
 import Home from "./pages/Home";
 import Checkout from "./pages/CheckOut";
+import Orders from "./pages/Admin/admin-components/Orders";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: 'manageproducts',
         element: <ManageProducts />,
+      },
+      {
+        path: 'orders',
+        element: <Orders />,
       },
     ],
   },

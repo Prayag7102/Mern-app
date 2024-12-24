@@ -86,4 +86,24 @@ const getCheckoutById = async (req, res) => {
   }
 };
 
-module.exports = { getCheckoutById, createCheckout }
+
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Checkout.find()
+      .populate({
+        path: 'products.productId',
+        select: 'name image price discountedPrice'
+      })
+      .populate({
+        path: 'userId',
+        select: 'name email'
+      })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch orders", details: error.message });
+  }
+};
+
+module.exports = { getCheckoutById, createCheckout, getAllOrders }

@@ -2,6 +2,7 @@ import React from 'react'
 import { HiHome } from "react-icons/hi";
 import { AiFillProduct } from "react-icons/ai";
 import { Link, useLocation } from 'react-router-dom';
+import { BsFillBagCheckFill } from "react-icons/bs";
 
 const Sidebar = ({ isOpen }) => {
 
@@ -44,6 +45,17 @@ const Sidebar = ({ isOpen }) => {
                     >
                         <AiFillProduct className={`text-2xl ${isActive("/admin/dashboard/manageproducts") ? "text-white" : "text-black"}`} />
                         <span className={`${isActive("/admin/dashboard/manageproducts") ? "font-medium" : ""}`}>Manage Products</span>
+                    </Link>
+                    <Link
+                        to="/admin/dashboard/orders"
+                        className={`px-4 py-3 flex items-center space-x-4 rounded-lg ${isActive("/admin/dashboard/orders")
+                                ? "text-white bg-gradient-to-r from-sky-600 to-cyan-400"
+                                : "text-gray-500 group"
+                            }`}
+                    >
+                       
+                        <BsFillBagCheckFill className={`text-2xl ${isActive("/admin/dashboard/orders") ? "text-white" : "text-black"}`} />
+                        <span className={`${isActive("/admin/dashboard/orders") ? "font-medium" : ""}`}>Orders</span>
                     </Link>
                 </div>
             </div>
