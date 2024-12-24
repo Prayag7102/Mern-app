@@ -1,0 +1,61 @@
+import { useState, useEffect } from 'react';
+import { getProducts } from '../api/products';
+import { handleDelete, handleEditSave } from '../utils/productUtils';
+import { toast } from 'react-toastify';
+
+export const useProductManagement = () => {
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterModel, setFilterModel] = useState({ items: [] });
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const data = await getProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      toast.error("Failed to fetch products");
+    }
+  };
+
+  const handleEdit = (id) => {
+    const productToEdit = products.find((product) => product._id === id);
+    setSelectedProduct(productToEdit);
+    setEditModalOpen(true);
+  };
+
+  const handleProductDelete = (id) => handleDelete(id, setProducts, toast);
+  
+  const handleProductEdit = () => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast);
+
+  const getFilteredProducts = () => {
+    return products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.price.toString().includes(searchQuery)
+    );
+  };
+
+  return {
+    products,
+    selectedProduct,
+    editModalOpen,
+    searchQuery,
+    filterModel,
+    setSelectedProduct,
+    setEditModalOpen,
+    setSearchQuery,
+    setFilterModel,
+    handleEdit,
+    handleProductDelete,
+    handleProductEdit,
+    getFilteredProducts,
+  };
+}; 
