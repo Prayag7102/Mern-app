@@ -15,7 +15,7 @@ export const ProductImages = ({ product }) => {
         navigation={true}
         pagination={{ clickable: true }}
         modules={[Zoom, Navigation, Pagination, Autoplay]}
-        className="w-full max-w-xl"
+        className="w-full max-w-xl 2xl:h-[640px] xs:h-[300px] lg:h-[550px]"
         spaceBetween={10}
         slidesPerView={1}
       >
