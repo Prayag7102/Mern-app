@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Typography, Chip, Alert } from '@mui/material';
+import { Box, Typography, Chip, Alert,Paper } from '@mui/material';
 import axiosInstance from '../../../api/axios';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    const total = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+    setTotalAmount(total);
+  }, [orders]);
 
   const fetchOrders = async () => {
     try {
@@ -124,6 +130,65 @@ const Orders = () => {
       <Typography variant="h4" sx={{ mb: 3 }}>
         Orders Management
       </Typography>
+
+      {/* Summary Cards */}
+      <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 2, 
+            flex: 1, 
+            bgcolor: 'primary.light',
+            color: 'white'
+          }}
+        >
+          <Typography variant="h6">Total Orders</Typography>
+          <Typography variant="h4">{orders.length}</Typography>
+        </Paper>
+
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 2, 
+            flex: 1, 
+            bgcolor: 'success.light',
+            color: 'white'
+          }}
+        >
+          <Typography variant="h6">Total Revenue</Typography>
+          <Typography variant="h4">₹{totalAmount.toLocaleString()}</Typography>
+        </Paper>
+
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 2, 
+            flex: 1, 
+            bgcolor: 'warning.light',
+            color: 'white'
+          }}
+        >
+          <Typography variant="h6">Pending Orders</Typography>
+          <Typography variant="h4">
+            {orders.filter(order => order.status === 'Pending').length}
+          </Typography>
+        </Paper>
+
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 2, 
+            flex: 1, 
+            bgcolor: 'success.main',
+            color: 'white'
+          }}
+        >
+          <Typography variant="h6">Completed Orders</Typography>
+          <Typography variant="h4">
+            {orders.filter(order => order.status === 'Completed').length}
+          </Typography>
+        </Paper>
+      </Box>
       
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
