@@ -10,8 +10,6 @@ const CartCard = ({ updateSubtotal }) => {
     const fetchCart = async () => {
       try {
         const data = await getCartItems();
-        console.log(data);
-        
         const validItems = data.filter(item => item.product && item.product._id);
         setCartItems(validItems);
       } catch (error) {

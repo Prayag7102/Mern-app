@@ -3,22 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import CartCard from '../components/CartCard';
 
 const Cart = () => {
-  const [subtotal, setSubtotal] = useState(0); // Maintain subtotal in the parent
-  const [cartItems, setCartItems] = useState([]); // Store cart items
-  const shippingCost = 50; // Fixed shipping cost
-  const total = subtotal + shippingCost; // Total = Subtotal + Shipping
+  const [subtotal, setSubtotal] = useState(0);
+  const [cartItems, setCartItems] = useState([]); 
+  const shippingCost = 50; 
+  const total = subtotal + shippingCost; 
 
   const navigate = useNavigate();
 
-  // Callback function to update the subtotal and cart items
   const updateSubtotal = (newSubtotal, updatedCartItems) => {
     setSubtotal(newSubtotal);
     setCartItems(updatedCartItems);
   };
-
-  // Handle Checkout button click
   const handleCheckout = () => {
-    // Redirect to checkout page with cart data
     navigate('/profile/checkout', { state: { cartItems, subtotal, shippingCost, total } });
   };
 
