@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
     return (
         <div className='mt-3 px-5 py-3'>
-        <footer className="bg-gradient-to-r from-gray-900 via-gray-700 via-gray-500 via-gray-300 to-gray-900 rounded-[40px] text-white py-8 animate-bg-move">
+        <footer className="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 rounded-[40px] text-white py-8 animate-bg-move">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="flex flex-col items-center">
