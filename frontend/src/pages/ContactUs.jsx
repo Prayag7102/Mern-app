@@ -4,7 +4,6 @@ import Header from '../components/Header'
 const ContactUs = () => {
     return (
         <div>
-            <Header/>
                 <div className="flex justify-center items-center w-screen h-screen bg-white mt-10">
                     {/* COMPONENT CODE */}
                     <div className="container mx-auto my-4 px-4 lg:px-20">
