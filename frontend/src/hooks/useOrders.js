@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axiosInstance from '../api/axios';
+import { getAllOrders } from '../api/Checkout';
 
 export const useOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -16,15 +16,12 @@ export const useOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const response = await axiosInstance.get('/checkout/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      const response = await getAllOrders();
+      console.log(response.data);
       setOrders(response.data.orders || []);
       setError(null);
     } catch (error) {
+      console.log(error);
       setError(error.response?.data.message || 'Failed to fetch orders');
     } finally {
       setLoading(false);

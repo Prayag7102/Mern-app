@@ -26,3 +26,18 @@ export const decodeToken = (token) => {
       return null;
     }
   };
+
+  export const getAllOrders = async () => {
+    try {
+      const token = localStorage.getItem('admintoken');
+      const response = await axiosInstance.get('/checkout/all', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching all orders:', error);
+      throw error.response?.data || error.message;
+    }
+  };

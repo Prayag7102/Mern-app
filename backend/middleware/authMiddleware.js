@@ -9,11 +9,10 @@ const protect = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const admin = await Admin.findById(decoded.id).select("-password");
-
+    console.log(admin);
     if (!admin) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -21,6 +20,7 @@ const protect = async (req, res, next) => {
     req.user = admin;
     next();
   } catch (error) {
+    console.log(error);
     return res.status(401).json({ message: "Invalid or expired token." });
   }
 };
