@@ -29,7 +29,7 @@ export const decodeToken = (token) => {
 
   export const getAllOrders = async () => {
     try {
-      const token = localStorage.getItem('admintoken');
+      const token = localStorage.getItem('adminToken');
       const response = await axiosInstance.get('/checkout/all', {
         headers: {
           Authorization: `Bearer ${token}`

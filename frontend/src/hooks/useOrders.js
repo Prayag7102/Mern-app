@@ -17,11 +17,9 @@ export const useOrders = () => {
   const fetchOrders = async () => {
     try {
       const response = await getAllOrders();
-      console.log(response.data);
-      setOrders(response.data.orders || []);
+      setOrders(response.orders || []);
       setError(null);
     } catch (error) {
-      console.log(error);
       setError(error.response?.data.message || 'Failed to fetch orders');
     } finally {
       setLoading(false);
