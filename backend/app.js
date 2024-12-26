@@ -12,12 +12,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use('/api/cart', require("./routes/cartRoutes"));
 app.use("/api/checkout", require("./routes/checkoutRoutes"));
+app.use("/api/banner", require("./routes/banner.routes"));
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
   app.get("*", (req, res) => {

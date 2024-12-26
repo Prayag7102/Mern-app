@@ -135,6 +135,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  //localStorage.clear();
   return (
     <div>
       <RouterProvider router={router} />
