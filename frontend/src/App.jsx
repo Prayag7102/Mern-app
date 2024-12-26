@@ -22,6 +22,8 @@ import ProductDetail from "./pages/ProductDetails";
 import Home from "./pages/Home";
 import Checkout from "./pages/CheckOut";
 import Orders from "./pages/Admin/admin-components/Orders";
+import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
+import BannerTable from "./pages/Admin/admin-components/BannerTable";
 
 const router = createBrowserRouter([
   {
@@ -99,6 +101,14 @@ const router = createBrowserRouter([
       {
         path: 'orders',
         element: <Orders />,
+      },
+      {
+        path: 'banner',
+        element: <BannerUpload />,
+      },
+      {
+        path: 'editbanner',
+        element: <BannerTable />,
       },
     ],
   },
