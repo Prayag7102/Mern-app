@@ -30,6 +30,7 @@ const loginAdmin = async (req, res) => {
   if (!admin) {
     return res.status(400).json({ message: "Invalid username or password" });
   }
+  
   const isMatch = await bcrypt.compare(password, admin.password);
   if (!isMatch) {
     return res.status(400).json({ message: "Invalid username or password" });
@@ -39,5 +40,6 @@ const loginAdmin = async (req, res) => {
 
   res.json({ token });
 };
+
 
 module.exports = { createAdmin, loginAdmin };

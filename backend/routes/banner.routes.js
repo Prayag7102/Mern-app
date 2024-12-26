@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post("/upload", protect, uploadFields, createBanner);
 router.put("/:id", protect, uploadFields, updateBanner);
-router.get("/", protect, getBanners);
+router.get("/", getBanners);
 
 module.exports = router;

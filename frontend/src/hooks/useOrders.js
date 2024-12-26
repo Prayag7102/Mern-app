@@ -7,9 +7,7 @@ export const useOrders = () => {
   const [error, setError] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+ 
 
   useEffect(() => {
     const total = orders.reduce((sum, order) => sum + order.totalPrice, 0);
@@ -18,7 +16,7 @@ export const useOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('admintoken');
+      const token = localStorage.getItem('adminToken');
       const response = await axiosInstance.get('/checkout/all', {
         headers: {
           Authorization: `Bearer ${token}`
@@ -32,6 +30,9 @@ export const useOrders = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   return { orders, loading, error, totalAmount };
 };
