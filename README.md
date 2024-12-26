@@ -110,6 +110,55 @@ This is a full-stack ecommerce application built with Node.js, Express, MongoDB 
     - Request Body: `{ "quantity": 2, "color": "blue", "size": "L" }`
     - Response: `{ "message": "Cart item updated" }`
 
+    ## API Endpoints
+
+### Banners
+- **Create Banner**
+    - `POST /api/banners/upload`
+    - Request Body: 
+    ```json
+    {
+      "title": "Banner Title",
+      "imageUrl": ["image_url1", "image_url2"]
+    }
+    ```
+    - Response: 
+    ```json
+    {
+      "message": "Banner created successfully"
+    }
+    ```
+
+- **Update Banner**
+    - `PUT /api/banners/:id`
+    - Request Body: 
+    ```json
+    {
+      "title": "Updated Banner Title",
+      "imageUrl": ["updated_image_url1"]
+    }
+    ```
+    - Response: 
+    ```json
+    {
+      "message": "Banner updated successfully"
+    }
+    ```
+
+- **Get Banners**
+    - `GET /api/banners`
+    - Response: 
+    ```json
+    [
+      {
+        "id": "banner_id",
+        "title": "Banner Title",
+        "imageUrl": ["image_url1", "image_url2"],
+        "createdAt": "2023-10-01T00:00:00.000Z"
+      }
+    ]
+    ```
+
 ### Checkout
 
 - **Create Checkout**
