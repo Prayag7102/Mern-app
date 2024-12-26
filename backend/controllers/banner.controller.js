@@ -31,26 +31,23 @@ const createBanner = async (req, res) => {
 
 const updateBanner = async (req, res) => {
   try {
-    const { id } = req.params; // Banner ID
-    const { title, imageIndex } = req.body; // Image index to update
-    const newImageFile = req.files.imageUrl ? req.files.imageUrl[0] : null; // New image file
+    const { id } = req.params; 
+    const { title, imageIndex } = req.body; 
+    const newImageFile = req.files.imageUrl ? req.files.imageUrl[0] : null; 
 
     if (!newImageFile) {
-      console.log("No image file provided");
       return res.status(400).json({ message: "No image file provided" });
     }
 
-    // Find the banner by ID
+   
     const banner = await Banner.findById(id);
     if (!banner) {
-
       return res.status(404).json({ message: "Banner not found" });
     }
 
     if (imageIndex !== undefined && banner.imageUrl[imageIndex]) {
       banner.imageUrl[imageIndex] = path.basename(newImageFile.path);
     } else {
-      console.log("Invalid image index");
       return res.status(400).json({ message: "Invalid image index" });
     }
 
