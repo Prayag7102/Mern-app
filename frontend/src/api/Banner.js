@@ -35,13 +35,13 @@ export const getBanners = async () => {
 export const editBanner = async (bannerId, imageIndex, newImageFile) => {
     try {
       const formData = new FormData();
-      formData.append('imageUrl', newImageFile); // Ensure this matches the field name expected by multer
-      formData.append('imageIndex', imageIndex); // Include the image index
+      formData.append('imageUrl', newImageFile); 
+      formData.append('imageIndex', imageIndex); 
   
       const response = await axiosInstance.put(`/banner/${bannerId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`, // Ensure token is correctly set
+          'Authorization': `Bearer ${token}`, 
         },
       });
       return response;
