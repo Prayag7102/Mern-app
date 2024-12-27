@@ -12,12 +12,13 @@ const createAdmin = async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-
   const admin = new Admin({ username, password: hashedPassword });
 
   try {
     await admin.save();
-    res.status(201).json({ message: "Admin created successfully" });
+    const token = jwt.sign({ id: admin._id, username: admin.username }, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+    res.status(201).json({ message: "Admin created successfully", token }); 
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
