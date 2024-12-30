@@ -1,9 +1,9 @@
 
 import axiosInstance from "./axios";
 
-const token = localStorage.getItem('adminToken');
 export const uploadBanner = async (formData) => {
   try {
+    const token = localStorage.getItem('adminToken');
     const response = await axiosInstance.post('/banner/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -18,6 +18,7 @@ export const uploadBanner = async (formData) => {
 
 export const getBanners = async () => {
   try {
+    const token = localStorage.getItem('adminToken');
     const response = await axiosInstance.get('/banner', {
       headers: {
         'Authorization': `Bearer ${token}`, 
@@ -31,6 +32,7 @@ export const getBanners = async () => {
 
 export const editBanner = async (bannerId, imageIndex, newImageFile) => {
     try {
+      const token = localStorage.getItem('adminToken');
       const formData = new FormData();
       formData.append('imageUrl', newImageFile); 
       formData.append('imageIndex', imageIndex); 
