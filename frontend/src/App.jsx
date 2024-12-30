@@ -145,7 +145,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  //localStorage.removeItem("adminToken");
+  //localStorage.clear();
   return (
     <div>
       <RouterProvider router={router} />
