@@ -1,8 +1,7 @@
 
 import axiosInstance from "./axios";
 
-const token = localStorage.getItem('admintoken');
-
+const token = localStorage.getItem('adminToken');
 export const uploadBanner = async (formData) => {
   try {
     const response = await axiosInstance.post('/banner/upload', formData, {
@@ -13,7 +12,6 @@ export const uploadBanner = async (formData) => {
     });
     return response;
   } catch (error) {
-    console.error('Error uploading banner:', error);
     throw error.response ? error.response.data : error;
   }
 };
@@ -27,7 +25,6 @@ export const getBanners = async () => {
     });
     return response;
   } catch (error) {
-    console.error('Error fetching banners:', error);
     throw error.response ? error.response.data : error;
   }
 };
@@ -46,7 +43,6 @@ export const editBanner = async (bannerId, imageIndex, newImageFile) => {
       });
       return response;
     } catch (error) {
-      console.error('Error editing banner:', error);
       throw error.response ? error.response.data : error;
     }
   };
