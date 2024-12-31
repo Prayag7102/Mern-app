@@ -97,7 +97,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
           <div key={type} className="mt-4">
             <Autocomplete
               multiple
-              freeSolo // Allow typing custom values
+              freeSolo 
               options={
                 type === "categories"
                   ? categoriesOptions
