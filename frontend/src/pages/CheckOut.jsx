@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { getCartItems } from '../api/cart';
 import { toast } from 'react-toastify'
 import Loading from '../components/LoaderSpinner'
-import { createCheckout } from '../api/Checkout';
+import axiosInstance from '../api/axios';
+import { createCheckout, initiateRazorpayPayment } from '../api/Checkout';
 
 
 const Checkout = () => {
@@ -94,7 +95,7 @@ const Checkout = () => {
       }
 
       const checkoutData = {
-        userId: userId, // Using decoded userId
+        userId: userId,
         products: userCart.map(item => ({
           productId: item.product._id,
           quantity: item.quantity,
@@ -107,14 +108,70 @@ const Checkout = () => {
       };
 
       const response = await createCheckout(checkoutData);
-      
-      if (response.checkout.userId !== userId) {
-        toast.error('User verification failed. Please try again');
+      console.log("Response from createCheckout:", response); // Log the response
+
+      // Ensure the response contains the checkout object
+      if (!response.checkout) {
+        toast.error('Checkout object is missing in the response.');
         return;
       }
 
-      toast.success('Order placed successfully!');
+      // Access the orderId correctly
       navigate('/order-success', { state: { orderId: response.checkout._id } });
+      
+      // Initiate Razorpay payment
+      const orderData = {
+        amount: total * 100, // Amount in paise
+        currency: "INR",
+        receipt: `receipt_order_${response.checkout._id}`,
+      };
+
+      const razorpayResponse = await initiateRazorpayPayment(orderData);
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // Your Razorpay key ID
+        amount: razorpayResponse.amount,
+        currency: razorpayResponse.currency,
+        name: "Your Company Name",
+        description: "Order Payment",
+        order_id: razorpayResponse.id,
+        handler: async (response) => {
+          console.log("Payment response:", response); // Log the response
+
+          const paymentData = {
+            orderId: response.razorpay_order_id, // This should match the Razorpay order ID
+            paymentId: response.razorpay_payment_id,
+            signature: response.razorpay_signature,
+          };
+
+          // Log the payment data being sent for verification
+          console.log("Payment data for verification:", paymentData);
+
+          try {
+            const verifyResponse = await axiosInstance.post('/checkout/verify-payment', paymentData);
+            if (verifyResponse.status === 200) {
+              toast.success('Payment successful!');
+              // Update the checkout status to completed
+              await axiosInstance.put(`/checkout/${response.razorpay_order_id}`, { status: 'Completed' });
+              navigate('/order-success', { state: { orderId: response.razorpay_order_id } }); // Use the correct order ID
+            } else {
+              toast.error('Payment verification failed.');
+            }
+          } catch (error) {
+            toast.error('Payment verification failed.');
+          }
+        },
+        prefill: {
+          name: address.fullName,
+          email: '', // Add user email if available
+          contact: address.phone,
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
       toast.error(error.message || 'Something went wrong');
     } finally {

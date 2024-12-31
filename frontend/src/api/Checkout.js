@@ -13,6 +13,19 @@ export const createCheckout = async (checkoutData) => {
   }
 };
 
+export const initiateRazorpayPayment = async (orderData) => {
+  try {
+    const response = await axiosInstance.post('/checkout//razorpay/order', orderData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
 export const decodeToken = (token) => {
     try {
       const base64Url = token.split('.')[1];

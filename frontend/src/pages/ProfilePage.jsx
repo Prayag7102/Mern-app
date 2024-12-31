@@ -33,7 +33,6 @@ export default function ProfilePage() {
         const response = await axiosInstance.get('/checkout/orders');
         if (response.data.checkouts && response.data.checkouts.length > 0) {
           setOrders(response.data.checkouts);
-          console.log(response.data.checkouts);
           
         } else {
           setOrders([]);
