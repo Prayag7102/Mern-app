@@ -109,7 +109,6 @@ const Checkout = () => {
 
       // Create checkout and get the response
       const checkoutResponse = await createCheckout(checkoutData);
-      console.log("Response from createCheckout:", checkoutResponse); 
 
     
       if (!checkoutResponse.checkout) {
@@ -118,8 +117,7 @@ const Checkout = () => {
       }
 
       // Access the generated razorpayOrderId
-      const razorpayOrderId = checkoutResponse.checkout.razorpayOrderId; // Get the generated razorpayOrderId
-      console.log("Razorpay Order ID:", razorpayOrderId); 
+      const razorpayOrderId = checkoutResponse.checkout.razorpayOrderId; 
       if (!razorpayOrderId) {
         toast.error('Razorpay Order ID is missing.');
         return;

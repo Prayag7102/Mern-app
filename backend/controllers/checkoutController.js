@@ -36,8 +36,6 @@ const createCheckout = async (req, res) => {
       status: "Pending",
       razorpayOrderId: order.id 
     });
-
-    console.log("Checkout created:", checkout);
     return res.status(201).json({ message: "Checkout successful.", checkout: { ...checkout._doc, razorpayOrderId: order.id } });
   } catch (error) {
     res.status(500).json({ message: "Internal server error." });

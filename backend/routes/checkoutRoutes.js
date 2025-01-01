@@ -32,7 +32,6 @@ router.post("/razorpay/order", verifyToken, async (req, res) => {
     const order = await razorpayInstance.orders.create(options);
     return res.status(201).json(order);
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Failed to create Razorpay order." });
   }
 });
@@ -44,19 +43,16 @@ router.put("/:razorpayOrderId", verifyToken, async (req, res) => {
   const { status } = req.body;
 
   try {
-    console.log("Updating checkout with razorpayOrderId:", razorpayOrderId);
     const updatedCheckout = await Checkout.findOneAndUpdate(
       { razorpayOrderId: razorpayOrderId },
       { status },
       { new: true }
     );
-    console.log(updatedCheckout);
     if (!updatedCheckout) {
       return res.status(404).json({ message: "Checkout not found." });
     }
     res.status(200).json({ message: "Checkout status updated.", updatedCheckout });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Failed to update checkout status.", details: error.message });
   }
 });
