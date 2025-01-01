@@ -30,7 +30,11 @@ export default function ProfilePage() {
           return;
         }
 
-        const response = await axiosInstance.get('/checkout/orders');
+        const response = await axiosInstance.get('/checkout/orders',{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         if (response.data.checkouts && response.data.checkouts.length > 0) {
           setOrders(response.data.checkouts);
           
