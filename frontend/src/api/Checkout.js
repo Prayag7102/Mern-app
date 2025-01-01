@@ -2,9 +2,11 @@ import axiosInstance from './axios';
 
 export const createCheckout = async (checkoutData) => {
   try {
+    const token = localStorage.getItem('token');
     const response = await axiosInstance.post('/checkout', checkoutData, {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
     });
     return response.data;
@@ -15,9 +17,11 @@ export const createCheckout = async (checkoutData) => {
 
 export const initiateRazorpayPayment = async (orderData) => {
   try {
+    const token = localStorage.getItem('token');
     const response = await axiosInstance.post('/checkout/razorpay/order', orderData, {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       },
     });
     return response.data;

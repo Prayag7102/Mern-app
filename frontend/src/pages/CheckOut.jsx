@@ -124,7 +124,12 @@ const Checkout = () => {
       }
       if (paymentMethod === 'COD') {
         toast.success('Order placed successfully with Cash on Delivery!');
-        await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' }); // Update status to Pending
+        const token = localStorage.getItem('token');
+        await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' },{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }); // Update status to Pending
         navigate('/order-success', { state: { orderId: razorpayOrderId } }); // Redirect to success page
         return;
       }
@@ -149,11 +154,19 @@ const Checkout = () => {
             paymentId: response.razorpay_payment_id,
             signature: response.razorpay_signature,
           };
-
-          const verifyResponse = await axiosInstance.post('/checkout/verify-payment', paymentData);
+          const token = localStorage.getItem('token');
+          const verifyResponse = await axiosInstance.post('/checkout/verify-payment', paymentData,{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           if (verifyResponse.status === 200) {
             toast.success('Payment successful!');
-            await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Completed' });
+            await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Completed' },{
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
             navigate('/order-success', { state: { orderId: razorpayOrderId } }); 
           } else {
             toast.error('Payment verification failed.');
