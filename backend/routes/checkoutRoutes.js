@@ -1,32 +1,31 @@
 const express = require("express");
 const { verifyToken, protect } = require("../middleware/authMiddleware");
 const { createCheckout, getCheckoutById, getAllOrders, verifyPayment } = require("../controllers/checkoutController");
-const crypto = require("crypto"); // Import crypto for verification
 const Razorpay = require("razorpay"); 
 const Checkout = require("../models/Checkout.model");
 
 const router = express.Router();
 
-// Initialize Razorpay instance
+
 const razorpayInstance = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID, // Ensure you have this in your environment variables
-  key_secret: process.env.RAZORPAY_KEY_SECRET // Ensure you have this in your environment variables
+  key_id: process.env.RAZORPAY_KEY_ID, 
+  key_secret: process.env.RAZORPAY_KEY_SECRET 
 });
 
-// Route to create a new checkout
+
 router.post("/", verifyToken, createCheckout);
 router.get("/orders", verifyToken, getCheckoutById);
 router.get("/all", protect, getAllOrders);
 
-// Route to create Razorpay order
+
 router.post("/razorpay/order", verifyToken, async (req, res) => {
   const { amount, currency, receipt } = req.body;
 
   const options = {
-    amount, // Amount in paise
+    amount, 
     currency,
     receipt,
-    payment_capture: 1 // Auto capture payment
+    payment_capture: 1 
   };
 
   try {
@@ -38,7 +37,6 @@ router.post("/razorpay/order", verifyToken, async (req, res) => {
   }
 });
 
-// Route to verify payment
 router.post("/verify-payment", verifyToken, verifyPayment);
 
 router.put("/:razorpayOrderId", verifyToken, async (req, res) => {

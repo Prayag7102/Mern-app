@@ -151,14 +151,14 @@ const Checkout = () => {
           if (verifyResponse.status === 200) {
             toast.success('Payment successful!');
             await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Completed' });
-            navigate('/order-success', { state: { orderId: razorpayOrderId } }); // Use the correct order ID
+            navigate('/order-success', { state: { orderId: razorpayOrderId } }); 
           } else {
             toast.error('Payment verification failed.');
           }
         },
         prefill: {
           name: address.fullName,
-          email: '', // Add email if available
+          email: '', 
           contact: address.phone,
         },
         theme: {

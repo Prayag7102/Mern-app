@@ -8,18 +8,17 @@ const razorpayInstance = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-// Create a new checkout
 const createCheckout = async (req, res) => {
   try {
     const userId = req.user.id;
     const { products, address, paymentMethod, totalPrice } = req.body;
 
-    // Create Razorpay order first
+
     const options = {
-      amount: totalPrice * 100, // Amount in paise
+      amount: totalPrice * 100, 
       currency: "INR",
-      receipt: `receipt_order_${userId}`, // Use userId or any unique identifier
-      payment_capture: 1 // Auto capture payment
+      receipt: `receipt_order_${userId}`, 
+      payment_capture: 1 
     };
 
     const order = await razorpayInstance.orders.create(options); 
@@ -41,12 +40,11 @@ const createCheckout = async (req, res) => {
     console.log("Checkout created:", checkout);
     return res.status(201).json({ message: "Checkout successful.", checkout: { ...checkout._doc, razorpayOrderId: order.id } });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
 
-// Get checkout details
+
 const getCheckoutById = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -106,7 +104,6 @@ const verifyPayment = async (req, res) => {
 
       return res.status(200).json({ message: "Payment verified successfully.", checkout });
     } catch (error) {
-      console.error("Error updating checkout status:", error);
       return res.status(500).json({ message: "Failed to update checkout status.", details: error.message });
     }
   } else {
