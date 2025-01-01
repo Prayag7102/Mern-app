@@ -41,7 +41,7 @@ router.post("/razorpay/order", verifyToken, async (req, res) => {
 // Route to verify payment
 router.post("/verify-payment", verifyToken, verifyPayment);
 
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:razorpayOrderId", verifyToken, async (req, res) => {
   const { razorpayOrderId } = req.params;
   const { status } = req.body;
 
