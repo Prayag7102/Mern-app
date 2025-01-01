@@ -122,7 +122,12 @@ const Checkout = () => {
         toast.error('Razorpay Order ID is missing.');
         return;
       }
-
+      if (paymentMethod === 'COD') {
+        toast.success('Order placed successfully with Cash on Delivery!');
+        await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' }); // Update status to Pending
+        navigate('/order-success', { state: { orderId: razorpayOrderId } }); // Redirect to success page
+        return;
+      }
       // Initiate Razorpay payment
       const orderData = {
         amount: total * 100, 
