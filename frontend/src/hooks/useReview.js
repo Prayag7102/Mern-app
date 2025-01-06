@@ -23,7 +23,11 @@ export const useReview = (productId, setProduct) => {
       return;
     }
     try {
-      await axiosInstance.post(`/products/${productId}/review`, { rating, comment });
+      await axiosInstance.post(`/products/${productId}/review`, { rating, comment }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       toast.success('Review added successfully!');
       resetAndRefresh();
     } catch (error) {
@@ -55,6 +59,7 @@ export const useReview = (productId, setProduct) => {
 
   const handleDeleteReview = async () => {
     try {
+      
       await deleteReview(productId, selectedReviewId);
       toast.success('Review deleted successfully!', { theme: 'dark' });
       resetAndRefresh();

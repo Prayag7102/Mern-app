@@ -53,7 +53,7 @@ export const createProduct = async (productData, image, otherImages) => {
   formData.append("image", image);
 
   otherImages.forEach((file) => {
-    formData.append("otherImages", file); // Notice the singular key
+    formData.append("otherImages", file);
   });
 
   const response = await axiosInstance.post("/products", formData, {
@@ -115,63 +115,3 @@ export const updateProduct = async (id, productData) => {
   }
 };
 
-
-export const addReview = async (productId, reviewData, userId) => {
-  const token = localStorage.getItem("userToken"); 
-
-  if (!token) {
-    throw new Error("You must be logged in to add a review");
-  }
-
-  try {
-    const response = await axiosInstance.post(`/products/${productId}/reviews`, reviewData, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-      params: { userId },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error.message;
-  }
-};
-
-
-export const editReview = async (productId, reviewId, userId, reviewData) => {
-  const token = localStorage.getItem("userToken"); 
-
-  if (!token) {
-    throw new Error("You must be logged in to edit a review");
-  }
-
-  try {
-    const response = await axiosInstance.put(`/products/${productId}/reviews/${reviewId}/user/${userId}`, reviewData, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error.message;
-  }
-};
-
-
-export const deleteReview = async (productId, reviewId, userId) => {
-  const token = localStorage.getItem("userToken"); 
-
-  if (!token) {
-    throw new Error("You must be logged in to delete a review");
-  }
-
-  try {
-    const response = await axiosInstance.delete(`/products/${productId}/reviews/${reviewId}/user/${userId}`, {
-      headers: {
-        "Authorization": `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : error.message;
-  }
-};
