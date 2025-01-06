@@ -35,7 +35,6 @@ const Checkout = () => {
     }
 
     try {
-      // Decode token
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const decodedToken = JSON.parse(window.atob(base64));
@@ -87,7 +86,6 @@ const Checkout = () => {
 
       setLoading(true);
 
-      // Validation checks
       if (!address.fullName || !address.phone || !address.addressLine1 || 
           !address.city || !address.state || !address.pinCode) {
         toast.error('Please fill all required fields');
@@ -107,7 +105,6 @@ const Checkout = () => {
         totalPrice: total,
       };
 
-      // Create checkout and get the response
       const checkoutResponse = await createCheckout(checkoutData);
 
     
@@ -116,7 +113,6 @@ const Checkout = () => {
         return;
       }
 
-      // Access the generated razorpayOrderId
       const razorpayOrderId = checkoutResponse.checkout.razorpayOrderId; 
       if (!razorpayOrderId) {
         toast.error('Razorpay Order ID is missing.');
@@ -129,11 +125,10 @@ const Checkout = () => {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        }); // Update status to Pending
+        });
         navigate('/order-success', { state: { orderId: razorpayOrderId } }); // Redirect to success page
         return;
       }
-      // Initiate Razorpay payment
       const orderData = {
         amount: total * 100, 
         currency: "INR",
