@@ -25,7 +25,9 @@ const SwiperBanner = () => {
 
   return (
     <Swiper
-      loop={true}
+      loop={banners.length > 1}
+      slidesPerView={1}
+      slidesPerGroup={1}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,
