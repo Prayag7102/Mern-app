@@ -25,6 +25,7 @@ const Checkout = () => {
     pinCode: '',
   });
   const [paymentMethod, setPaymentMethod] = useState('COD');
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -85,9 +86,26 @@ const Checkout = () => {
       }
 
       setLoading(true);
+      setSubmitted(true);
 
-      if (!address.fullName || !address.phone || !address.addressLine1 || 
-          !address.city || !address.state || !address.pinCode) {
+      const inputFields = ['fullName', 'phone', 'addressLine1', 'city', 'state', 'pinCode'];
+      inputFields.forEach(field => {
+        document.querySelector(`input[name="${field}"]`).classList.remove('border-red-500');
+      });
+
+      let hasError = false;
+      inputFields.forEach(field => {
+        if (!address[field]) {
+          hasError = true;
+        }
+      });
+
+      if (hasError) {
+        inputFields.forEach(field => {
+          if (!address[field]) {
+            document.querySelector(`input[name="${field}"]`).classList.add('border-red-500');
+          }
+        });
         toast.error('Please fill all required fields');
         return;
       }
@@ -250,7 +268,7 @@ const Checkout = () => {
               name="fullName"
               value={address.fullName}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.fullName ? 'border-red-500' : ''}`}
               required
             />
           </div>
@@ -260,7 +278,7 @@ const Checkout = () => {
               name="phone"
               value={address.phone}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.phone ? 'border-red-500' : ''}`}
               required
             />
           </div>
@@ -270,7 +288,7 @@ const Checkout = () => {
               name="addressLine1"
               value={address.addressLine1}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.addressLine1 ? 'border-red-500' : ''}`}
               required
             />
           </div>
@@ -280,7 +298,7 @@ const Checkout = () => {
               name="city"
               value={address.city}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.city ? 'border-red-500' : ''}`}
               required
             />
           </div>
@@ -290,7 +308,7 @@ const Checkout = () => {
               name="state"
               value={address.state}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.state ? 'border-red-500' : ''}`}
               required
             />
           </div>
@@ -300,7 +318,7 @@ const Checkout = () => {
               name="pinCode"
               value={address.pinCode}
               onChange={handleAddressChange}
-              className="mt-2 p-3 border border-gray-300 rounded-lg"
+              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.pinCode ? 'border-red-500' : ''}`}
               required
             />
           </div>
