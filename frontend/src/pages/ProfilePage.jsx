@@ -197,7 +197,14 @@ export default function ProfilePage() {
                             <p className="text-sm text-gray-500">
                               Quantity: {item.quantity}
                             </p>
-                            <p className='text-xs text-black'><span className='font-bold'>Color:</span> {item.color}</p>
+                            <p className="mt-1 font-bold flex items-center gap-2 text-xs text-blue-900">
+                              Color:
+                              <span
+                                className="inline-block w-4 h-4 rounded-full"
+                                style={{ backgroundColor: item.color }}
+                                aria-label={`Color: ${item.color}`}
+                              />
+                            </p>
                             <p className='text-xs text-black'><span className='font-bold'>Size:</span> {item.size}</p>
                             <p className="text-sm font-medium">
                               Price: ₹{(item.productId.price * item.quantity).toFixed(2)}
