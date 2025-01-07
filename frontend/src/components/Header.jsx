@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsCart } from "react-icons/bs";
-import { IoMdLogOut } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
+import { isActiveLink } from "../utils/HelperFunction";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,9 +17,7 @@ const Navbar = () => {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username")
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
+  
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -50,44 +47,48 @@ const Navbar = () => {
         <div className="flex items-center lg:order-2">
           <Link
             to="/login"
-            className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+            className={` ${isActiveLink('/login') ? 'text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2' : 'text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'} `}
+            aria-current={isActiveLink('/login') ? 'page' : undefined}
           >
             Log in
           </Link>
           <Link
             to="/register"
-            className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+            className={` ${isActiveLink('/register') ? 'text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2' : 'text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'} `}
+            aria-current={isActiveLink('/register') ? 'page' : undefined}
           >
             Register
           </Link>
           <div className="relative mr-4">
-            <button
-              onClick={toggleDropdown}
-              className="flex capitalize items-center text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2"
-            >
-              <FaUserCircle className="mr-1" />
-              Profile
-            </button>
-            {isDropdownOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-48 bg-white rounded-md shadow-lg">
-                <ul className="py-1" aria-labelledby="dropdownDefaultButton">
-                  <li>
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      {username?  `${username}` : 'User'}
-                    </Link>
-                  </li>
-                  {token? (<li>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Logout
-                    </button>
-                  </li>) : ''}
-                </ul>
+            {token && (
+              <div className="group">
+                <button
+                  className="flex capitalize items-center text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2"
+                >
+                  <FaUserCircle className="mr-1 text-lg" />
+                </button>
+                <div className="absolute right-0 top-5 z-10 mt-2 w-[8rem] bg-white rounded-md shadow-lg hidden group-hover:block">
+                  <ul className="py-1" aria-labelledby="dropdownDefaultButton">
+                    <li>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {username ? `${username}` : 'User'}
+                      </Link>
+                    </li>
+                    {token && (
+                      <li>
+                        <button
+                          onClick={handleLogout}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </div>
             )}
           </div>
@@ -143,40 +144,26 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className="block py-2 pr-4 pl-3 text-white rounded bg-blue-700 lg:bg-transparent lg:text-blue-700 lg:p-0 dark:text-white"
-                aria-current="page"
+                className={`block py-2 pr-4 pl-3 ${isActiveLink('/') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink('/') ? 'page' : undefined}
               >
                 Home
               </Link>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+              <Link
+                to="/about"
+                className={`block py-2 pr-4 pl-3 ${isActiveLink('/about') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink('/about') ? 'page' : undefined}
               >
-                Marketplace
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Features
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Team
-              </a>
+                About Us
+              </Link>
             </li>
             <li>
               <Link
                 to="/contact"
-                className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700"
+                className={`block py-2 pr-4 pl-3 ${isActiveLink('/contact') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink('/contact') ? 'page' : undefined}
               >
                 Contact
               </Link>
