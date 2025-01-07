@@ -15,7 +15,14 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
         <div className="mt-5 sm:mt-0">
           <h2 className="text-lg font-bold text-gray-900">{item.product.name}</h2>
           <p className="mt-1 text-xs text-gray-700">{item.product.description}</p>
-          <p className="mt-1 font-bold text-xs text-blue-900">Color: {item.color}</p>
+          <p className="mt-1 font-bold text-xs flex items-center gap-2 text-blue-900">
+            Color: 
+            <span 
+              className="inline-block w-4 h-4 rounded-full" 
+              style={{ backgroundColor: item.color }} 
+              aria-label={`Color: ${item.color}`} 
+            />
+          </p>
           <p className="mt-1 font-bold text-xs text-blue-900">Size: {item.size}</p>
         </div>
         <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
