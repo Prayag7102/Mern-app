@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import Loading from '../components/LoaderSpinner'
 import axiosInstance from '../api/axios';
 import { createCheckout, initiateRazorpayPayment } from '../api/Checkout';
+import { Input } from 'antd';
 
 
 const Checkout = () => {
@@ -271,61 +272,61 @@ const Checkout = () => {
         <div className="space-y-4">
           <div className="flex flex-col">
             <label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name *</label>
-            <input
+            <Input
               name="fullName"
               value={address.fullName}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.fullName ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.fullName ? 'border-red-500' : ''}`}
               required
             />
           </div>
           <div className="flex flex-col">
             <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number *</label>
-            <input
+            <Input
               name="phone"
               value={address.phone}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.phone ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.phone ? 'border-red-500' : ''}`}
               required
             />
           </div>
           <div className="flex flex-col">
             <label htmlFor="addressLine1" className="text-sm font-medium text-gray-700">Address Line 1 *</label>
-            <input
+            <Input
               name="addressLine1"
               value={address.addressLine1}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.addressLine1 ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.addressLine1 ? 'border-red-500' : ''}`}
               required
             />
           </div>
           <div className="flex flex-col">
             <label htmlFor="city" className="text-sm font-medium text-gray-700">City *</label>
-            <input
+            <Input
               name="city"
               value={address.city}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.city ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.city ? 'border-red-500' : ''}`}
               required
             />
           </div>
           <div className="flex flex-col">
             <label htmlFor="state" className="text-sm font-medium text-gray-700">State *</label>
-            <input
+            <Input
               name="state"
               value={address.state}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.state ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.state ? 'border-red-500' : ''}`}
               required
             />
           </div>
           <div className="flex flex-col">
             <label htmlFor="pinCode" className="text-sm font-medium text-gray-700">PIN Code *</label>
-            <input
+            <Input
               name="pinCode"
               value={address.pinCode}
               onChange={handleAddressChange}
-              className={`mt-2 p-3 border border-gray-300 rounded-lg ${submitted && !address.pinCode ? 'border-red-500' : ''}`}
+              className={`mt-2 ${submitted && !address.pinCode ? 'border-red-500' : ''}`}
               required
             />
           </div>
