@@ -24,6 +24,7 @@ import Checkout from "./pages/CheckOut";
 import Orders from "./pages/Admin/admin-components/Orders";
 import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
 import BannerTable from "./pages/Admin/admin-components/BannerTable";
+import OrderSuccess from "./components/OrderSuccess";
 
 const router = createBrowserRouter([
   {
@@ -136,7 +137,12 @@ const router = createBrowserRouter([
         path: "checkout",
         element: <Checkout />,
       },
+      
     ]
+  },
+  {
+    path: "/order-success",
+    element: <OrderSuccess />,
   },
   {
     path: "*", 

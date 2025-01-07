@@ -39,6 +39,10 @@ const Checkout = () => {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const decodedToken = JSON.parse(window.atob(base64));
+
+
+      console.log(decodedToken.id);
+      
       
       if (!decodedToken.id) {
         toast.error('Invalid session. Please login again');
@@ -144,7 +148,7 @@ const Checkout = () => {
             Authorization: `Bearer ${token}`
           }
         });
-        navigate('/order-success', { state: { orderId: razorpayOrderId } }); // Redirect to success page
+        navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); // Redirect to success page
         return;
       }
       const orderData = {
@@ -180,7 +184,7 @@ const Checkout = () => {
                 Authorization: `Bearer ${token}`
               }
             });
-            navigate('/order-success', { state: { orderId: razorpayOrderId } }); 
+            navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); 
           } else {
             toast.error('Payment verification failed.');
           }
@@ -349,6 +353,7 @@ const Checkout = () => {
           </div>
           </div>
         </div>
+        
 
         <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
           <div className="mb-2 flex justify-between">
@@ -367,6 +372,7 @@ const Checkout = () => {
               <p className="text-sm text-gray-700">including GST</p>
             </div>
           </div>
+          <img className='mt-2' src='https://cdn.dribbble.com/users/70521/screenshots/3278384/dribbbble.gif' />
           <button
           onClick={handleSubmit}
           disabled={loading}
@@ -374,8 +380,11 @@ const Checkout = () => {
         >
           {loading ? 'Processing...' : 'Confirm Order'}
         </button>
+        
         </div>
       </div>
+      
+      
     </div>
   );
 };
