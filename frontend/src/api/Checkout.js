@@ -39,8 +39,7 @@ export const decodeToken = (token) => {
       );
       return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error('Error decoding token:', error);
-      return null;
+      throw error.response?.data || error.message;
     }
   };
 
@@ -54,7 +53,22 @@ export const decodeToken = (token) => {
       });
       return response.data;
     } catch (error) {
-      console.error('Error fetching all orders:', error);
       throw error.response?.data || error.message;
+    }
+  };
+
+  export const fetchOrderDetails = async (token) => {
+    try {
+      const response = await axiosInstance.get('/checkout/orders', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.checkouts || [];
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return [];
+      }
+      throw new Error('Error fetching orders');
     }
   };
