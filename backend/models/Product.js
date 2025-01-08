@@ -30,6 +30,7 @@ const productSchema = new mongoose.Schema({
     material: { type: String },
     other: { type: String },
   },
+  status: { type: String, default: "active" },
   createdAt: { type: Date, default: Date.now },
 });
 

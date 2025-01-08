@@ -32,6 +32,8 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
       rating: undefined
     };
 
+    updatedProductData.status = selectedProduct.status;
+
     const updateResponse = await fetch(
       `http://localhost:5000/api/products/${selectedProduct._id}`,
       {

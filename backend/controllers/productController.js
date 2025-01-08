@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("reviews.user", "name _id"); 
+    const products = await Product.find({ status: "active" }).populate("reviews.user", "name _id"); 
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -11,10 +11,10 @@ const getProducts = async (req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate("reviews.user", "name _id");
+    const product = await Product.findOne({ _id: req.params.id, status: "active" }).populate("reviews.user", "name _id");
 
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Product not found or inactive" });
     }
 
     res.json(product);

@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Autocomplete } from "@mui/material";
 import JoditEditor from "jodit-react";
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [previewImage, setPreviewImage] = useState("");
@@ -83,6 +84,10 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
     });
   };
 
+  const handleStatusChange = (e) => {
+    setProduct({ ...product, status: e.target.value });
+  };
+
   return (
     <Modal open={open} onClose={onClose} aria-labelledby="edit-product" aria-describedby="edit-product-details">
       <div className="bg-white p-6 rounded-lg w-full max-w-4xl mx-auto mt-16 overflow-y-auto" style={{ maxWidth: "900px", maxHeight: "80vh" }}>
@@ -92,6 +97,14 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
         <TextField label="Price" fullWidth type="number" value={product?.price || ""} onChange={(e) => setProduct({ ...product, price: e.target.value })} margin="normal" />
         <TextField label="Discounted Price" fullWidth type="number" value={product?.discountedPrice || ""} onChange={(e) => setProduct({ ...product, discountedPrice: e.target.value })} margin="normal" />
         <TextField label="Stock" fullWidth type="number" value={product?.stock || ""} onChange={(e) => setProduct({ ...product, stock: e.target.value })} margin="normal" />
+
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Status</InputLabel>
+          <Select value={product?.status || "active"} onChange={handleStatusChange}>
+            <MenuItem value="active">Active</MenuItem>
+            <MenuItem value="inactive">Inactive</MenuItem>
+          </Select>
+        </FormControl>
 
         {["categories", "tags", "colors", "sizes", "features"].map((type) => (
           <div key={type} className="mt-4">

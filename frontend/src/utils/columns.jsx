@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Chip } from "@mui/material";
 import { MdEditNote, MdDelete } from "react-icons/md";
 
 export const createColumns = (handleEdit, handleDelete) => [
@@ -38,6 +38,20 @@ export const createColumns = (handleEdit, handleDelete) => [
           objectFit: "cover",
           borderRadius: "4px",
         }}
+      />
+    ),
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    flex: 1,
+    minWidth: 100,
+    renderCell: (params) => (
+      <Chip
+        label={params.value}
+        color={params.value === "active" ? "success" : "default"}
+       
+        style={{ cursor: "pointer" }}
       />
     ),
   },
