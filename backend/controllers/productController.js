@@ -8,6 +8,14 @@ const getProducts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getProductsAll = async (req, res) => {
+  try {
+    const products = await Product.find().populate("reviews.user", "name _id"); 
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const getProductById = async (req, res) => {
   try {
@@ -220,4 +228,4 @@ const deleteReview = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, addProduct, deleteProduct, updateProduct, addReview,deleteReview,editReview,getProductById };
+module.exports = { getProducts, addProduct, deleteProduct, updateProduct, addReview,deleteReview,editReview,getProductById,getProductsAll };

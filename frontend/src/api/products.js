@@ -75,6 +75,19 @@ export const getProducts = async () => {
     throw error.response ? error.response.data : error;
   }
 };
+export const getAllProducts = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+    const response = await axiosInstance.get("/products/all",{
+      headers:{
+        Authorization:`Bearer ${token}`
+      },
+    });
+    return response.data;  
+  } catch (error) {
+    throw error.response ? error.response.data : error;
+  }
+};
 export const deleteProduct = async (id) => {
   try {
     const token = localStorage.getItem("adminToken");

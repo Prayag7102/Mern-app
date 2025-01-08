@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProducts } from '../api/products';
+import { getAllProducts } from '../api/products';
 import { handleDelete, handleEditSave } from '../utils/productUtils';
 import { toast } from 'react-toastify';
 
@@ -16,7 +16,7 @@ export const useProductManagement = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = await getProducts();
+      const data = await getAllProducts();
       setProducts(data);
     } catch (error) {
       console.error("Error fetching products:", error);
