@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import Header from "../components/Header";
-import { loginUser } from "../api/auth"; // Import login function
+import { loginUser } from "../api/auth"; 
 import { toast } from "react-toastify";
 
 export default function LoginPage() {
@@ -10,8 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
-
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
