@@ -76,10 +76,9 @@ const addProduct = async (req, res) => {
     });
 
     await product.save();
-    res.status(201).json(product);
+    return res.status(201).json(product);
   } catch (error) {
-    res.status(400).json({ message: error.message });
-    res.status(500).json({ message: "Error creating product" });
+    return res.status(400).json({ message: error.message });
   }
 };
 

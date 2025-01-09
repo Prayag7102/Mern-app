@@ -25,6 +25,7 @@ import Orders from "./pages/Admin/admin-components/Orders";
 import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
 import BannerTable from "./pages/Admin/admin-components/BannerTable";
 import OrderSuccess from "./components/OrderSuccess";
+import axios from "axios";
 
 const router = createBrowserRouter([
   {
