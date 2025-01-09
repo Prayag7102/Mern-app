@@ -18,17 +18,17 @@ const upload = multer({ storage: multer.diskStorage({
   ]);
 
   // New middleware to handle the response
-  const handleUploadResponse = (req, res) => {
-    if (req.files) {
-        res.status(200).json({
-            message: "Images uploaded successfully",
-            files: req.files,
-        });
-    } else {
-        res.status(400).json({
-            message: "No files uploaded",
-        });
-    }
-  };
+  //const handleUploadResponse = (req, res) => {
+  //  if (req.files) {
+  //      res.status(200).json({
+  //          message: "Images uploaded successfully",
+  //          files: req.files,
+  //      });
+  //  } else {
+  //      res.status(400).json({
+  //          message: "No files uploaded",
+  //      });
+  //  }
+  //};
 
-  module.exports = { uploadFields, handleUploadResponse };
+  module.exports = { uploadFields };
