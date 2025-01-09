@@ -48,9 +48,14 @@ export const adminLogin = async (username, password) => {
 
 export  const fetchAllUsers = async () => {
   try {
-    const response = await axiosInstance.get("/users");
-    console.log("All users:", response.data);
+    const token = localStorage.getItem("adminToken")
+    const response = await axiosInstance.get("/users",{
+      headers:{
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data
   } catch (error) {
-    console.error("Error fetching users:", error);
+    throw error.response ? error.responce.data : error;
   }
 };
