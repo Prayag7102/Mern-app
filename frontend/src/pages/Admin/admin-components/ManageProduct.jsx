@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, TextField } from "@mui/material";
 import EditModal from "./EditModal";
 import { useProductManagement } from "../../../hooks/useProductManagement";
-import { createColumns } from "../../../utils/Columns.jsx";
+import { createColumns } from "../../../utils/columns";
 
 const ManageProduct = () => {
   const {
