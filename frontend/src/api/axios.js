@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const axiosInstance = axios.create({
-  baseURL: `${import.meta.env.REACT_APP_API_URL}/api`, 
+  baseURL: `https://ecommerce-backend-uqpq.onrender.com/api`, 
   headers: {
     "Content-Type": "application/json",
   },
