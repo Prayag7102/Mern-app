@@ -30,7 +30,7 @@ export const createColumns = (handleEdit, handleDelete) => [
     minWidth: 150,
     renderCell: (params) => (
       <img
-        src={`http://localhost:5000/uploads/${params.value}`}
+        src={`https://ecommerce-backend-uqpq.onrender.com/uploads/${params.value}`}
         alt="Product"
         style={{
           width: "50px",
