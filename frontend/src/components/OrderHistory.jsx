@@ -55,7 +55,7 @@ const OrderHistory = ({ orders, loading, navigate }) => {
                 {order.products.map((item, index) => (
                   <div key={index} className="flex items-center space-x-4 border-b pb-4">
                     <img
-                      src={`http://localhost:5000/uploads/${item.productId.image}`}
+                      src={`https://ecommerce-backend-uqpq.onrender.com/uploads/${item.productId.image}`}
                       alt={item.productId.name}
                       className="w-20 h-20 object-cover rounded"
                       onError={(e) => {

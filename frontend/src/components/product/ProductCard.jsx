@@ -5,7 +5,7 @@ const ProductCard = ({ product, handleAddToCart, navigate }) => (
     <Link to={`/products/${product._id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl">
       <img
         className="object-cover h-64 w-full"
-        src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
+        src={product.image ? `https://ecommerce-backend-uqpq.onrender.com/uploads/${product.image}` : "https://via.placeholder.com/150"}
         alt={product.name}
       />
       {product.discount && (

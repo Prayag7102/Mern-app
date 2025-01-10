@@ -21,7 +21,7 @@ export const ProductImages = ({ product }) => {
       >
         <SwiperSlide>
           <img
-            src={`http://localhost:5000/uploads/${product.image}`}
+            src={`https://ecommerce-backend-uqpq.onrender.com/uploads/${product.image}`}
             alt={product.name}
             className="rounded-lg shadow-md object-contain"
           />
@@ -29,7 +29,7 @@ export const ProductImages = ({ product }) => {
         {product.otherImages.map((img, index) => (
           <SwiperSlide key={index}>
             <img
-              src={`http://localhost:5000/uploads/${img}`}
+              src={`https://ecommerce-backend-uqpq.onrender.com/uploads/${img}`}
               alt={`${product.name} ${index + 1}`}
               className="max-w-full object-cover"
             />
