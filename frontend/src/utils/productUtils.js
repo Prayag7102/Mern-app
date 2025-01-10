@@ -12,7 +12,7 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
       formData.append("image", selectedProduct.image);
 
       const uploadResponse = await fetch(
-        `http://localhost:5000/api/products/${selectedProduct._id}`,
+        `https://ecommerce-backend-uqpq.onrender.com/api/products/${selectedProduct._id}`,
         {
           method: "PUT",
           body: formData,
@@ -35,7 +35,7 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
     updatedProductData.status = selectedProduct.status;
 
     const updateResponse = await fetch(
-      `http://localhost:5000/api/products/${selectedProduct._id}`,
+      `https://ecommerce-backend-uqpq.onrender.com/api/products/${selectedProduct._id}`,
       {
         method: "PUT",
         body: JSON.stringify(updatedProductData),
