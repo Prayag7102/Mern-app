@@ -108,22 +108,3 @@ export const deleteProduct = async (id) => {
 };
 
 
-//export const updateProduct = async (id, productData) => {
-//  try {
-//    const token = localStorage.getItem("adminToken");
-//    if (!token) {
-//      throw new Error("You must be logged in as an admin to update a product.");
-//    }
-
-//    const response = await axiosInstance.put(`/products/${id}`, productData, {
-//      headers: {
-//        Authorization: `Bearer ${token}`,
-//      },
-//    });
-
-//    return response.data;
-//  } catch (error) {
-//    throw error.response ? error.response.data : error.message;
-//  }
-//};
-
