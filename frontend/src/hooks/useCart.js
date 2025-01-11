@@ -4,14 +4,18 @@ import { toast } from 'react-toastify';
 
 export const useCart = (updateSubtotal) => {
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchCart = async () => {
+    setLoading(true);
     try {
       const data = await getCartItems();
       const validItems = data.filter(item => item.product && item.product._id);
       setCartItems(validItems);
     } catch (error) {
       toast.error('Error fetching cart.', { theme: 'dark', draggable: true });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,5 +81,5 @@ export const useCart = (updateSubtotal) => {
     updateSubtotal(subtotal);
   }, [cartItems, updateSubtotal]);
 
-  return { cartItems, handleRemoveItem, handleQuantityChange };
+  return { cartItems, loading, handleRemoveItem, handleQuantityChange };
 }; 
