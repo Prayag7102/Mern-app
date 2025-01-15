@@ -160,9 +160,10 @@ const router = createBrowserRouter([
 function App() {
   //localStorage.clear();
   return (
-    <RouterProvider router={router}>
+    <>
       <ToastContainer />
-    </RouterProvider>
+      <RouterProvider router={router} />
+    </>
   );
 }
 
