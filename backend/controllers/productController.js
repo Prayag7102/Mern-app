@@ -1,8 +1,17 @@
 const Product = require("../models/Product");
+const redis = require("../config/redisClient"); 
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ status: "active" }).populate("reviews.user", "name _id"); 
+    const cacheKey = "activeProducts"; 
+    const cachedProducts = await redis.get(cacheKey); 
+
+    if (cachedProducts) {
+      return res.json(JSON.parse(cachedProducts)); 
+    }
+
+    const products = await Product.find({ status: "active" }).populate("reviews.user", "name _id");
+    await redis.set(cacheKey, JSON.stringify(products), "EX", 3600); 
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
