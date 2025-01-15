@@ -1,18 +1,10 @@
 const Banner = require("../models/banner.model");
 const path = require("path");
-const redis = require("../config/redisClient"); 
 
 const getBanners = async (req, res) => {
   try {
-    const cacheKey = "banners"; 
-    const cachedBanners = await redis.get(cacheKey); 
-
-    if (cachedBanners) {
-      return res.status(200).json({ banners: JSON.parse(cachedBanners) }); 
-    }
 
     const banners = await Banner.find();
-    await redis.set(cacheKey, JSON.stringify(banners), "EX", 3600); 
     res.status(200).json({ banners });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
