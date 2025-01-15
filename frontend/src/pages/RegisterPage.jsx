@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
   return (
     <>
-      <div className="h-screen w-screen flex justify-center items-center dark:bg-gray-900">
+      <div className=" w-screen flex justify-center items-center dark:bg-gray-900">
         <div className="grid gap-8">
           <div
             id="back-div"
