@@ -6,6 +6,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-creative';
 import 'swiper/css/navigation';
 import { getBanners } from '../api/Banner';
+import { toast } from 'react-toastify';
 
 const SwiperBanner = () => {
   const [banners, setBanners] = useState([]);
@@ -16,7 +17,7 @@ const SwiperBanner = () => {
         const response = await getBanners();
         setBanners(response.data.banners);
       } catch (error) {
-        console.error("Error fetching banners:", error);
+        toast.error("Error fetching banners:", error);
       }
     };
 
