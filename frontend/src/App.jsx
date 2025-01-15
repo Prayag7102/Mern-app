@@ -26,11 +26,17 @@ import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
 import BannerTable from "./pages/Admin/admin-components/BannerTable";
 import OrderSuccess from "./components/OrderSuccess";
 import axios from "axios";
+import ScrollToTop from "./components/ScrollToTop";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element:(
+      <>
+        <ScrollToTop /> {/* Place ScrollToTop here */}
+        <Home />
+      </>
+    ),
     children:[
       {
         index:true,
@@ -154,10 +160,9 @@ const router = createBrowserRouter([
 function App() {
   //localStorage.clear();
   return (
-    <div>
-      <RouterProvider router={router} />
+    <RouterProvider router={router}>
       <ToastContainer />
-    </div>
+    </RouterProvider>
   );
 }
 
