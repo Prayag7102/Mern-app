@@ -24,10 +24,10 @@ export default function LoginPage() {
         })
         navigate("/profile");
       } catch (err) {
-        if (err.status === 401) {
+        if (err === 401) {
           setError("Invalid email or password. Please try again.");
         } else {
-          setError("An error occurred. Please try again.");
+          setError(err.message);
         }
       } finally {
         setLoading(false);
