@@ -57,7 +57,6 @@ const updateBanner = async (req, res) => {
     }
 
     await banner.save();
-    await redis.del("banners");
     res.status(200).json({ message: "Banner updated successfully", banner });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
