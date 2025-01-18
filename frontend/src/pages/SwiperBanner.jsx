@@ -52,7 +52,7 @@ const SwiperBanner = () => {
         banner.imageUrl.map((url, imgIndex) => (
           <SwiperSlide key={`${index}-${imgIndex}`}>
             <img
-              src={`https://ecommerce-backend-uqpq.onrender.com/uploads/${url}`}
+              src={`http://localhost:5000/uploads/${url}`}
               alt={`E-commerce Banner ${index + 1} - Image ${imgIndex + 1}`}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />

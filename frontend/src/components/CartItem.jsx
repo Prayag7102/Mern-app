@@ -6,7 +6,7 @@ const CartItem = ({ item, onQuantityChange, onRemove }) => {
     <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
       <Link to={`/products/${item.product._id}`}>
         <img
-          src={item.product.image ? `https://ecommerce-backend-uqpq.onrender.com/uploads/${item.product.image}` : '/path/to/default-image.jpg'}
+          src={item.product.image ? `http://localhost:5000/uploads/${item.product.image}` : '/path/to/default-image.jpg'}
           alt={item.product.name}
           className="w-full rounded-lg sm:w-40"
         />

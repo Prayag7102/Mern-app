@@ -26,7 +26,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
 
   useEffect(() => {
     if (product?.image && typeof product.image === "string") {
-      setPreviewImage(`https://ecommerce-backend-uqpq.onrender.com/uploads/${product.image}`);
+      setPreviewImage(`http://localhost:5000/uploads/${product.image}`);
     } else if (product?.image instanceof File) {
       setPreviewImage(URL.createObjectURL(product.image));
     }

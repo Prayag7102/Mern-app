@@ -84,7 +84,7 @@ const BannerTable = () => {
               {banner.imageUrl.map((url, index) => (
                 <div key={index} className="flex flex-wrap items-center gap-5">
                   <img
-                    src={url.startsWith('data:') ? url : `https://ecommerce-backend-uqpq.onrender.com/uploads/${url}`}
+                    src={url.startsWith('data:') ? url : `http://localhost:5000/uploads/${url}`}
                     alt={`Banner ${banner.title} - Image ${index + 1}`}
                     className="w-[24rem] h-40 object-cover rounded"
                   />
