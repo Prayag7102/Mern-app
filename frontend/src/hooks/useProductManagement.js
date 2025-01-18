@@ -19,7 +19,6 @@ export const useProductManagement = () => {
       const data = await getAllProducts();
       setProducts(data);
     } catch (error) {
-      console.error("Error fetching products:", error);
       toast.error("Failed to fetch products");
     }
   };

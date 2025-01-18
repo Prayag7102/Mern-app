@@ -33,7 +33,7 @@ const router = createBrowserRouter([
     path: "/",
     element:(
       <>
-        <ScrollToTop /> {/* Place ScrollToTop here */}
+        <ScrollToTop /> 
         <Home />
       </>
     ),

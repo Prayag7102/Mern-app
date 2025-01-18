@@ -16,16 +16,6 @@
   .animate-youtube-loading {
     animation: youtube-loading 2s ease-in-out infinite;
   }
-
-  
   .animate-bg-move {
       background-size: 500% 100%;
-      /*animation: bgMove 20s ease infinite;*/
   }
-  /*@keyframes bgMove {
-    0% { background-position: 0% 50%; }
-    25% { background-position: 50% 50%; }
-    50% { background-position: 100% 50%; }
-    75% { background-position: 50% 50%; }
-    100% { background-position: 0% 50%; }
-}*/

@@ -5,10 +5,10 @@ const ScrollToTop = () => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to the top-left corner
-  }, [location.pathname]); // Trigger on pathname change
+    window.scrollTo(0, 0); 
+  }, [location.pathname]); 
 
-  return null; // This component doesn't render anything
+  return null; 
 };
 
 export default ScrollToTop;

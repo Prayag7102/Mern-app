@@ -52,8 +52,8 @@ const AddProducts = () => {
   const handleOtherImagesChange = (e) => {
     const files = Array.from(e.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
-    setOtherImages(files); // Store file objects for upload
-    setOtherImagesPreviews(previews); // Generate preview URLs for display
+    setOtherImages(files); 
+    setOtherImagesPreviews(previews); 
   };
 
   const handleTagChange = (e, type) => {
