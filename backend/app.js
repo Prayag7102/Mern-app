@@ -19,16 +19,16 @@ app.use('/api/cart', require("./routes/cartRoutes"));
 app.use("/api/checkout", require("./routes/checkoutRoutes"));
 app.use("/api/banner", require("./routes/banner.routes"));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "public")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
-} else {
+//if (process.env.NODE_ENV === "production") {
+//  app.use(express.static(path.join(__dirname, "public")));
+//  app.get("*", (req, res) => {
+//    res.sendFile(path.join(__dirname, "public", "index.html"));
+//  });
+//} else {
   app.get("/", (req, res) => {
     res.send("Backend API running...");
   });
-}
+
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
