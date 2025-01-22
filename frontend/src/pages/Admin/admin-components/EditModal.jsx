@@ -13,7 +13,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-
+  const [previewOtherImages, setPreviewOtherImages] = useState([]);
   const [editorContent, setEditorContent] = useState(product?.details || "");
 
   const editorRef = useRef(null);
@@ -36,6 +36,7 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
     setSelectedColors(product?.colors || []);
     setSelectedSizes(product?.sizes || []);
     setSelectedFeatures(product?.features || []);
+    setPreviewOtherImages(product?.otherImages?.map(img => (typeof img === 'string' ? `http://localhost:5000/uploads/${img}` : URL.createObjectURL(img))) || []);
   }, [product]);
 
   const handleFileChange = (e) => {
@@ -44,6 +45,28 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
       setProduct({ ...product, image: file });
       setPreviewImage(URL.createObjectURL(file));
     }
+  };
+  const handleOtherImageChange = (e, index) => {
+    const file = e.target.files[0];
+    if (file) {
+      const updatedOtherImages = [...(product.otherImages || [])];
+      updatedOtherImages[index] = file;
+      const updatedPreviewOtherImages = updatedOtherImages.map((img) =>
+        img instanceof File
+          ? URL.createObjectURL(img) 
+          : `http://localhost:5000/uploads/${img}` 
+      );
+      setProduct({ ...product, otherImages: updatedOtherImages });
+      setPreviewOtherImages(updatedPreviewOtherImages);
+    }
+  };
+
+  const handleAddOtherImage = (e) => {
+    const files = Array.from(e.target.files);
+    const updatedOtherImages = [...(product.otherImages || []), ...files];
+    setProduct({ ...product, otherImages: updatedOtherImages });
+    const updatedPreviewOtherImages = updatedOtherImages.map(img => (img instanceof File ? URL.createObjectURL(img) : `http://localhost:5000/uploads/${img}`));
+    setPreviewOtherImages(updatedPreviewOtherImages);
   };
 
   const handleMultiChange = (event, newValue, type) => {
@@ -167,10 +190,30 @@ const EditModal = ({ open, onClose, product, setProduct, onSave }) => {
           />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 px-3 py-2 border border-slate-800">
+          <h5 className="font-semibold text-blue-600 text-2xl">Main Image</h5>
           {previewImage && <img src={previewImage} alt="Preview" className="max-h-32 object-contain mb-4" />}
           <input type="file" accept="image/*" onChange={handleFileChange} />
         </div>
+
+        <div className="mt-4">
+        <label>Other Images</label>
+        {previewOtherImages.map((src, index) => (
+          <div key={index}>
+            <input
+              type="file"
+              name={`otherImage-${index}`}
+              onChange={(e) => handleOtherImageChange(e, index)}
+            />
+            {src && <img src={src} alt={`Preview ${index}`} className="max-h-32 object-contain mb-4" />}
+
+          </div>
+        ))}
+          <div className="mt-4">
+            <h4>Upload new Images:</h4>
+             <input type="file" accept="image/*" multiple onChange={handleAddOtherImage} />
+          </div>
+      </div>
 
         <Button variant="contained" color="primary" onClick={onSave} className="mt-6" fullWidth>
           Save Changes

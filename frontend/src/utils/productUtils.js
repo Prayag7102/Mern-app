@@ -4,6 +4,7 @@ import { deleteProduct } from "../api/products";
 export const handleEditSave = async (selectedProduct, setProducts, setEditModalOpen, toast) => {
   try {
     let imageUrl = selectedProduct.image;
+    let otherImagesUrls = selectedProduct.otherImages || [];
     const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) throw new Error("Admin is not authenticated.");
 
@@ -25,9 +26,35 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
       imageUrl = uploadedData.image;
     }
 
+    if (selectedProduct.otherImages && selectedProduct.otherImages.length > 0) {
+      const otherImagesFormData = new FormData();
+      selectedProduct.otherImages.forEach((file, index) => {
+        if (file instanceof File) {
+          otherImagesFormData.append(`otherImages`, file);
+        }
+      });
+
+      const otherImagesUploadResponse = await fetch(
+        `http://localhost:5000/api/products/${selectedProduct._id}`,
+        {
+          method: "PUT",
+          body: otherImagesFormData,
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }
+      );
+
+      if (!otherImagesUploadResponse.ok) throw new Error("Failed to upload other images");
+      const uploadedOtherImagesData = await otherImagesUploadResponse.json();
+      otherImagesUrls = uploadedOtherImagesData.otherImages;
+      console.log(uploadedOtherImagesData);
+    }
+
+    
+
     const updatedProductData = {
       ...selectedProduct,
       image: imageUrl,
+      otherImages: otherImagesUrls,
       reviews: undefined, 
       rating: undefined
     };

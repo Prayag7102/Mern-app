@@ -108,8 +108,13 @@ const updateProduct = async (req, res) => {
     }
 
     if (req.files && req.files.otherImages) {
-      const otherImages = req.files.otherImages.map((file) => `/uploads/${file.filename}`);
-      updates.otherImages = otherImages;
+      const otherImages = req.files.otherImages.map((file) => `${file.filename}`);
+      if (!updates.otherImages) {
+          updates.otherImages = [];
+      }
+      otherImages.forEach((image, index) => {
+          updates.otherImages[index] = image;
+      });
     }
 
     const existingProduct = await Product.findById(id);
@@ -127,6 +132,7 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Failed to update product.", error: error.message });
   }
 };
+
 
 
 const addReview = async (req, res) => {
@@ -182,8 +188,6 @@ const editReview = async (req, res) => {
     review.rating = rating;
     review.comment = comment;
     review.date = new Date();
-
-    // Recalculate the overall rating
     const totalReviews = product.reviews.length;
     const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
     product.rating = totalRating / totalReviews;
