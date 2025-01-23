@@ -1,11 +1,31 @@
 import React from 'react'
 import { Form, Input, Button } from 'antd'
+import { submitContactForm } from '../api/contact'
+import { toast } from 'react-toastify'
 
 const ContactUs = () => {
     const [form] = Form.useForm()
 
-    const onFinish = (values) => {
-        console.log('Success:', values)
+    const onFinish = async (values) => {
+        
+        const formData = new FormData()
+        formData.append('name', values.name)
+        formData.append('email', values.email)
+        formData.append('phone', values.phone)
+        formData.append('subject', values.subject)
+        formData.append('message', values.message)
+
+        try {
+            const response = await submitContactForm(formData)
+            toast.success("Your inquiry submited successfully, We will responce on your email. Thankyou",{
+                theme:'dark',
+                draggable:true,
+                pauseOnHover:false
+            })
+            form.resetFields()
+        } catch (error) {
+            alert(`Error: ${error.response ? error.response.data.error : 'Network Error'}`)
+        }
     }
 
     const onFinishFailed = (errorInfo) => {
