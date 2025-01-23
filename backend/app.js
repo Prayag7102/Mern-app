@@ -18,6 +18,7 @@ app.use("/api/admin", require("./routes/adminRoutes"));
 app.use('/api/cart', require("./routes/cartRoutes"));
 app.use("/api/checkout", require("./routes/checkoutRoutes"));
 app.use("/api/banner", require("./routes/banner.routes"));
+app.use("/api/contact", require("./routes/contact.routes"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
