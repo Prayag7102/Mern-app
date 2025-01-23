@@ -14,6 +14,15 @@ const createContact = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Server error' });
     }
-}; 
+};
 
-module.exports = {createContact};
+const getAllInquiries = async (req, res) => {
+    try {
+        const inquiries = await Contact.find(); 
+        res.status(200).json(inquiries); 
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports = { createContact, getAllInquiries };

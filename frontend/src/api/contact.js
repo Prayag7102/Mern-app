@@ -15,3 +15,17 @@ export const submitContactForm = async (formData) => {
         throw error.response ? error.response.data : new Error('Network Error');
     }
 };
+
+export const getInquiry = async () => {
+    try {
+        const token = localStorage.getItem("adminToken");
+        const response = await axiosInstance.get(`/contact/get-inquiry`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        throw error.response ? error.response.data : new Error('Network Error');
+    }
+};

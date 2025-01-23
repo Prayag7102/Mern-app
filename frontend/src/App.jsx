@@ -25,7 +25,7 @@ import Orders from "./pages/Admin/admin-components/Orders";
 import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
 import BannerTable from "./pages/Admin/admin-components/BannerTable";
 import OrderSuccess from "./components/OrderSuccess";
-import axios from "axios";
+import GetAllInquiry from './pages/Admin/admin-components/GetAllInquiry'
 import ScrollToTop from "./components/ScrollToTop";
 
 const router = createBrowserRouter([
@@ -118,6 +118,10 @@ const router = createBrowserRouter([
         path: 'editbanner',
         element: <BannerTable />,
       },
+      {
+        path: "inquiry",
+        element: <GetAllInquiry />,
+      },
     ],
   },
   {
@@ -151,6 +155,7 @@ const router = createBrowserRouter([
     path: "/order-success",
     element: <OrderSuccess />,
   },
+  
   {
     path: "*", 
     element: <NotFoundPage />,

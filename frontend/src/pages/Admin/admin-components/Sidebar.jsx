@@ -1,6 +1,6 @@
 import React from 'react'
 import { HiHome } from "react-icons/hi";
-import { AiFillProduct } from "react-icons/ai";
+import { AiFillProduct, AiOutlineMessage } from "react-icons/ai";
 import { Link, useLocation } from 'react-router-dom';
 import { BsFillBagCheckFill, BsFillImageFill, BsPencilSquare } from "react-icons/bs";
 
@@ -76,6 +76,16 @@ const Sidebar = ({ isOpen }) => {
                     >
                         <BsPencilSquare className={`text-2xl ${isActive("/admin/dashboard/editbanner") ? "text-white" : "text-black"}`} />
                         <span className={`${isActive("/admin/dashboard/editbanner") ? "font-medium" : ""}`}>Edit Banner</span>
+                    </Link>
+                    <Link
+                        to="/admin/dashboard/inquiry"
+                        className={`px-4 py-3 flex items-center space-x-4 rounded-lg ${isActive("/admin/dashboard/inquiry")
+                                ? "text-white bg-gradient-to-r from-sky-600 to-cyan-400"
+                                : "text-gray-500 group"
+                            }`}
+                    >
+                        <AiOutlineMessage className={`text-2xl ${isActive("/admin/dashboard/inquiry") ? "text-white" : "text-black"}`} />
+                        <span className={`${isActive("/admin/dashboard/inquiry") ? "font-medium" : ""}`}>Inquiries</span>
                     </Link>
                 </div>
             </div>

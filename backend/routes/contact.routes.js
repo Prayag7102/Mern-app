@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { createContact } = require('../controllers/contactController');
-const { verifyToken } = require('../middleware/authMiddleware');
+const { createContact, getAllInquiries } = require('../controllers/contactController');
+const { verifyToken, protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -15,5 +15,7 @@ router.post('/inquiry', [
     body('subject').notEmpty().withMessage('Subject is required'),
     body('message').notEmpty().withMessage('Message is required'),
 ],verifyToken, createContact);
+
+router.get('/get-inquiry',protect,getAllInquiries)
 
 module.exports = router; 
