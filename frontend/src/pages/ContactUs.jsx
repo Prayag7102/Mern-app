@@ -24,7 +24,11 @@ const ContactUs = () => {
             })
             form.resetFields()
         } catch (error) {
-            alert(`Error: ${error.response ? error.response.data.error : 'Network Error'}`)
+            toast.error(`${error.response ? error.response.data.error : 'Please Login To submit the form'}`, {
+                theme:'dark',
+                draggable:true,
+                pauseOnHover:false
+            })
         }
     }
 

@@ -25,4 +25,20 @@ const getAllInquiries = async (req, res) => {
     }
 };
 
-module.exports = { createContact, getAllInquiries };
+const deleteContact = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const contact = await Contact.findByIdAndDelete(id);
+
+        if (!contact) {
+            return res.status(200).json({ error: 'Contact not found' });
+        }
+
+        res.status(200).json({ message: 'Contact deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+module.exports = { createContact, getAllInquiries,deleteContact };

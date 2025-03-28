@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { createContact, getAllInquiries } = require('../controllers/contactController');
+const { createContact, getAllInquiries, deleteContact } = require('../controllers/contactController');
 const { verifyToken, protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -17,5 +17,8 @@ router.post('/inquiry', [
 ],verifyToken, createContact);
 
 router.get('/get-inquiry',protect,getAllInquiries)
+
+
+router.delete('/delete-inquiry/:id',protect,deleteContact)
 
 module.exports = router; 

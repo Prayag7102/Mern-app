@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, Input } from 'antd';
-import { getInquiry } from '../../../api/contact';
+import { Table, Spin, Input, Button } from 'antd';
+import { deleteInquiry, getInquiry } from '../../../api/contact';
+import { toast } from 'react-toastify';
 
 const InquiryTable = () => {
     const [inquiries, setInquiries] = useState([]);
@@ -11,6 +12,8 @@ const InquiryTable = () => {
         const fetchInquiries = async () => {
             try {
                 const data = await getInquiry();
+                console.log(data);
+                
                 setInquiries(data);
             } catch (error) {
                 console.error('Error fetching inquiries:', error);
@@ -25,7 +28,15 @@ const InquiryTable = () => {
     const handleSearch = (value) => {
         setSearchText(value);
     };
-
+    const handleDelete = async (id) => {
+        try {
+            await deleteInquiry(id);
+            toast.success('Inquiry deleted successfully');
+            setInquiries((prev) => prev.filter((inquiry) => inquiry._id !== id));
+        } catch (error) {
+            toast.error('Error deleting inquiry:', error);
+        }
+    };
     const filteredInquiries = inquiries.filter(inquiry => {
         return Object.keys(inquiry).some(key =>
             String(inquiry[key]).toLowerCase().includes(searchText.toLowerCase())
@@ -39,10 +50,37 @@ const InquiryTable = () => {
         { title: 'Phone', dataIndex: 'phone', key: 'phone', width: 200 },
         { title: 'Subject', dataIndex: 'subject', key: 'subject', width: 200 },
         { title: 'Message', dataIndex: 'message', key: 'message', width: 300 },
+        { 
+            title: 'Date', 
+            dataIndex: 'createdAt', 
+            key: 'createdAt', 
+            width: 300,
+            render: (text) => new Date(text).toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            })
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            width: 150,
+            render: (_, record) => (
+                <Button
+                    type="primary"
+                    danger
+                    onClick={() => handleDelete(record._id)}
+                >
+                    Delete
+                </Button>
+            ),
+        },
     ];
 
     return (
-        <div>
+        <div className='w-[80rem] mt-4'>
             <Input.Search
                 placeholder="Search inquiries"
                 onSearch={handleSearch}
