@@ -36,6 +36,7 @@ export const adminLogin = async (username, password) => {
 
 
     if (response.data.token) {
+      localStorage.setItem("admin", response.data.admin.username);
       localStorage.setItem("adminToken", response.data.token);
     }
 
