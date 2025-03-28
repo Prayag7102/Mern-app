@@ -344,8 +344,7 @@ const Checkout = () => {
               className="p-3 border border-gray-300 rounded-lg w-full"
             >
               <option value="COD">Cash on Delivery</option>
-              <option value="UPI">UPI</option>
-              <option value="Card">Credit/Debit Card</option>
+              <option value="UPI">Razor Pay</option>
             </select>
           </div>
           </div>
