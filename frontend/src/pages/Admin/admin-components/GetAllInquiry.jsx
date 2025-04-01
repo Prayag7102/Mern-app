@@ -26,6 +26,7 @@ const InquiryTable = () => {
     const handleSearch = (value) => {
         setSearchText(value);
     };
+    
     const handleDelete = async (id) => {
         try {
             await deleteInquiry(id);
