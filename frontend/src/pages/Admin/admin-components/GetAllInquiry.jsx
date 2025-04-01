@@ -14,7 +14,7 @@ const InquiryTable = () => {
                 const data = await getInquiry();
                 setInquiries(data);
             } catch (error) {
-                console.error('Error fetching inquiries:', error);
+                toast.error('Error fetching inquiries:', error);
             } finally {
                 setLoading(false);
             }
