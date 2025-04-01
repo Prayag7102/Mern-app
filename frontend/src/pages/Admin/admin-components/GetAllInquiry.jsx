@@ -12,8 +12,6 @@ const InquiryTable = () => {
         const fetchInquiries = async () => {
             try {
                 const data = await getInquiry();
-                console.log(data);
-                
                 setInquiries(data);
             } catch (error) {
                 console.error('Error fetching inquiries:', error);
