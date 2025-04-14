@@ -30,7 +30,7 @@ const ProductsCard = ({products, handleAddToCart, navigate}) => {
         ) : (
           filteredProducts.map((product) => (
             <ProductCard 
-              key={product._id} 
+              key={product.id} 
               product={product} 
               handleAddToCart={handleAddToCart} 
               navigate={navigate}

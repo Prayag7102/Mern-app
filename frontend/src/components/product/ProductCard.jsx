@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product, handleAddToCart, navigate }) => (
   <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-    <Link to={`/products/${product._id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl">
+    <Link to={`/products/${product.id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl">
       <img
         className="object-cover h-64 w-full"
         src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
@@ -40,7 +40,7 @@ const ProductCard = ({ product, handleAddToCart, navigate }) => (
         Add to cart
         </button>
         <button 
-        onClick={() => navigate(`/products/${product._id}`)}  
+        onClick={() => navigate(`/products/${product.id}`)}  
         className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
         >
         View Details 
