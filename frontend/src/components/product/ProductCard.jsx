@@ -8,11 +8,6 @@ const ProductCard = ({ product, handleAddToCart, navigate }) => (
         src={product.image ? `http://localhost:5000/uploads/${product.image}` : "https://via.placeholder.com/150"}
         alt={product.name}
       />
-      {product.discount && (
-        <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">
-          {product.discount}% OFF
-        </span>
-      )}
     </Link>
     <div className="mt-4 px-3 pb-5">
       <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
