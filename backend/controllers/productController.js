@@ -11,6 +11,7 @@ const getProducts = async (req, res) => {
       discountedPrice: data.discountedPrice,
       price: data.price,
       brand: data.brand,
+      categories: data.categories
     }))
     res.json(filterproductsData);
   } catch (error) {

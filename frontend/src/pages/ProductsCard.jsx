@@ -7,10 +7,12 @@ const ProductsCard = ({products, handleAddToCart, navigate}) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const filteredProducts = useMemo(() => 
-    selectedCategory === 'all' ? products : products.filter(product => product.categories.includes(selectedCategory)),
+    selectedCategory === 'all'
+      ? products
+      : products.filter(product => Array.isArray(product.categories) && product.categories.includes(selectedCategory)),
     [products, selectedCategory]
   );
-
+  
   const categoryName = selectedCategory === 'all' ? 'All Products': CATEGORIES.find(c => c.id === selectedCategory)?.name;
 
   return (
