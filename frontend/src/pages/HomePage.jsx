@@ -21,16 +21,8 @@ export default function HomePage() {
     const fetchProducts = async () => {
       try {
         const productsData = await getProducts();
-        const filteredData = productsData.map((data) => ({
-          id: data._id,
-          name: data.name,
-          image: data.image,
-          discountedPrice: data.discountedPrice,
-          price: data.price,
-          brand: data.brand,
-        }));
   
-        setProducts(filteredData);
+        setProducts(productsData);
       } catch (error) {
         toast.error("Error fetching products:", error.message || error);
       } finally {

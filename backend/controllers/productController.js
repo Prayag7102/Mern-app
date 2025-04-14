@@ -3,7 +3,17 @@ const Product = require("../models/Product");
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({ status: "active" }).populate("reviews.user", "name _id");
-    res.json(products);
+
+    const filterproductsData = products.map((data)=> ({
+      id:data._id,
+      name: data.name,
+      image: data.image,
+      discountedPrice: data.discountedPrice,
+      price: data.price,
+      brand: data.brand,
+    }))
+    console.log(filterproductsData);
+    res.json(filterproductsData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
