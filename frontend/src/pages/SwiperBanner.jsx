@@ -10,19 +10,39 @@ import { toast } from 'react-toastify';
 
 const SwiperBanner = () => {
   const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    const fetchBanners = async () => {
+    const fetchAndPreloadBanners = async () => {
       try {
         const response = await getBanners();
-        setBanners(response.data.banners);
+        const bannersData = response.data.banners;
+        const preloadPromises = bannersData.flatMap(banner =>
+          banner.imageUrl.map(url => {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.src = `http://localhost:5000/uploads/${url}`;
+              img.onload = resolve;
+              img.onerror = resolve; 
+            });
+          })
+        );
+
+        await Promise.all(preloadPromises);
+
+        setBanners(bannersData);
       } catch (error) {
-        toast.error("Error fetching banners:", error);
+        toast.error("Error fetching banners");
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchBanners();
+    fetchAndPreloadBanners();
   }, []);
+
+  if (loading) return <div className="w-full  bg-gray-100 animate-pulse rounded-md" />;
 
   return (
     <Swiper
@@ -48,17 +68,20 @@ const SwiperBanner = () => {
       pagination={{ clickable: true }}
       navigation={true}
     >
-      {banners.map((banner, index) => (
+      {banners.map((banner, index) =>
         banner.imageUrl.map((url, imgIndex) => (
           <SwiperSlide key={`${index}-${imgIndex}`}>
             <img
               src={`http://localhost:5000/uploads/${url}`}
+              height={'100%'}
+              width={'100%'}
+              loading='lazy'
               alt={`E-commerce Banner ${index + 1} - Image ${imgIndex + 1}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ objectFit: 'cover' }}
             />
           </SwiperSlide>
         ))
-      ))}
+      )}
     </Swiper>
   );
 };
