@@ -2,7 +2,7 @@ const CATEGORIES = [
     { id: 'all', name: 'All Products' },
     { id: 'clothing', name: 'Clothing & Accessories' },
     { id: 'smartphones', name: 'Smartphones' },
-    { id: 'electronics', name: 'Electronics' }
+    { id: 'Electronics', name: 'Electronics' }
   ];
   
   const CategoryFilter = ({ selectedCategory, setSelectedCategory }) => (
