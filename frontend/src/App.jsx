@@ -1,5 +1,6 @@
+// App.jsx
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
@@ -25,149 +26,67 @@ import Orders from "./pages/Admin/admin-components/Orders";
 import BannerUpload from "./pages/Admin/admin-components/BannerUpload";
 import BannerTable from "./pages/Admin/admin-components/BannerTable";
 import OrderSuccess from "./components/OrderSuccess";
-import GetAllInquiry from './pages/Admin/admin-components/GetAllInquiry'
+import GetAllInquiry from "./pages/Admin/admin-components/GetAllInquiry";
 import ScrollToTop from "./components/ScrollToTop";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element:(
-      <>
-        <ScrollToTop /> 
-        <Home />
-      </>
-    ),
-    children:[
-      {
-        index:true,
-        element:(
-          <>
-            <HomePage/>
-          </>
-        )
-      },
-        {
-          path: "/products/:id",
-          element: <ProductDetail />,
-        },
-        {
-          path: "/login",
-          element: <LoginPage />,
-        },
-        {
-          path: "/register",
-          element: <RegisterPage />,
-        },
-        {
-          path: "/contact",
-          element: <ContactUs />,
-        },
-    ]
-  },
-  {
-    path: "/admin/login",
-    element: <AdminLogin />,
-  },
-  {
-    path: "/admin/dashboard",
-    element: (
-      <ProtectedRoute isAdmin={true}>
-        <AdminLayout /> 
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        index: true,
-        element: (
-          <>
-            <Search/>
-            <DashCards />
-            <TableData />
-          </>
-        ),
-      },
-      {
-        path: 'search',
-        element: <Search />,
-      },
-      {
-        path: 'dashcards',
-        element: <DashCards />,
-      },
-      {
-        path: 'table-data',
-        element: <TableData />,
-      },
-      {
-        path: 'addproducts',
-        element: <AddProducts />,
-      },
-      {
-        path: 'manageproducts',
-        element: <ManageProducts />,
-      },
-      {
-        path: 'orders',
-        element: <Orders />,
-      },
-      {
-        path: 'banner',
-        element: <BannerUpload />,
-      },
-      {
-        path: 'editbanner',
-        element: <BannerTable />,
-      },
-      {
-        path: "inquiry",
-        element: <GetAllInquiry />,
-      },
-    ],
-  },
-  {
-    path: "/profile", 
-    element: (
-      <ProtectedRoute>
-        <UserLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        index: true,
-        element: (
-          <>
-           <ProfilePage/>
-          </>
-        ),
-      },
-      {
-        path: "cart", 
-        element: <Cart />
-      },
-      {
-        path: "checkout",
-        element: <Checkout />,
-      },
-      
-    ]
-  },
-  {
-    path: "/order-success",
-    element: <OrderSuccess />,
-  },
-  
-  {
-    path: "*", 
-    element: <NotFoundPage />,
-  },
-]);
-
 function App() {
-  //localStorage.clear();
   return (
     <>
       <ToastContainer />
-      <RouterProvider router={router} />
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Home />}>
+            <Route index element={<HomePage />} />
+            <Route path="products/:id" element={<ProductDetail />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="contact" element={<ContactUs />} />
+          </Route>
+
+          <Route path="/order-success" element={<OrderSuccess />} />
+
+          {/* Protected User Routes */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<ProfilePage />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="checkout" element={<Checkout />} />
+          </Route>
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<><Search /><DashCards /><TableData /></>} />
+            <Route path="search" element={<Search />} />
+            <Route path="dashcards" element={<DashCards />} />
+            <Route path="table-data" element={<TableData />} />
+            <Route path="addproducts" element={<AddProducts />} />
+            <Route path="manageproducts" element={<ManageProducts />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="banner" element={<BannerUpload />} />
+            <Route path="editbanner" element={<BannerTable />} />
+            <Route path="inquiry" element={<GetAllInquiry />} />
+          </Route>
+
+          {/* Fallback Route */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }
