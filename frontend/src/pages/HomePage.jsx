@@ -43,7 +43,7 @@ export default function HomePage() {
 
   const handleAddToCart = async (product) => {
     try {
-      await addToCart(product._id, 1); 
+      await addToCart(product.id, 1); 
       toast.success("Product Add To Cart Successfully!",{
         theme:'dark',
         draggable:true
