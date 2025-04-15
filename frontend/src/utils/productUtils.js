@@ -5,8 +5,6 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
   try {
     let imageUrl = selectedProduct.image;
     let otherImagesUrls = selectedProduct.otherImages || [];
-    const adminToken = localStorage.getItem("adminToken");
-    if (!adminToken) throw new Error("Admin is not authenticated.");
 
     if (selectedProduct.image instanceof File) {
       const formData = new FormData();
@@ -17,8 +15,8 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
         {
           method: "PUT",
           body: formData,
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
+          credentials: "include",
+        },
       );
 
       if (!uploadResponse.ok) throw new Error("Failed to upload image");
@@ -39,8 +37,8 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
         {
           method: "PUT",
           body: otherImagesFormData,
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
+          credentials: "include",
+        },
       );
 
       if (!otherImagesUploadResponse.ok) throw new Error("Failed to upload other images");
@@ -68,8 +66,8 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
         body: JSON.stringify(updatedProductData),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${adminToken}`,
         },
+        credentials: "include",
       }
     );
 

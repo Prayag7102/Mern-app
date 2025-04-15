@@ -15,11 +15,8 @@ export const submitContactForm = async (formData) => {
 
 export const getInquiry = async () => {
     try {
-        const token = localStorage.getItem("adminToken");
         const response = await axiosInstance.get(`/contact/get-inquiry`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials:true
         });
         return response.data; 
     } catch (error) {
@@ -29,15 +26,8 @@ export const getInquiry = async () => {
 
 export const deleteInquiry = async (id) => {
     try {
-        const token = localStorage.getItem("adminToken");
-        if (!token) {
-            throw new Error('Unauthorized: Admin token is missing');
-        }
-
         const response = await axiosInstance.delete(`/contact/delete-inquiry/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials:true
         });
         return response.data;
     } catch (error) {

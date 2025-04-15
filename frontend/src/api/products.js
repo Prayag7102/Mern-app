@@ -2,11 +2,6 @@ import axiosInstance from './axios';
 
 
 export const createProduct = async (productData, image, otherImages) => {
-  const token = localStorage.getItem("adminToken");
-
-  if (!token) {
-    throw new Error("You must be logged in as an admin to add a product");
-  }
 
   const formData = new FormData();
   formData.append("name", productData.name);
@@ -59,8 +54,8 @@ export const createProduct = async (productData, image, otherImages) => {
   const response = await axiosInstance.post("/products", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`,
     },
+    withCredentials:true
   });
 
   return response.data;
@@ -77,11 +72,8 @@ export const getProducts = async () => {
 };
 export const getAllProducts = async () => {
   try {
-    const token = localStorage.getItem("adminToken");
     const response = await axiosInstance.get("/products/all",{
-      headers:{
-        Authorization:`Bearer ${token}`
-      },
+      withCredentials:true
     });
     return response.data;  
   } catch (error) {
@@ -90,15 +82,9 @@ export const getAllProducts = async () => {
 };
 export const deleteProduct = async (id) => {
   try {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      throw new Error("You must be logged in as an admin to delete a product.");
-    }
 
     const response = await axiosInstance.delete(`/products/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      withCredentials:true
     });
 
     return response.data;

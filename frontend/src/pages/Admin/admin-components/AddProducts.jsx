@@ -4,6 +4,9 @@ import { createProduct } from '../../../api/products';
 import { toast } from 'react-toastify';
 import { Button, Input, Box, Typography } from '@mui/material';
 import  JoditEditor  from 'jodit-react';
+import { useAdmin } from '../../../context/admin.context';
+
+
 
 const AddProducts = () => {
   const editor = useRef(null);
@@ -28,6 +31,8 @@ const AddProducts = () => {
   const [otherImagesPreviews, setOtherImagesPreviews] = useState([]);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const {admin} = useAdmin();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -82,10 +87,9 @@ const AddProducts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("adminToken");
 
-    if (!token) {
-      alert("You need to log in as an admin to add products");
+    if (!admin) {
+      toast.error("Please login first", { theme: "dark" });
       navigate("/admin/login");
       return;
     }

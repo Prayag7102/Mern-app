@@ -34,13 +34,18 @@ export const useProductManagement = () => {
   const handleProductEdit = () => handleEditSave(selectedProduct, setProducts, setEditModalOpen, toast);
 
   const getFilteredProducts = () => {
-    return products.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.price.toString().includes(searchQuery)
-    );
-  };
+    return products.filter((product) => {
+      const name = product.name || "";
+      const description = product.description || "";
+      const price = product.price?.toString() || "";
+  
+      return (
+        name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        price.includes(searchQuery)
+      );
+    });
+  }
 
   return {
     products,
