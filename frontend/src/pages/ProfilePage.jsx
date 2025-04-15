@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useUser } from '../hooks/useUser';
 import OrderHistory from '../components/OrderHistory';
 import ProfileInfo from '../components/ProfileInfo';
 import { userOrders } from '../hooks/user.order';
+import axiosInstance from '../api/axios';
+import { useUser } from '../context/user.context';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
   const { orders, loading } = userOrders();
-  const user = useUser();
+  const {user, setUser} = useUser();
   const [activeTab, setActiveTab] = useState('profile');
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    toast.success('Logged out successfully!');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/users/logout", {}, { withCredentials: true });
+      toast.success("Logged out successfully!");
+      setUser(null);
+      navigate("/login");
+    } catch (error) {
+      toast.error("Logout failed!");
+      console.error(error);
+    }
   };
 
   return (
@@ -37,7 +43,7 @@ export default function ProfilePage() {
             alt="Profile"
           />
           <div className="flex items-center space-x-2 mt-2">
-            <p className="text-2xl">{user.name || 'User'}</p>
+            <p className="text-2xl">{user?.name || 'User'}</p>
             <span className="bg-blue-500 rounded-full p-1" title="Verified">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

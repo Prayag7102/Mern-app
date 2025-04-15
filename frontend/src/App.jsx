@@ -28,6 +28,7 @@ import BannerTable from "./pages/Admin/admin-components/BannerTable";
 import OrderSuccess from "./components/OrderSuccess";
 import GetAllInquiry from "./pages/Admin/admin-components/GetAllInquiry";
 import ScrollToTop from "./components/ScrollToTop";
+import AdminProtected from "./components/AdminProtectedRoute";
 
 function App() {
   return (
@@ -66,9 +67,9 @@ function App() {
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute isAdmin={true}>
+              <AdminProtected>
                 <AdminLayout />
-              </ProtectedRoute>
+              </AdminProtected>
             }
           >
             <Route index element={<><Search /><DashCards /><TableData /></>} />

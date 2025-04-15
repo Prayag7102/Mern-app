@@ -88,7 +88,7 @@ const ProductDetail = () => {
         {activeTab === "reviews" && (
           <ReviewSection
             product={product}
-            userId={reviewHook.userId}
+            userId={reviewHook.User}
             openReviewModal={reviewHook.openReviewModal}
             setOpenReviewModal={reviewHook.setOpenReviewModal}
             deleteModalOpen={reviewHook.deleteModalOpen}

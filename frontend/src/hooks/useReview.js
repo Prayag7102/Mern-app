@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import axiosInstance from '../api/axios';
-import { deleteReview, editReview, decodeToken } from '../api/review';
+import { deleteReview, editReview } from '../api/review';
+import { useUser } from '../context/user.context';
 
 export const useReview = (productId, setProduct) => {
   const [openReviewModal, setOpenReviewModal] = useState(false);
@@ -13,20 +14,19 @@ export const useReview = (productId, setProduct) => {
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState('');
 
-  const token = localStorage.getItem('token');
-  const decodedToken = decodeToken(token);
-  const userId = decodedToken?.id;
+
+  const {user} = useUser();
+
+  const User = user?.id;
 
   const handleAddReview = async () => {
-    if (!token) {
+    if (!user) {
       toast.error('You need to be logged in to add a review.');
       return;
     }
     try {
       await axiosInstance.post(`/products/${productId}/review`, { rating, comment }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        withCredentials:true
       });
       toast.success('Review added successfully!');
       resetAndRefresh();
@@ -80,6 +80,7 @@ export const useReview = (productId, setProduct) => {
 
   return {
     openReviewModal,
+    User,
     setOpenReviewModal,
     deleteModalOpen,
     setDeleteModalOpen,
@@ -94,7 +95,6 @@ export const useReview = (productId, setProduct) => {
     setEditRating,
     editComment,
     setEditComment,
-    userId,
     handleAddReview,
     handleEditClick,
     handleEditReview,

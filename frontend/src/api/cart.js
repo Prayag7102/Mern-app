@@ -1,16 +1,10 @@
+
 import axiosInstance from "./axios";
 
 export const getCartItems = async () => {
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            throw new Error('You need to be logged in to view your cart.');
-        }
-
         const response = await axiosInstance.get('/cart/getCartItem', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true
         });
 
         return response.data.cartItems;
@@ -21,11 +15,7 @@ export const getCartItems = async () => {
 
 
 export const addToCart = async (productId, quantity = 1, color, size) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        throw new Error('You must be logged in to add products to your cart!');
-    }
-
+  
     try {
         const response = await axiosInstance.post('/cart/cart', 
             {
@@ -35,10 +25,10 @@ export const addToCart = async (productId, quantity = 1, color, size) => {
                 size
             },
             {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              withCredentials: true
             }
         );
 
@@ -55,14 +45,12 @@ export const addToCart = async (productId, quantity = 1, color, size) => {
 };
 
 
-export const removeFromCart = async (cartItemId, productId, token) => {
+export const removeFromCart = async (cartItemId, productId) => {
     try {
       const response = await axiosInstance.delete(
         `/cart/remove/${cartItemId}/${productId}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true
         }
       );
       return response.data;
@@ -71,7 +59,7 @@ export const removeFromCart = async (cartItemId, productId, token) => {
     }
   };
   
-export const updateCartItem = async (cartItemId, productId, quantity, color, size, token) => {
+export const updateCartItem = async (cartItemId, productId, quantity, color, size) => {
     try {
       const response = await axiosInstance.patch(
         `/cart/update/${cartItemId}/${productId}`,
@@ -81,9 +69,7 @@ export const updateCartItem = async (cartItemId, productId, quantity, color, siz
           size 
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true
         }
       );
       return response.data;

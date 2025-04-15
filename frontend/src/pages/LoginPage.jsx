@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { loginUser } from "../api/auth"; 
 import { toast } from "react-toastify";
+import { useUser } from "../context/user.context";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const {user, setUser} = useUser();
 
   const navigate = useNavigate();
   const handleLogin = async (e) => {
@@ -21,6 +24,8 @@ export default function LoginPage() {
           theme:'dark',
           draggable:true
         })
+        
+        setUser(data.user);
         navigate("/profile");
       } catch (err) {
         if (err === 401) {

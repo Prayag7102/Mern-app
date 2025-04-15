@@ -39,14 +39,32 @@ const loginAdmin = async (req, res) => {
 
   const token = jwt.sign({ id: admin._id, username: admin.username }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
+
+  res.cookie("admintoken", token, {
+    httpOnly: true,
+    secure: false, 
+    sameSite: "Lax",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+
   res.json({ token,
     admin: {
       id: admin._id,
       username: admin.username,
     },
 
-   });
+  });
+};
+
+const logoutAdmin = (req, res) => {
+  res.clearCookie("admintoken", {
+    httpOnly: true,
+    sameSite: "Lax", 
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 
-module.exports = { createAdmin, loginAdmin };
+module.exports = { createAdmin, loginAdmin,logoutAdmin };

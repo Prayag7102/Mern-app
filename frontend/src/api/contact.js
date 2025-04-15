@@ -1,19 +1,11 @@
 import axiosInstance from "./axios";
 
 export const submitContactForm = async (formData) => {
-    const token = localStorage.getItem("token")
-    if(!token) {
-        throw new Error('Please login to submit the form');
-    }
     try {
-
-
         const response = await axiosInstance.post('/contact/inquiry', formData,
             {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
+                withCredentials:true
+            }
         );
         return response.data; 
     } catch (error) {

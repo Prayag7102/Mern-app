@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { decodeToken, fetchOrderDetails } from '../api/Checkout';
+import { fetchOrderDetails } from '../api/Checkout';
 
 export const userOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -11,23 +11,7 @@ export const userOrders = () => {
   useEffect(() => {
     const getOrderDetails = async () => {
       try {
-        setLoading(true);
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-          toast.error('Please login to view orders');
-          navigate('/login');
-          return;
-        }
-
-        const decodedToken = decodeToken(token);
-        if (!decodedToken?.id) {
-          toast.error('Invalid session');
-          navigate('/login');
-          return;
-        }
-
-        const orders = await fetchOrderDetails(token);
+        const orders = await fetchOrderDetails();
         setOrders(orders.length > 0 ? orders : []);
         if (orders.length === 0) toast.info('No orders');
       } catch (error) {

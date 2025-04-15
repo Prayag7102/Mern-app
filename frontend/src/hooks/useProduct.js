@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import axiosInstance from '../api/axios';
 import { addToCart } from '../api/cart';
+import { useUser } from '../context/user.context';
 
 export const useProduct = (id) => {
   const [product, setProduct] = useState(null);
@@ -9,6 +10,9 @@ export const useProduct = (id) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
+
+
+  const {user} = useUser();
 
   useEffect(() => {
     fetchProduct();
@@ -28,7 +32,7 @@ export const useProduct = (id) => {
   };
 
   const handleAddToCart = async () => {
-    if (!localStorage.getItem('token')) {
+    if (!user) {
       toast.error('You need to be logged in to add items to the cart.');
       return;
     }

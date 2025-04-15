@@ -1,15 +1,21 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { useUser } from "../context/user.context";
 
-const ProtectedRoute = ({ children, isAdmin = false }) => {
-  const userToken = localStorage.getItem("token");  
-  const adminToken = localStorage.getItem("adminToken");  
+const ProtectedRoute = ({ children }) => {
+  const { user, loading1 } = useUser();
 
 
-  if (isAdmin) {
-    return adminToken ? children : <Navigate to="/admin/login" replace />;
+  console.log(user);
+  
+
+  if (loading1) return <div>Loading...</div>;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
   }
-  return userToken ? children : <Navigate to="/login" replace />;
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

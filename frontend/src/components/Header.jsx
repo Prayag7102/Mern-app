@@ -4,31 +4,34 @@ import { toast } from "react-toastify";
 import { BsCart } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
 import { isActiveLink } from "../utils/HelperFunction";
+import axiosInstance from "../api/axios";
+import { useUser } from "../context/user.context";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
+
+  const {user,setUser } = useUser();
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev);
   };
 
-  const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username")
-
   
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    toast.success("Logged out successfully!", {
-      theme: 'dark',
-      draggable: true
-    });
-    setTimeout(() => {
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/users/logout", {}, { withCredentials: true });
+  
+      toast.success("Logged out successfully!");
+      setUser(null);
       navigate("/login");
-    }, 1000);
+    } catch (error) {
+      toast.error("Logout failed!");
+      console.error(error);
+    }
   };
 
   return (
@@ -45,26 +48,36 @@ const Navbar = () => {
           </span>
         </Link>
         <div className="flex items-center lg:order-2">
-          <Link
-            to="/login"
-            className={` ${isActiveLink('/login') ? 'text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2' : 'text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'} `}
-            aria-current={isActiveLink('/login') ? 'page' : undefined}
-          >
-            Log in
-          </Link>
-          <Link
-            to="/register"
-            className={` ${isActiveLink('/register') ? 'text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2' : 'text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'} `}
-            aria-current={isActiveLink('/register') ? 'page' : undefined}
-          >
-            Register
-          </Link>
+          {!user && (
+            <>
+              <Link
+                to="/login"
+                className={`${
+                  isActiveLink("/login")
+                    ? "text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2"
+                    : "text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                }`}
+                aria-current={isActiveLink("/login") ? "page" : undefined}
+              >
+                Log in
+              </Link>
+              <Link
+                to="/register"
+                className={`${
+                  isActiveLink("/register")
+                    ? "text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2"
+                    : "text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                }`}
+                aria-current={isActiveLink("/register") ? "page" : undefined}
+              >
+                Register
+              </Link>
+            </>
+          )}
           <div className="relative mr-4">
-            {token && (
+            {user && (
               <div className="group">
-                <button
-                  className="flex capitalize items-center text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2"
-                >
+                <button className="flex capitalize items-center text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2">
                   <FaUserCircle className="mr-1 text-lg" />
                 </button>
                 <div className="absolute right-0 top-5 z-10 mt-2 w-[8rem] bg-white rounded-md shadow-lg hidden group-hover:block">
@@ -74,10 +87,10 @@ const Navbar = () => {
                         to="/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        {username ? `${username}` : 'User'}
+                        {user?.name ? `${user.name}` : "User"}
                       </Link>
                     </li>
-                    {token && (
+                    {user && (
                       <li>
                         <button
                           onClick={handleLogout}
@@ -98,8 +111,7 @@ const Navbar = () => {
           >
             <BsCart />
           </Link>
-         
-          
+
           <button
             onClick={toggleMobileMenu}
             type="button"
@@ -144,8 +156,10 @@ const Navbar = () => {
             <li>
               <Link
                 to="/"
-                className={`block py-2 pr-4 pl-3 ${isActiveLink('/') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
-                aria-current={isActiveLink('/') ? 'page' : undefined}
+                className={`block py-2 pr-4 pl-3 ${
+                  isActiveLink("/") ? "text-blue-500" : "text-gray-700"
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink("/") ? "page" : undefined}
               >
                 Home
               </Link>
@@ -153,8 +167,10 @@ const Navbar = () => {
             <li>
               <Link
                 to="/about"
-                className={`block py-2 pr-4 pl-3 ${isActiveLink('/about') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
-                aria-current={isActiveLink('/about') ? 'page' : undefined}
+                className={`block py-2 pr-4 pl-3 ${
+                  isActiveLink("/about") ? "text-blue-500" : "text-gray-700"
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink("/about") ? "page" : undefined}
               >
                 About Us
               </Link>
@@ -162,8 +178,10 @@ const Navbar = () => {
             <li>
               <Link
                 to="/contact"
-                className={`block py-2 pr-4 pl-3 ${isActiveLink('/contact') ? 'text-blue-500' : 'text-gray-700'} border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
-                aria-current={isActiveLink('/contact') ? 'page' : undefined}
+                className={`block py-2 pr-4 pl-3 ${
+                  isActiveLink("/contact") ? "text-blue-500" : "text-gray-700"
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                aria-current={isActiveLink("/contact") ? "page" : undefined}
               >
                 Contact
               </Link>

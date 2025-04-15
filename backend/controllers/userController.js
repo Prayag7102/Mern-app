@@ -25,31 +25,47 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Validate input
     if (!email || !password) {
       return res.status(400).json({ message: "Please provide email and password" });
     }
 
-    // Check if user exists
     const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Generate token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
+    // Set cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, 
+      sameSite: "Lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({
-      token,
+      message: "Login successful",
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
       },
     });
+
   } catch (error) {
     res.status(500).json({ message: "Server error, please try again later", error: error.message });
   }
+};
+
+const logoutUser = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "Lax", 
+    secure: process.env.NODE_ENV === "production",
+  });
+
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 const getAllUsers = async (req, res) => {
@@ -75,4 +91,4 @@ const getUserById = async (req, res) => {
 };
 
 
-module.exports = { registerUser, loginUser,getAllUsers,getUserById };
+module.exports = { registerUser, loginUser,getAllUsers,getUserById,logoutUser };

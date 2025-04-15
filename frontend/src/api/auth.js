@@ -3,12 +3,9 @@ import axiosInstance from "./axios";
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await axiosInstance.post("/users/login", { email, password });
-    
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("username", response.data.user.name);
-    }
+    const response = await axiosInstance.post("/users/login", { email, password },{
+      withCredentials:true
+    });
     return response.data;
   } catch (error) {
     throw error.response.data ? error.response.data : error;
@@ -18,11 +15,9 @@ export const loginUser = async (email, password) => {
 
 export const registerUser = async (name, email, password) => {
   try {
-    const response = await axiosInstance.post("/users/register", { name, email, password });
-
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-    }
+    const response = await axiosInstance.post("/users/register", { name, email, password },{
+      withCredentials:true
+    });
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error;
@@ -32,14 +27,9 @@ export const registerUser = async (name, email, password) => {
 
 export const adminLogin = async (username, password) => {
   try {
-    const response = await axiosInstance.post("/admin/admin/login", { username, password });
-
-
-    if (response.data.token) {
-      localStorage.setItem("admin", response.data.admin.username);
-      localStorage.setItem("adminToken", response.data.token);
-    }
-
+    const response = await axiosInstance.post("/admin/admin/login", { username, password },{
+      withCredentials:true
+    });
     return response.data;  
   } catch (error) {
     throw error.response ? error.response.data : error;

@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { adminLogin } from '../api/auth';
 import { toast } from 'react-toastify';
+import { useAdmin } from '../context/admin.context';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const {admin, setAdmin} = useAdmin();
   const navigate = useNavigate(); 
 
   const handleLogin = async (e) => {
@@ -17,15 +20,11 @@ export default function AdminLogin() {
 
     try {
       const data = await adminLogin(username, password); 
-
-      
-      if (data.token) {
-        localStorage.setItem("adminToken", data.token);
-      }
       toast.success("successfully logged in!",{
         theme:'dark',
         draggable:true
       })
+      setAdmin(data.admin)
       navigate('/admin/dashboard'); 
     } catch (err) {
       setError(err.message || 'Login failed!');

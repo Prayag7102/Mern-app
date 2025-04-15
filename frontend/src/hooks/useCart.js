@@ -20,21 +20,20 @@ export const useCart = (updateSubtotal) => {
   };
 
   const handleRemoveItem = async (cartItemId, productId) => {
-    const token = localStorage.getItem('token');
-    if (!checkAuth(token)) return;
+    if (!checkAuth) return;
 
     try {
-      await removeFromCart(cartItemId, productId, token);
+      await removeFromCart(cartItemId, productId);
       setCartItems(cartItems.filter(item => item._id !== cartItemId));
       toast.success('Product removed from cart!', { theme: 'dark', draggable: true });
     } catch (error) {
+      console.error(error);
       toast.error('Failed to remove product from cart.', { theme: 'dark', draggable: true });
     }
   };
 
   const handleQuantityChange = async (cartItemId, productId, change) => {
-    const token = localStorage.getItem('token');
-    if (!checkAuth(token)) return;
+    if (!checkAuth) return;
 
     const updatedCartItems = [...cartItems];
     const itemIndex = updatedCartItems.findIndex(item => item._id === cartItemId);
@@ -52,7 +51,6 @@ export const useCart = (updateSubtotal) => {
         newQuantity,
         updatedCartItems[itemIndex].color,
         updatedCartItems[itemIndex].size,
-        token
       );
       setCartItems(updatedCartItems);
     } catch (error) {
@@ -60,15 +58,22 @@ export const useCart = (updateSubtotal) => {
     }
   };
 
-  const checkAuth = (token) => {
-    if (!token) {
-      toast.warning('You must be logged in to perform this action.', {
-        theme: 'dark',
-        draggable: true
+  const checkAuth = async () => {
+    try {
+      const res = await axiosInstance.get("/users/user-check", {
+        withCredentials: true,
       });
-      return false;
+
+      if (res.data.success) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    } finally {
+      setCheckingAuth(false);
     }
-    return true;
   };
 
   useEffect(() => {

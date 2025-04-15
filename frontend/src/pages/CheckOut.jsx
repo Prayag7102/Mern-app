@@ -7,6 +7,8 @@ import axiosInstance from '../api/axios';
 import { createCheckout, initiateRazorpayPayment } from '../api/Checkout';
 import { Input } from 'antd';
 
+import { useUser } from '../context/user.context'
+
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -28,30 +30,24 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('COD');
   const [submitted, setSubmitted] = useState(false);
 
+  const {user} = useUser();
+
+
+  console.log(userId);
+  
+
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
+    
+    if (!user) {
       toast.error('Please login to continue');
       navigate('/login');
       return;
     }
 
     try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const decodedToken = JSON.parse(window.atob(base64));
-      
-      if (!decodedToken.id) {
-        toast.error('Invalid session. Please login again');
-        localStorage.removeItem('token');
-        navigate('/login');
-        return;
-      }
-
-      setUserId(decodedToken.id);
+      setUserId(user.id);
     } catch (error) {
       toast.error('Session error. Please login again');
-      localStorage.removeItem('token');
       navigate('/login');
     }
   }, [navigate]);
