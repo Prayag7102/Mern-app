@@ -13,7 +13,6 @@ export const userOrders = () => {
       try {
         const orders = await fetchOrderDetails();
         setOrders(orders.length > 0 ? orders : []);
-        if (orders.length === 0) toast.info('No orders');
       } catch (error) {
         toast.error(error.message);
       } finally {

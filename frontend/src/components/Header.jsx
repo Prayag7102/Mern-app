@@ -77,8 +77,8 @@ const Navbar = () => {
           <div className="relative mr-4">
             {user && (
               <div className="group">
-                <button className="flex capitalize items-center text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 py-2">
-                  <FaUserCircle className="mr-1 text-lg" />
+                <button className="flex capitalize items-center text-gray-800 bg-blue-600 dark:text-white hover:bg-blue-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-3 py-2">
+                  <FaUserCircle className=" text-lg" />
                 </button>
                 <div className="absolute right-0 top-5 z-10 mt-2 w-[8rem] bg-white rounded-md shadow-lg hidden group-hover:block">
                   <ul className="py-1" aria-labelledby="dropdownDefaultButton">

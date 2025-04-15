@@ -4,11 +4,7 @@ import { useAdmin } from "../context/admin.context";
 
 const AdminProtected = ({ children }) => {
   const { admin, loading1 } = useAdmin();
-
-
-  console.log(admin);
   
-
   if (loading1) return <div>Loading...</div>;
 
   if (!admin) {

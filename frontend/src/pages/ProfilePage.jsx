@@ -44,22 +44,6 @@ export default function ProfilePage() {
           />
           <div className="flex items-center space-x-2 mt-2">
             <p className="text-2xl">{user?.name || 'User'}</p>
-            <span className="bg-blue-500 rounded-full p-1" title="Verified">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-white h-2.5 w-2.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={4}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </span>
           </div>
         </div>
         <div className="flex justify-center mt-6">

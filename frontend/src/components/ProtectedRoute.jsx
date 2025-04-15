@@ -4,9 +4,6 @@ import { useUser } from "../context/user.context";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading1 } = useUser();
-
-
-  console.log(user);
   
 
   if (loading1) return <div>Loading...</div>;

@@ -15,7 +15,6 @@ useEffect(() => {
         withCredentials: true,
     });
     if (res.data.success) {
-        console.log(res.data.admin);
         setAdmin(res.data.admin);
     } else {
         setAdmin(null);
