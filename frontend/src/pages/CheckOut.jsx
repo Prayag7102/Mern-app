@@ -45,7 +45,7 @@ const Checkout = () => {
     }
 
     try {
-      setUserId(user.id);
+      setUserId(user._id);
     } catch (error) {
       toast.error('Session error. Please login again');
       navigate('/login');

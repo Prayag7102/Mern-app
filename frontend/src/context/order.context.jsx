@@ -5,7 +5,7 @@ import { getAllOrders } from "../api/Checkout";
 const OrdersContext = createContext();
 
 export const OrderProvider = ({ children }) => {
-const [orders, setOrder] = useState(null);
+const [orders, setOrder] = useState([]);
 const [loading1, setLoading] = useState(true);
 const [error, setError] = useState(false);
 const [totalAmount, setTotalAmount] = useState(0);
