@@ -16,7 +16,7 @@ const Checkout = () => {
   const location = useLocation();
   const { cartItems, subtotal, shippingCost, total } = location.state || {};
 
-  const {orders, setOrder} = useOrder();
+  const { setOrder} = useOrder();
 
   const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
