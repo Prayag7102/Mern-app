@@ -139,9 +139,8 @@ const Checkout = () => {
         await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' },{
           withCredentials: true,
         });
-        const newOrder = checkoutResponse.checkout;
-        setOrder(prev => [...prev, newOrder]);
-        navigate('/order-success', { state: { orderId: newOrder._id, } });
+        setOrder(prev => [...prev, checkoutResponse.checkout]);
+        navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id, } });
         return;
       }
       const orderData = {

@@ -5,45 +5,45 @@ import { getAllOrders } from "../api/Checkout";
 const OrderContext = createContext();
 
 export const OrderProvider = ({ children }) => {
-  const [orders, setOrder] = useState([]);
-  const [loading1, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [totalAmount, setTotalAmount] = useState(0);
+    const [orders, setOrder] = useState([]);
+    const [loading1, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const [totalAmount, setTotalAmount] = useState(0);
 
-  const fetchOrders = async () => {
+    const fetchOrders = async () => {
     try {
-      const res = await getAllOrders();
-      if (res.data.success) {
+    const res = await getAllOrders();
+    if (res.data.success) {
         setOrder(res.data.orders);
         const total = res.data.orders.reduce(
-          (sum, order) => sum + order.totalPrice,
-          0
+            (sum, order) => sum + order.totalPrice,
+            0
         );
         setTotalAmount(total);
-      } else {
+    } else {
         setOrder([]);
         setTotalAmount(0);
-      }
+        }
     } catch (error) {
-      setOrder([]);
-      setTotalAmount(0);
-      setError(true);
+        setOrder([]);
+        setTotalAmount(0);
+        setError(true);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+    };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
-  return (
+return (
     <OrderContext.Provider
-      value={{ orders, setOrder, totalAmount, loading1, error, fetchOrders }}
+        value={{ orders, setOrder, totalAmount, loading1, error }}
     >
-      {children}
+        {children}
     </OrderContext.Provider>
-  );
+    );
 };
 
 export const useOrder = () => useContext(OrderContext);
