@@ -6,6 +6,7 @@ import Loading from '../components/LoaderSpinner'
 import axiosInstance from '../api/axios';
 import { createCheckout, initiateRazorpayPayment } from '../api/Checkout';
 import { Input } from 'antd';
+import { useOrder } from '../context/order.context'
 
 import { useUser } from '../context/user.context'
 
@@ -14,6 +15,8 @@ const Checkout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cartItems, subtotal, shippingCost, total } = location.state || {};
+
+  const {orders, setOrder} = useOrder();
 
   const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
@@ -32,8 +35,6 @@ const Checkout = () => {
 
   const {user} = useUser();
 
-
-  console.log(userId);
   
 
   useEffect(() => {
@@ -135,13 +136,12 @@ const Checkout = () => {
       }
       if (paymentMethod === 'COD') {
         toast.success('Order placed successfully with Cash on Delivery!');
-        const token = localStorage.getItem('token');
         await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' },{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          withCredentials: true,
         });
-        navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); // Redirect to success page
+        const newOrder = checkoutResponse.checkout;
+        setOrder(prev => [...prev, newOrder]);
+        navigate('/order-success', { state: { orderId: newOrder._id, } });
         return;
       }
       const orderData = {

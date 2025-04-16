@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const OrderSuccess = () => {
     const location = useLocation();
     const { orderId } = location.state || {};
+    
   return (
     <div>
        <div className='flex items-center justify-center flex-col'>
