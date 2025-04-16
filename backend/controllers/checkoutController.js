@@ -75,8 +75,8 @@ const getAllOrders = async (req, res) => {
         select: 'name email'
       })
       .sort({ createdAt: -1 });
-
-    res.status(200).json({ orders });
+      
+    res.status(200).json({success: true, orders });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch orders", details: error.message });
   }

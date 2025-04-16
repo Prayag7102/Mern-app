@@ -1,15 +1,14 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Typography, Alert } from '@mui/material';
-import { OrderSummaryCards } from './OrderSummaryCards';
-import { useOrders } from '../../../hooks/useOrders';
 import { getOrderColumns } from '../../../utils/orderColumns';
+import { useOrder } from '../../../context/order.context';
 
 const Orders = () => {
-  const { orders, loading, error, totalAmount } = useOrders();
+  const { orders,loading1,error } = useOrder();
   const columns = getOrderColumns();
 
-  if (loading) {
+  if (loading1) {
     return (
       <Box sx={{ p: 2 }}>
         <Typography>Loading orders...</Typography>
@@ -21,10 +20,8 @@ const Orders = () => {
     <div className="lg:w-[90%] lg:float-end">
       <Box sx={{ height: 600, width: '100%', p: 2 }}>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          Orders Management
+          Orders 
         </Typography>
-
-        <OrderSummaryCards orders={orders} totalAmount={totalAmount} />
         
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
@@ -38,7 +35,7 @@ const Orders = () => {
           pageSize={10}
           rowsPerPageOptions={[10]}
           getRowId={(row) => row._id}
-          loading={loading}
+          loading={loading1}
           disableSelectionOnClick
           autoHeight
           sx={{

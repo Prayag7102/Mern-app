@@ -31,13 +31,10 @@ export const initiateRazorpayPayment = async (orderData) => {
 
   export const getAllOrders = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
       const response = await axiosInstance.get('/checkout/all', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        withCredentials:true
       });
-      return response.data;
+      return response;
     } catch (error) {
       throw error.response?.data || error.message;
     }

@@ -7,6 +7,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 const [user, setUser] = useState(null);
 const [loading1, setLoading] = useState(true);
+const [totalAmount, setTotalAmount] = useState(0);
 
 useEffect(() => {
     const fetchUser = async () => {

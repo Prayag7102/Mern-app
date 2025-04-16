@@ -12,8 +12,6 @@ import AdminLogin from "./pages/AdminLogin";
 import NotFoundPage from "./components/NotFoundPage";
 import AdminLayout from "./pages/Admin/AdminLayout";
 import DashCards from "./pages/Admin/admin-components/DashCards";
-import TableData from "./pages/Admin/admin-components/TableData";
-import Search from "./pages/Admin/admin-components/Search";
 import ContactUs from "./pages/ContactUs";
 import AddProducts from "./pages/Admin/admin-components/AddProducts";
 import ManageProducts from "./pages/Admin/admin-components/ManageProduct";
@@ -72,10 +70,8 @@ function App() {
               </AdminProtected>
             }
           >
-            <Route index element={<><Search /><DashCards /><TableData /></>} />
-            <Route path="search" element={<Search />} />
+            <Route index element={<DashCards />} />
             <Route path="dashcards" element={<DashCards />} />
-            <Route path="table-data" element={<TableData />} />
             <Route path="addproducts" element={<AddProducts />} />
             <Route path="manageproducts" element={<ManageProducts />} />
             <Route path="orders" element={<Orders />} />
