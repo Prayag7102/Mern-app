@@ -6,7 +6,7 @@ export const OrderSummaryCards = () => {
   const { orders, totalAmount } = useOrder();
 
   return (
-    <Box className="flex flex-wrap gap-2 mb-3 mt-5 mb-5">
+    <Box className="flex flex-wrap gap-2 mt-5 mb-5">
     
     <Paper
       elevation={3}
