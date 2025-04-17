@@ -7,9 +7,11 @@ import { ProductImages } from "../components/product/ProductImages";
 import { ProductInfo } from "../components/product/ProductInfo";
 import { ReviewSection } from "../components/product/ReviewSection";
 import Loading from "../components/LoaderSpinner";
+import { useUser } from "../context/user.context";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const {user} = useUser();
   const [activeTab, setActiveTab] = useState("details");
   const {
     product,
@@ -88,7 +90,7 @@ const ProductDetail = () => {
         {activeTab === "reviews" && (
           <ReviewSection
             product={product}
-            userId={reviewHook.User}
+            userId={user?._id}
             openReviewModal={reviewHook.openReviewModal}
             setOpenReviewModal={reviewHook.setOpenReviewModal}
             deleteModalOpen={reviewHook.deleteModalOpen}

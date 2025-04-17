@@ -16,9 +16,7 @@ export const useReview = (productId, setProduct) => {
 
 
   const {user} = useUser();
-
-  const User = user?.id;
-
+  
   const handleAddReview = async () => {
     if (!user) {
       toast.error('You need to be logged in to add a review.');
@@ -80,7 +78,6 @@ export const useReview = (productId, setProduct) => {
 
   return {
     openReviewModal,
-    User,
     setOpenReviewModal,
     deleteModalOpen,
     setDeleteModalOpen,
