@@ -176,7 +176,7 @@ const Checkout = () => {
             setOrder(prev => [...prev, checkoutResponse.checkout]);
             navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); 
           } else {
-            await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Cancelled' },{
+            await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Failed' },{
               withCredentials: true,
             });
             toast.error('Payment verification failed.');
