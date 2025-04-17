@@ -14,7 +14,7 @@ useEffect(() => {
     const res = await axiosInstance.get("/admin/admin-check", {
         withCredentials: true,
     });
-    if (res.data.success) {
+    if (res.data?.success && res.data?.admin) {
         setAdmin(res.data.admin);
     } else {
         setAdmin(null);
