@@ -8,32 +8,31 @@ export const UserProvider = ({ children }) => {
 const [user, setUser] = useState(null);
 const [loading1, setLoading] = useState(true);
 
-useEffect(() => {
     const fetchUser = async () => {
-    try {
-    const res = await axiosInstance.get("/users/user-check", {
-        withCredentials: true,
-    });
-    
-    if (res.data?.success && res.data?.user) {
-        setUser(res.data.user);
-    } else {
-        setUser(null);
-    }
-    } catch (error) {
-        setUser(null);
-    } finally {
-        setLoading(false);
-    }
-    };
+        try {
+        const res = await axiosInstance.get("/users/user-check", {
+            withCredentials: true,
+        });
 
-    fetchUser();
-}, []);
+        if (res.data?.success && res.data?.user) {
+            setUser(res.data.user);
+        } else {
+            setUser(null);
+        }
+        } catch (error) {
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchUser();
+    }, []);
 
 
 
 return (
-    <UserContext.Provider value={{ user, setUser, loading1 }}>
+    <UserContext.Provider value={{ user, setUser,fetchUser, loading1 }}>
         {children}
     </UserContext.Provider>
 );

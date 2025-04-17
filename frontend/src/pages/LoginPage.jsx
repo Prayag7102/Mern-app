@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const {user, setUser} = useUser();
+  const {fetchUser} = useUser();
 
   const navigate = useNavigate();
   const handleLogin = async (e) => {
@@ -20,12 +20,12 @@ export default function LoginPage() {
 
     try {
         const data = await loginUser(email, password);
+
+        await fetchUser();
         toast.success("Login successful! Welcome,",{
           theme:'dark',
           draggable:true
         })
-        
-        setUser(data.user);
         navigate("/profile");
       } catch (err) {
         if (err === 401) {

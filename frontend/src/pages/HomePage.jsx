@@ -8,6 +8,7 @@ import { addToCart } from '../api/cart';
 import { toast } from 'react-toastify';
 import Loading from '../components/LoaderSpinner';
 import { useUser } from '../context/user.context';
+import { useCarts } from '../context/cart.context';
 
 
 export default function HomePage() {
@@ -15,6 +16,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   const { user } = useUser();
+  const { fetchCartItems  } = useCarts();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export default function HomePage() {
     }
     try {
       await addToCart(product.id, 1); 
+      await fetchCartItems();
       toast.success("Product Add To Cart Successfully!",{
         theme:'dark',
         draggable:true

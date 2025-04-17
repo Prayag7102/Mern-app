@@ -1,41 +1,23 @@
-import { useState, useEffect } from 'react';
-import { getCartItems, removeFromCart, updateCartItem } from '../api/cart';
+import { useEffect } from 'react';
+import { removeFromCart, updateCartItem } from '../api/cart';
 import { toast } from 'react-toastify';
+import { useCarts } from '../context/cart.context';
 
 export const useCart = (updateSubtotal) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchCart = async () => {
-    setLoading(true);
-    try {
-      const data = await getCartItems();
-      const validItems = data.filter(item => item.product && item.product._id);
-      setCartItems(validItems);
-    } catch (error) {
-      toast.error('Error fetching cart.', { theme: 'dark', draggable: true });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { cart, setCartItem, loading1, error } = useCarts();
 
   const handleRemoveItem = async (cartItemId, productId) => {
-    if (!checkAuth) return;
-
     try {
       await removeFromCart(cartItemId, productId);
-      setCartItems(cartItems.filter(item => item._id !== cartItemId));
+      setCartItem(prev => prev.filter(item => item._id !== cartItemId));
       toast.success('Product removed from cart!', { theme: 'dark', draggable: true });
     } catch (error) {
-      console.error(error);
       toast.error('Failed to remove product from cart.', { theme: 'dark', draggable: true });
     }
   };
 
   const handleQuantityChange = async (cartItemId, productId, change) => {
-    if (!checkAuth) return;
-
-    const updatedCartItems = [...cartItems];
+    const updatedCartItems = [...cart];
     const itemIndex = updatedCartItems.findIndex(item => item._id === cartItemId);
     if (itemIndex === -1) return;
 
@@ -47,44 +29,28 @@ export const useCart = (updateSubtotal) => {
     try {
       await updateCartItem(
         cartItemId,
-        productId, 
+        productId,
         newQuantity,
         updatedCartItems[itemIndex].color,
-        updatedCartItems[itemIndex].size,
+        updatedCartItems[itemIndex].size
       );
-      setCartItems(updatedCartItems);
+      setCartItem(updatedCartItems);
     } catch (error) {
       toast.error('Failed to update product quantity.', { theme: 'dark', draggable: true });
     }
   };
 
-  const checkAuth = async () => {
-    try {
-      const res = await axiosInstance.get("/users/user-check", {
-        withCredentials: true,
-      });
-
-      if (res.data.success) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-    } catch (error) {
-      setIsAuthenticated(false);
-    } finally {
-      setCheckingAuth(false);
-    }
-  };
-
   useEffect(() => {
-    fetchCart();
-  }, []);
-
-  useEffect(() => {
-    const subtotal = cartItems.reduce((total, item) => 
+    const subtotal = cart.reduce((total, item) => 
       total + item.product.discountedPrice * item.quantity, 0);
     updateSubtotal(subtotal);
-  }, [cartItems, updateSubtotal]);
+  }, [cart, updateSubtotal]);
 
-  return { cartItems, loading, handleRemoveItem, handleQuantityChange };
-}; 
+  return {
+    cartItems: cart,
+    loading: loading1,
+    error,
+    handleRemoveItem,
+    handleQuantityChange
+  };
+};

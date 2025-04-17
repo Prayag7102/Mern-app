@@ -16,7 +16,7 @@ const Checkout = () => {
   const location = useLocation();
   const { cartItems, subtotal, shippingCost, total } = location.state || {};
 
-  const { setOrder} = useOrder();
+  const { fetchOrders} = useOrder();
 
   const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
@@ -140,7 +140,7 @@ const Checkout = () => {
         await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Pending' },{
           withCredentials: true,
         });
-        setOrder(prev => [...prev, checkoutResponse.checkout]);
+        await fetchOrders();
         navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id, } });
         return;
       }
@@ -173,7 +173,7 @@ const Checkout = () => {
             await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Completed' },{
               withCredentials: true,
             });
-            setOrder(prev => [...prev, checkoutResponse.checkout]);
+            await fetchOrders();
             navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); 
           } else {
             await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Failed' },{

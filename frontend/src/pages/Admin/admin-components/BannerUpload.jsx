@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { uploadBanner } from '../../../api/Banner';
 import { toast } from 'react-toastify';
+import { useBanner } from '../../../context/banner.context';
 
 const BannerUpload = () => {
   const [title, setTitle] = useState('');
   const [images, setImages] = useState([]);
   const [previewUrls, setPreviewUrls] = useState([]);
+
+  const {fetchbanners} = useBanner();
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -23,6 +26,7 @@ const BannerUpload = () => {
 
     try {
       const response = await uploadBanner(formData);
+      await fetchbanners();
       toast.success('Banner uploaded successfully');
     } catch (error) {
       toast.error('Error uploading banner');

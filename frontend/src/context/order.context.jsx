@@ -39,7 +39,7 @@ export const OrderProvider = ({ children }) => {
 
 return (
     <OrderContext.Provider
-        value={{ orders, setOrder, totalAmount, loading1, error }}
+        value={{ orders, setOrder,fetchOrders, totalAmount, loading1, error }}
     >
         {children}
     </OrderContext.Provider>

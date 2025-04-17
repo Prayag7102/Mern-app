@@ -5,48 +5,17 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-creative';
 import 'swiper/css/navigation';
-import { getBanners } from '../api/Banner';
-import { toast } from 'react-toastify';
+import { useBanner } from '../context/banner.context';
 
 const SwiperBanner = () => {
-  const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true); 
 
-  useEffect(() => {
-    const fetchAndPreloadBanners = async () => {
-      try {
-        const response = await getBanners();
-        const bannersData = response.data.banners;
-        const preloadPromises = bannersData.flatMap(banner =>
-          banner.imageUrl.map(url => {
-            return new Promise((resolve) => {
-              const img = new Image();
-              img.src = `http://localhost:5000/uploads/${url}`;
-              img.onload = resolve;
-              img.onerror = resolve; 
-            });
-          })
-        );
+  const {banner,loading1} = useBanner();
 
-        await Promise.all(preloadPromises);
-
-        setBanners(bannersData);
-      } catch (error) {
-        toast.error("Error fetching banners");
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAndPreloadBanners();
-  }, []);
-
-  if (loading) return <div className="w-full  bg-gray-100 animate-pulse rounded-md" />;
+  if (loading1) return <div className="w-full  bg-gray-100 animate-pulse rounded-md" />;
 
   return (
     <Swiper
-      loop={banners.length > 1}
+      loop={banner.length > 1}
       slidesPerView={1}
       slidesPerGroup={1}
       autoplay={{
@@ -68,7 +37,7 @@ const SwiperBanner = () => {
       pagination={{ clickable: true }}
       navigation={true}
     >
-      {banners.map((banner, index) =>
+      {banner.map((banner, index) =>
         banner.imageUrl.map((url, imgIndex) => (
           <SwiperSlide key={`${index}-${imgIndex}`}>
             <img

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axiosInstance from '../api/axios';
 import { addToCart } from '../api/cart';
 import { useUser } from '../context/user.context';
+import { useCarts } from '../context/cart.context';
 
 export const useProduct = (id) => {
   const [product, setProduct] = useState(null);
@@ -13,6 +14,7 @@ export const useProduct = (id) => {
 
 
   const {user} = useUser();
+  const {fetchCartItems} = useCarts();
 
   useEffect(() => {
     fetchProduct();
@@ -44,7 +46,9 @@ export const useProduct = (id) => {
 
     try {
       await addToCart(product._id, quantity, selectedColor, selectedSize);
+
       toast.success('Product added to cart successfully!', { theme: 'dark' });
+      await fetchCartItems(); 
     } catch (error) {
       toast.error(typeof error === 'string' ? error : 'Failed to add product to cart.');
     }
