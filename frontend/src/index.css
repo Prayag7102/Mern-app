@@ -8,4 +8,10 @@
       -webkit-appearance: none;
       margin: 0;
     }
+
+    .glass-card {
+      background: rgb(0 43 86); 
+      backdrop-filter: blur(14px);
+      border-radius: 1rem;
+    }
   }

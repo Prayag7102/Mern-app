@@ -1,80 +1,66 @@
 import { Box, Paper, Typography } from "@mui/material";
 import { MdShoppingCart } from "react-icons/md";
+import { MdAttachMoney } from "react-icons/md";
+import { MdPendingActions } from "react-icons/md";
+import { MdDoneAll } from "react-icons/md";
+import { MdErrorOutline } from "react-icons/md";
 import { useOrder } from "../../../context/order.context";
 
 export const OrderSummaryCards = () => {
   const { orders, totalAmount } = useOrder();
 
   return (
-    <Box className="flex flex-wrap gap-2 mt-5 mb-5">
-    
-    <Paper
-      elevation={3}
-      sx={{
-        p: 2,
-        flex: 1,
-        bgcolor: "primary.light",
-        color: "white",
-        borderRadius: 2,
-        minWidth: 200,
-      }}
-    >
-      {/* Header: Icon + Title */}
-      <Box display="flex" alignItems="center" gap={1} mb={2}>
-        <MdShoppingCart size={24} />
-        <Typography variant="subtitle1" fontWeight="bold">
-          Total Orders
-        </Typography>
-      </Box>
-
-      {/* Order Count */}
-      <Typography variant="h3" fontWeight="bold">
-        {orders?.length}
-      </Typography>
-    </Paper>
-
-    <Paper
-      elevation={3}
-      sx={{
-        p: 2,
-        flex: 1,
-        bgcolor: "success.light",
-        color: "white",
-      }}
-    >
-      <Typography variant="h6">Total Revenue</Typography>
-      <Typography variant="h4">₹{totalAmount.toLocaleString()}</Typography>
-    </Paper>
-
-    <Paper
-      elevation={3}
-      sx={{
-        p: 2,
-        flex: 1,
-        bgcolor: "warning.light",
-        color: "white",
-      }}
-    >
-      <Typography variant="h6">Pending Orders</Typography>
-      <Typography variant="h4">
-        {orders?.filter((order) => order.status === "Pending").length}
-      </Typography>
-    </Paper>
-
-    <Paper
-      elevation={3}
-      sx={{
-        p: 2,
-        flex: 1,
-        bgcolor: "success.main",
-        color: "white",
-      }}
-    >
-      <Typography variant="h6">Completed Orders</Typography>
-      <Typography variant="h4">
-        {orders?.filter((order) => order.status === "Completed").length}
-      </Typography>
-    </Paper>
-  </Box>
+    <Box className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-5 mb-5">
+      {[
+        {
+          title: "Total Orders",
+          icon: <MdShoppingCart size={24} />,
+          value: orders?.length,
+          bg: "bg-gradient-to-tr from-blue-400 to-blue-600",
+        },
+        {
+          title: "Total Revenue",
+          icon: <MdAttachMoney size={24} />,
+          value: `₹${totalAmount.toLocaleString()}`,
+          bg: "bg-gradient-to-tr from-green-400 to-green-600",
+        },
+        {
+          title: "Pending Orders",
+          icon: <MdPendingActions size={24} />,
+          value: orders?.filter((order) => order.status === "Pending").length,
+          bg: "bg-gradient-to-tr from-yellow-400 to-yellow-600",
+        },
+        {
+          title: "Completed Orders",
+          icon: <MdDoneAll size={24} />,
+          value: orders?.filter((order) => order.status === "Completed").length,
+          bg: "bg-gradient-to-tr from-emerald-500 to-green-700",
+        },
+        {
+          title: "Failed Orders",
+          icon: <MdErrorOutline size={24} />,
+          value: orders?.filter((order) => order.status === "Failed").length,
+          bg: "bg-gradient-to-tr from-red-500 to-red-700",
+        },
+      ].map(({ title, icon, value, bg }, idx) => (
+        <Box
+          key={idx}
+          className={`rounded-2xl p-4 text-white shadow-lg transform transition duration-300 hover:scale-[1.03] hover:shadow-xl glass-card relative overflow-hidden ${bg}`}
+        >
+          <Box className="absolute top-2 right-2 bg-white/20 backdrop-blur-md text-white p-2 rounded-full shadow-md">
+            {icon}
+          </Box>
+          <Typography
+            variant="subtitle2"
+            className="uppercase font-semibold text-white/90 drop-shadow-sm"
+          >
+            {title}
+          </Typography>
+          <Typography variant="h4" className="font-bold text-white drop-shadow-md">
+            {value}
+          </Typography>
+        </Box>
+      ))}
+    </Box>
   );
 };
