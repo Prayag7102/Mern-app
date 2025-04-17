@@ -58,7 +58,7 @@ export const getOrderColumns = () => [
             color={
               params.row.status === 'Pending' ? 'warning' :
               params.row.status === 'Completed' ? 'success' :
-              params.row.status === 'Cancelled' ? 'error' : 'default'
+              params.row.status === 'Failed' ? 'error' : 'default'
             }
             variant="outlined"
           />

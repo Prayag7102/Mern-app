@@ -11,7 +11,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className=" bg-zinc-100 h-auto w-full">
+    <div className="  h-auto w-full">
       <div className='w-full'>
         <Nav onToggleSidebar={toggleSidebar} />
       </div>
@@ -19,7 +19,7 @@ export default function AdminLayout() {
         <div className='lg:w-[10%]'>
           <Sidebar isOpen={isSidebarOpen} />
         </div>
-        <div className='lg:w-[90%] md:w-full sm:w-full lg:px-5 sm:px-2'>
+        <div className='bg-zinc-100 lg:w-[90%] md:w-full sm:w-full lg:px-5 sm:px-2'>
           <Outlet/>
         </div>
       </div>
