@@ -7,6 +7,7 @@ import { AdminProvider } from './context/admin.context.jsx'
 import { OrderProvider } from './context/order.context.jsx'
 import { CartProvider } from './context/cart.context.jsx'
 import { BannerProvider } from './context/banner.context.jsx'
+import { ProductsProvider } from './context/product.context.jsx'
 
 
 createRoot(document.getElementById("root")).render(
@@ -15,7 +16,9 @@ createRoot(document.getElementById("root")).render(
         <CartProvider>
           <OrderProvider>
             <BannerProvider>
-              <App />
+              <ProductsProvider>
+                <App />
+              </ProductsProvider>
             </BannerProvider>
           </OrderProvider>
         </CartProvider>

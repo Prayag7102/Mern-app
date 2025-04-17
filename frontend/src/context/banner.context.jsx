@@ -12,7 +12,6 @@ const [loading1, setLoading] = useState(true);
     const fetchbanners = async () => {
         try {
         const res = await getBanners();
-        console.log(res.data);
         
         if (res?.data && res.data?.banners) {
             setBanner(res.data.banners);

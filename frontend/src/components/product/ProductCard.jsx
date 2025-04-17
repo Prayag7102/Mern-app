@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product, handleAddToCart, navigate }) => (
+
+  
   <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
     <Link to={`/products/${product.id}`} className="relative mx-3 mt-3 h-64 overflow-hidden rounded-xl">
       <img
