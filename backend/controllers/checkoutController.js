@@ -2,6 +2,8 @@ const Product = require("../models/Product");
 const Checkout = require('../models/Checkout.model');
 const Razorpay = require("razorpay");
 const crypto = require('crypto');
+const Cart = require('../models/Cart');
+
 
 const razorpayInstance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -89,16 +91,34 @@ const verifyPayment = async (req, res) => {
                                    .update(body.toString())
                                    .digest('hex');
 
-
   if (expectedSignature === signature) {
     try {
-      const checkout = await Checkout.findOne({ razorpayOrderId: orderId.trim() }); 
+      const checkout = await Checkout.findOne({ razorpayOrderId: orderId.trim() });
 
       if (!checkout) {
         return res.status(404).json({ message: "Checkout not found." });
       }
-      checkout.status = 'Completed'; 
-      await checkout.save(); 
+
+      checkout.status = 'Completed';
+      await checkout.save();
+
+      const cart = await Cart.findOne({ user: checkout.userId });
+      if (cart) {
+        checkout.products.forEach((checkoutProduct) => {
+          const productIndex = cart.products.findIndex(
+            (cartItem) =>
+              cartItem.product.toString() === checkoutProduct.productId.toString() &&
+              cartItem.color === checkoutProduct.color &&
+              cartItem.size === checkoutProduct.size
+          );
+
+          if (productIndex > -1) {
+            cart.products.splice(productIndex, 1);
+          }
+        });
+
+        await cart.save();
+      }
 
       return res.status(200).json({ message: "Payment verified successfully.", checkout });
     } catch (error) {

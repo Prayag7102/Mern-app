@@ -30,7 +30,6 @@ useEffect(() => {
     fetchUser();
 }, []);
 
-console.log(user);
 
 
 return (
