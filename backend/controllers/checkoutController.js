@@ -88,8 +88,8 @@ const verifyPayment = async (req, res) => {
   const { orderId, paymentId, signature } = req.body;
   const body = orderId + "|" + paymentId;
   const expectedSignature = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
-                                   .update(body.toString())
-                                   .digest('hex');
+                                  .update(body.toString())
+                                  .digest('hex');
 
   if (expectedSignature === signature) {
     try {
