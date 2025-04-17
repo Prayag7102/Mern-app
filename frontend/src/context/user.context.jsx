@@ -14,7 +14,8 @@ useEffect(() => {
     const res = await axiosInstance.get("/users/user-check", {
         withCredentials: true,
     });
-    if (res.data.success) {
+    
+    if (res.data?.success && res.data?.user) {
         setUser(res.data.user);
     } else {
         setUser(null);
@@ -28,6 +29,9 @@ useEffect(() => {
 
     fetchUser();
 }, []);
+
+console.log(user);
+
 
 return (
     <UserContext.Provider value={{ user, setUser, loading1 }}>

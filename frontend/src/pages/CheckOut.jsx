@@ -76,12 +76,13 @@ const Checkout = () => {
   };
 
   const handleSubmit = async () => {
+    
+    if (!userId) {
+      toast.error('Please login to continue');
+      navigate('/login');
+      return;
+    }
     try {
-      if (!userId) {
-        toast.error('Please login to continue');
-        navigate('/login');
-        return;
-      }
 
       setLoading(true);
       setSubmitted(true);
@@ -165,19 +166,19 @@ const Checkout = () => {
           };
           const token = localStorage.getItem('token');
           const verifyResponse = await axiosInstance.post('/checkout/verify-payment', paymentData,{
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+            withCredentials: true,
           });
           if (verifyResponse.status === 200) {
             toast.success('Payment successful!');
             await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Completed' },{
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
+              withCredentials: true,
             });
+            setOrder(prev => [...prev, checkoutResponse.checkout]);
             navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); 
           } else {
+            await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Cancelled' },{
+              withCredentials: true,
+            });
             toast.error('Payment verification failed.');
           }
         },

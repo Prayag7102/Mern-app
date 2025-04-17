@@ -39,11 +39,8 @@ export const adminLogin = async (username, password) => {
 
 export  const fetchAllUsers = async () => {
   try {
-    const token = localStorage.getItem("adminToken")
     const response = await axiosInstance.get("/users",{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
+      withCredentials:true
     });
     return response.data
   } catch (error) {

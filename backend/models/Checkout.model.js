@@ -55,7 +55,7 @@ const checkoutSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Completed", "Cancelled"],
+      enum: ["Pending", "Completed", "Failed"],
       default: "Pending",
     },
     razorpayOrderId: { // Add this field to store Razorpay order ID

@@ -9,10 +9,10 @@ import { OrderProvider } from './context/order.context.jsx'
 
 createRoot(document.getElementById("root")).render(
   <AdminProvider>
-    <OrderProvider>
       <UserProvider>
-        <App />
+        <OrderProvider>
+            <App />
+        </OrderProvider>
       </UserProvider>
-    </OrderProvider>
   </AdminProvider>
 );

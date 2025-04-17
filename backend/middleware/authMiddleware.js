@@ -25,6 +25,7 @@ const protect = async (req, res, next) => {
 
 const verifyToken = async (req, res, next) => {
   const token = req.cookies.token;
+  console.log(token)
   if (!token) {
     return res.status(200).json({ message: "Access token missing or invalid." });
   }
