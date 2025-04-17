@@ -5,11 +5,14 @@ import { toast } from 'react-toastify';
 import { Button, Input, Box, Typography } from '@mui/material';
 import  JoditEditor  from 'jodit-react';
 import { useAdmin } from '../../../context/admin.context';
+import { useProducts } from '../../../context/product.context';
 
 
 
 const AddProducts = () => {
   const editor = useRef(null);
+
+  const {fetchProducts} = useProducts();
   const [productData, setProductData] = useState({
     name: '',
     description: '',
@@ -103,6 +106,7 @@ const AddProducts = () => {
 
     try {
       const response = await createProduct(productData, image, otherImages);
+      await fetchProducts(); 
       toast.success("Product Created Successfully!", { theme: "dark" });
 
       setProductData({
