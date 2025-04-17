@@ -33,7 +33,7 @@ const createCheckout = async (req, res) => {
       totalPrice,
       address,
       paymentMethod,
-      status: "Pending",
+      status: "Failed",
       razorpayOrderId: order.id 
     });
     return res.status(201).json({ message: "Checkout successful.", checkout: { ...checkout._doc, razorpayOrderId: order.id } });
