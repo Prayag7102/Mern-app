@@ -29,8 +29,6 @@ export const CartProvider = ({ children }) => {
     useEffect(() => {
         fetchCartItems();
     }, []);
-
-    console.log("api call from order purchased");
 return (
     <CartContext.Provider
         value={{ cart, setCartItem,fetchCartItems,  loading1, error }}
