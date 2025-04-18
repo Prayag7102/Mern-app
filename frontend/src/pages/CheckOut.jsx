@@ -9,6 +9,7 @@ import { Input } from 'antd';
 import { useOrder } from '../context/order.context'
 
 import { useUser } from '../context/user.context'
+import { useCarts } from '../context/cart.context';
 
 
 const Checkout = () => {
@@ -17,6 +18,8 @@ const Checkout = () => {
   const { cartItems, subtotal, shippingCost, total } = location.state || {};
 
   const { fetchOrders} = useOrder();
+
+  const { fetchCartItems } = useCarts();
 
   const [userCart, setUserCart] = useState(cartItems);
   const [loading, setLoading] = useState(false);
@@ -174,6 +177,7 @@ const Checkout = () => {
               withCredentials: true,
             });
             await fetchOrders();
+            await fetchCartItems();
             navigate('/order-success', { state: { orderId: checkoutResponse.checkout._id } }); 
           } else {
             await axiosInstance.put(`/checkout/${razorpayOrderId}`, { status: 'Failed' },{

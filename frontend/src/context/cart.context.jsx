@@ -30,6 +30,7 @@ export const CartProvider = ({ children }) => {
         fetchCartItems();
     }, []);
 
+    console.log("api call from order purchased");
 return (
     <CartContext.Provider
         value={{ cart, setCartItem,fetchCartItems,  loading1, error }}
