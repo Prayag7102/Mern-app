@@ -1,6 +1,6 @@
 const CATEGORIES = [
     { id: 'all', name: 'All Products' },
-    { id: 'clothing', name: 'Clothing & Accessories' },
+    { id: 'clothing', name: 'Clothing' },
     { id: 'smartphones', name: 'Smartphones' },
     { id: 'Electronics', name: 'Electronics' }
   ];

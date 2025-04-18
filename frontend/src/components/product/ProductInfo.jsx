@@ -188,7 +188,7 @@ export const ProductInfo = ({
           onClick={handleAddToCart}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          disabled={!selectedColor || !selectedSize}
+          disabled={!selectedColor }
         >
           <BsCart className="text-2xl" /> Add to Cart
         </motion.button>

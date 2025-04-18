@@ -25,7 +25,7 @@ export const useProduct = (id) => {
       const response = await axiosInstance.get(`/products/${id}`);
       setProduct(response.data);
       setSelectedColor(response.data.colors[0]);
-      setSelectedSize(response.data.sizes[0]);
+      setSelectedSize(response.data.sizes[0] || null);
     } catch (error) {
       toast.error('Error fetching product details.');
     } finally {
@@ -39,7 +39,7 @@ export const useProduct = (id) => {
       return;
     }
 
-    if (!selectedColor || !selectedSize) {
+    if (!selectedColor) {
       toast.error('Please select both color and size');
       return;
     }
