@@ -105,18 +105,15 @@ const verifyPayment = async (req, res) => {
       const cart = await Cart.findOne({ user: checkout.userId });
       if (cart) {
         checkout.products.forEach((checkoutProduct) => {
-          const productIndex = cart.products.findIndex(
-            (cartItem) =>
-              cartItem.product.toString() === checkoutProduct.productId.toString() &&
-              cartItem.color === checkoutProduct.color &&
-              cartItem.size === checkoutProduct.size
+          const productIndex = cart.products.findIndex((cartItem) =>
+            cartItem.product.toString() === checkoutProduct.productId.toString() &&
+            cartItem.color === checkoutProduct.color &&
+            cartItem.size === (checkoutProduct.size ?? null)
           );
-
           if (productIndex > -1) {
             cart.products.splice(productIndex, 1);
           }
         });
-
         await cart.save();
       }
 
