@@ -43,7 +43,7 @@ const addToCart = async (req, res) => {
         product: productId, 
         quantity: quantity || 1,
         color: color || product.colors[0],
-        size: size || product.sizes[0]
+        size: size || product.sizes[0] || null
       });
     }
 
