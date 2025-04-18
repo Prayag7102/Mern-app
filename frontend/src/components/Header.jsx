@@ -35,7 +35,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
+    <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 border-b-orange-500">
       <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
         <Link to="/" className="flex items-center">
           <img
@@ -43,7 +43,7 @@ const Navbar = () => {
             className="mr-3 h-6 sm:h-9"
             alt="Flowbite Logo"
           />
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+          <span className="self-center text-xl font-semibold whitespace-nowrap text-black">
             Ecommerce
           </span>
         </Link>
@@ -54,8 +54,8 @@ const Navbar = () => {
                 to="/login"
                 className={`${
                   isActiveLink("/login")
-                    ? "text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2"
-                    : "text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                    ? "text-gray-700 dark:text-blue-500   font-medium rounded-lg text-md mx-2  focus:outline-none   "
+                    : "text-gray-700 dark:text-black    font-medium rounded-lg text-md  mx-2 focus:outline-none   "
                 }`}
                 aria-current={isActiveLink("/login") ? "page" : undefined}
               >
@@ -65,8 +65,8 @@ const Navbar = () => {
                 to="/register"
                 className={`${
                   isActiveLink("/register")
-                    ? "text-blue-500 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2"
-                    : "text-gray-700 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-2 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                    ? "text-gray-700 dark:text-blue-500   font-medium rounded-lg text-md mx-2  focus:outline-none  "
+                    : "text-gray-700 dark:text-black    font-medium rounded-lg text-md mx-2  focus:outline-none "
                 }`}
                 aria-current={isActiveLink("/register") ? "page" : undefined}
               >
@@ -157,8 +157,8 @@ const Navbar = () => {
               <Link
                 to="/"
                 className={`block py-2 pr-4 pl-3 ${
-                  isActiveLink("/") ? "text-blue-500" : "text-gray-700"
-                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                  isActiveLink("/") ? "text-blue-500" : "text-black"
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0  `}
                 aria-current={isActiveLink("/") ? "page" : undefined}
               >
                 Home
@@ -169,7 +169,7 @@ const Navbar = () => {
                 to="/about"
                 className={`block py-2 pr-4 pl-3 ${
                   isActiveLink("/about") ? "text-blue-500" : "text-gray-700"
-                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0  `}
                 aria-current={isActiveLink("/about") ? "page" : undefined}
               >
                 About Us
@@ -180,7 +180,7 @@ const Navbar = () => {
                 to="/contact"
                 className={`block py-2 pr-4 pl-3 ${
                   isActiveLink("/contact") ? "text-blue-500" : "text-gray-700"
-                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700`}
+                } border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-blue-700 lg:p-0  `}
                 aria-current={isActiveLink("/contact") ? "page" : undefined}
               >
                 Contact

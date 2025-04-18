@@ -32,24 +32,24 @@ export default function RegisterPage() {
 
   return (
     <>
-      <div className=" w-screen flex justify-center items-center dark:bg-gray-900">
+      <div className=" w-screen flex justify-center items-center dark:bg-gray-100">
         <div className="grid gap-8">
           <div
             id="back-div"
             className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4"
           >
-            <div className="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-              <h1 className="pt-8 pb-6 font-bold dark:text-gray-400 text-5xl text-center cursor-default">
+            <div className=" border-transparent rounded-[20px] dark:bg-white bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
+              <h1 className="pt-8 pb-6 font-bold dark:text-black text-5xl text-center cursor-default">
                 Register
               </h1>
               <form onSubmit={handleRegister} className="space-y-4">
                 <div>
-                  <label htmlFor="name" className="mb-2 dark:text-gray-400 text-lg">
+                  <label htmlFor="name" className="mb-2 dark:text-black text-lg">
                     Name
                   </label>
                   <input
                     id="name"
-                    className="border p-3 dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
+                    className="border p-3 dark:bg-gray-100 dark:text-gray-300 dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
                     type="text"
                     placeholder="Name"
                     value={name}
@@ -58,12 +58,12 @@ export default function RegisterPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="mb-2 dark:text-gray-400 text-lg">
+                  <label htmlFor="email" className="mb-2 dark:text-black text-lg">
                     Email
                   </label>
                   <input
                     id="email"
-                    className="border p-3 dark:bg-indigo-700 dark:text-gray-300 dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
+                    className="border p-3 dark:bg-gray-100 dark:text-gray-300 dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full"
                     type="email"
                     placeholder="Email"
                     value={email}
@@ -72,7 +72,7 @@ export default function RegisterPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="mb-2 dark:text-gray-400 text-lg">
+                  <label htmlFor="password" className="mb-2 dark:text-black text-lg">
                     Password
                   </label>
                   <input

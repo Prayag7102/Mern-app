@@ -40,19 +40,19 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className=" w-screen flex justify-center items-center dark:bg-gray-900">
+      <div className=" w-screen flex justify-center items-center bg-gray-100">
         <div className="grid gap-8">
           <div
             id="back-div"
             className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4"
           >
-            <div className="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-              <h1 className="pt-8 pb-6 font-bold dark:text-gray-400 text-5xl text-center cursor-default">
+            <div className=" border-transparent rounded-[20px] dark:bg-white bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-5 md:p-5 sm:p-2 m-2">
+              <h1 className="pt-8 pb-6 font-bold dark:text-black text-5xl text-center cursor-default">
                 Log in
               </h1>
               <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="mb-2 dark:text-gray-400 text-lg">
+                  <label htmlFor="email" className="mb-2 dark:text-black text-lg">
                     Email
                   </label>
                   <input
@@ -66,7 +66,7 @@ export default function LoginPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="mb-2 dark:text-gray-400 text-lg">
+                  <label htmlFor="password" className="mb-2 dark:text-black text-lg">
                     Password
                   </label>
                   <input
