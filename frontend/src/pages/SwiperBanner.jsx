@@ -40,14 +40,14 @@ const SwiperBanner = () => {
       {banner.map((banner, index) =>
         banner.imageUrl.map((url, imgIndex) => (
           <SwiperSlide key={`${index}-${imgIndex}`}>
-            <img
-              src={`http://localhost:5000/uploads/${url}`}
-              height={'100%'}
-              width={'100%'}
-              loading='lazy'
-              alt={`E-commerce Banner ${index + 1} - Image ${imgIndex + 1}`}
-              style={{ objectFit: 'cover' }}
-            />
+            <div className="relative w-full pt-[40%]">
+              <img
+                src={`http://localhost:5000/uploads/${url}`}
+                className="absolute top-0 left-0 w-full h-full object-cover"
+                loading='lazy'
+                alt={`E-commerce Banner ${index + 1} - Image ${imgIndex + 1}`}
+              />
+            </div>
           </SwiperSlide>
         ))
       )}
