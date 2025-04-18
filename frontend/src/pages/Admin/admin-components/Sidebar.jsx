@@ -9,7 +9,7 @@ const Sidebar = ({ isOpen }) => {
     const location = useLocation();
     const isActive = (path) => location.pathname === path;
     return (
-        <div className='relative z-10'>
+        <div className='absolute z-10'>
             <div
                 id="sidebar"
                 className={`lg:block ${isOpen ? 'block' : 'hidden'} bg-white  h-screen  rounded-none border-none`}

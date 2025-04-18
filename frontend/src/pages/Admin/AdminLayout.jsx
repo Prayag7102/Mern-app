@@ -16,7 +16,7 @@ export default function AdminLayout() {
         <Nav onToggleSidebar={toggleSidebar} />
       </div>
       <div className="lg:flex ">
-        <div className='w-[20%]'>
+        <div className='sm:w-[25%] md:w-[18%] relative top-0 left-0'>
           <Sidebar isOpen={isSidebarOpen} />
         </div>
         <div className='bg-zinc-100 overflow-hidden  md:w-full sm:w-full lg:px-5 sm:px-2'>
