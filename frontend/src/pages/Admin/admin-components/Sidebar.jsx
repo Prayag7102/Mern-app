@@ -12,7 +12,7 @@ const Sidebar = ({ isOpen }) => {
         <div className='relative z-10'>
             <div
                 id="sidebar"
-                className={`lg:block ${isOpen ? 'block' : 'hidden'} bg-white w-64 h-screen fixed rounded-none border-none`}
+                className={`lg:block ${isOpen ? 'block' : 'hidden'} bg-white  h-screen  rounded-none border-none`}
             >
                 <div className="p-4 space-y-4">
                     <Link

@@ -17,7 +17,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="lg:w-[90%] lg:float-end">
+    <div className="">
       <Box sx={{ height: 600, width: '100%', p: 2 }}>
         <Typography variant="h4" sx={{ mb: 3 }}>
           Orders 

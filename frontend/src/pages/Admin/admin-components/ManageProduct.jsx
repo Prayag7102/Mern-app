@@ -24,7 +24,7 @@ const ManageProduct = () => {
   const columns = createColumns(handleEdit, handleProductDelete);
 
   return (
-    <div className="lg:w-[90%] lg:float-end">
+    <div className="">
       <EditModal
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}

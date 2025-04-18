@@ -15,11 +15,11 @@ export default function AdminLayout() {
       <div className='w-full'>
         <Nav onToggleSidebar={toggleSidebar} />
       </div>
-      <div className="lg:flex lg:gap-40">
-        <div className='lg:w-[10%]'>
+      <div className="lg:flex ">
+        <div className='w-[20%]'>
           <Sidebar isOpen={isSidebarOpen} />
         </div>
-        <div className='bg-zinc-100 lg:w-[90%] md:w-full sm:w-full lg:px-5 sm:px-2'>
+        <div className='bg-zinc-100 overflow-hidden  md:w-full sm:w-full lg:px-5 sm:px-2'>
           <Outlet/>
         </div>
       </div>
