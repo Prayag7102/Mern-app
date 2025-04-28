@@ -44,7 +44,6 @@ export const handleEditSave = async (selectedProduct, setProducts, setEditModalO
       if (!otherImagesUploadResponse.ok) throw new Error("Failed to upload other images");
       const uploadedOtherImagesData = await otherImagesUploadResponse.json();
       otherImagesUrls = uploadedOtherImagesData.otherImages;
-      console.log(uploadedOtherImagesData);
     }
 
     
